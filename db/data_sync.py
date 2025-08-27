@@ -122,7 +122,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
 
             # 提交事务
             mysql_conn.commit()
-            print(f"成功同步 {len(rows)} 条记录到MySQL数据库")
+            print(f"成功同步 {len(rows)} 条记录到MySQL数据库，ID冲突的不同步")
 
         finally:
             mysql_conn.close()
