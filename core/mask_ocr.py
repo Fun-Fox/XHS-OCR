@@ -7,6 +7,7 @@ from ppocr_visualize import visualize
 # 引入数据库模块
 from db import save_ocr_data
 import time
+import configparser
 
 # OCR 引擎路径
 ocr_engine_path = r"D:\PaddleOCR-json_v1.4.1\PaddleOCR-json.exe"
@@ -19,6 +20,10 @@ ocr_dir = os.path.join(root_dir, "images")
 
 # 初始化 OCR 引擎
 ocr = GetOcrApi(ocr_engine_path)
+
+# 读取配置文件
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini'))
 
 if ocr.getRunningMode() == "local":
     print(f"初始化OCR成功，进程号为{ocr.ret.pid}")
