@@ -91,11 +91,13 @@ for filename in os.listdir(ocr_dir):
     if not getObj["code"] == 100:
         print(f"识别失败: {filename}")
         continue
-    if tag == "data_overview":
-        index_mapping_data = ['曝光数', '观看数', '点击率', '平均观看时长', '完播率', '2秒退出率', '涨粉数', '点赞数',
-                              '评论数', '收藏数']
-    else:
-        index_mapping_data = []
+    
+    # 从配置文件中获取index_mapping_data
+    index_mapping_data = []
+    if config.has_section('tags') and config.has_option('tags', tag):
+        index_mapping_data_str = config.get('tags', tag)
+        index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
+    
     if len(getObj["data"]) != len(index_mapping_data):
         print("识别到的数据个数不匹配")
         continue
