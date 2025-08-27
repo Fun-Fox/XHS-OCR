@@ -1,7 +1,8 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv ()
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
 
 # 添加数据库同步功能
 def sync_explore_data_to_remote():
@@ -24,12 +25,11 @@ def sync_explore_data_to_remote():
             return
 
         # 获取ExploreData.db路径
-        download_path = os.path.join(current_dir, 'Download')
-        db_path = os.path.join(download_path, 'ocr_data.db')
+        db_path = os.path.join(current_dir, 'ocr_data.db')
 
         # 检查数据库文件是否存在
         if not os.path.exists(db_path):
-            print("ExploreData.db 文件不存在，跳过数据同步")
+            print("ocr_data.db 文件不存在，跳过数据同步")
             return
 
         # 连接本地SQLite数据库
