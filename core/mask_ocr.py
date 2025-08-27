@@ -23,7 +23,8 @@ ocr = GetOcrApi(ocr_engine_path)
 
 # 读取配置文件
 config = configparser.ConfigParser()
-config.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini'))
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini'), encoding='utf-8') as f:
+    config.read_file(f)
 
 if ocr.getRunningMode() == "local":
     print(f"初始化OCR成功，进程号为{ocr.ret.pid}")
