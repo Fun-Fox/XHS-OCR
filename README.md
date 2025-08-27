@@ -1,6 +1,7 @@
 # XHS-OCR - 小红书数据OCR识别系统
 
 一个用于识别小红书图片数据并保存到数据库的OCR系统。
+![](./doc/1.png)
 
 ## 功能特点
 
@@ -71,13 +72,17 @@ XHS-OCR/
 ## 配置说明
 
 ### 1. OCR引擎配置
+
 在 `core/mask_ocr.py` 中配置OCR引擎路径：
+
 ```python
 ocr_engine_path = r"D:\PaddleOCR-json_v1.4.1\PaddleOCR-json.exe"
 ```
 
 ### 2. 数据库配置
+
 通过环境变量配置远程MySQL数据库：
+
 - `MYSQL_HOST`: MySQL服务器地址
 - `MYSQL_PORT`: MySQL端口
 - `MYSQL_USER`: 用户名
@@ -85,7 +90,9 @@ ocr_engine_path = r"D:\PaddleOCR-json_v1.4.1\PaddleOCR-json.exe"
 - `MYSQL_DATABASE`: 数据库名
 
 ### 3. 标签配置
+
 在 `core/config.ini` 中配置标签和字段映射：
+
 ```ini
 [tags]
 data_overview = 曝光数,观看数,点击率,平均观看时长,完播率,2秒退出率,涨粉数,点赞数,评论数,收藏数
