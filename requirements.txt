@@ -1,2 +1,13 @@
-pillow~=11.3.0
-opencv-python~=4.12.0.88
+# XHS-OCR 项目依赖
+
+# 基础依赖
+opencv-python
+numpy
+Pillow
+pymysql
+
+# 定时任务（可选）
+schedule
+
+# 配置文件处理
+configparser

@@ -25,7 +25,7 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
 
     cursor.execute(f'''
             CREATE TABLE IF NOT EXISTS {tag}_ocr (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                作品ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 "作品标题" TEXT,
                 "采集时间" TEXT,
                 {(' TEXT, '.join(escaped_fields)) + ' TEXT' if escaped_fields else ''}
