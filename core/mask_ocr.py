@@ -25,7 +25,7 @@ ocr = GetOcrApi(ocr_engine_path)
 
 # 读取配置文件
 config = configparser.ConfigParser()
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini'), encoding='utf-8') as f:
+with open(os.path.join(root_dir, 'config.ini'), encoding='utf-8') as f:
     config.read_file(f)
 
 def process_images():
@@ -41,11 +41,18 @@ def process_images():
     for filename in os.listdir(ocr_dir):
         # 构建图片路径
         img_path = os.path.join(ocr_dir, filename)
-        post_info = filename.split('#')
+        post_info = os.path.basename(filename).split('#')
 
         tag = post_info[0]
         post_title = post_info[1]
-        collect_time = post_info[2]
+        # 将时间戳转换为可读时间格式
+        timestamp_str = post_info[2]
+        if '.' in timestamp_str:
+            timestamp = int(timestamp_str.split('.')[0])
+        else:
+            timestamp = int(timestamp_str)
+        collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
+        
         # 读取原图和遮罩图
         original_img = imread_with_pil(img_path)
         mask_path = os.path.join(root_dir, "mask", f"{tag}.png")
@@ -104,7 +111,6 @@ def process_images():
             print(f"{index_mapping_data[index]}:{text}")
 
         # 保存数据到数据库
-        collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data)
 
         textBlocks = getObj["data"]
@@ -147,4 +153,4 @@ def imread_with_pil(path):
 if __name__ == "__main__":
     process_images()
     # 开始同步识别后的数据
-    sync_explore_data_to_remote()
+    sync_explore_data_to_remote(['data_overview_ocr','traffic_analysis_ocr'])

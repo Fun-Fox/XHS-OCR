@@ -37,7 +37,7 @@ def run_sync_task():
     """
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行数据同步任务...")
     try:
-        sync_explore_data_to_remote()
+        sync_explore_data_to_remote(['data_overview_ocr','traffic_analysis_ocr'])
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行完成")
     except Exception as e:
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行出错: {e}")

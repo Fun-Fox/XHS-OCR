@@ -5,7 +5,7 @@ load_dotenv ()
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 添加数据库同步功能
-def sync_explore_data_to_remote():
+def sync_explore_data_to_remote(table_name_list = ['data_overview_ocr','traffic_analysis_ocr']):
     """
     将Download文件夹下的ExploreData.db sqlite数据全量同步到远程MySQL数据库中
     """
@@ -36,20 +36,21 @@ def sync_explore_data_to_remote():
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        table_name = 'data_overview_ocr'
-        # 读取所有数据
-        cursor.execute(f"SELECT * FROM {table_name}")
-        rows = cursor.fetchall()
+        for table_name in table_name_list:
+            # 读取所有数据
+            cursor.execute(f"SELECT * FROM {table_name}")
+            rows = cursor.fetchall()
 
-        # 获取列名
-        column_names = [description[0] for description in cursor.description]
+            # 获取列名
+            column_names = [description[0] for description in cursor.description]
 
+
+
+            # 同步到MySQL数据库
+            sync_to_mysql(db_config, table_name, column_names, rows)
+            print("数据已同步到远程MySQL数据库")
         # 关闭本地数据库连接
         conn.close()
-
-        # 同步到MySQL数据库
-        sync_to_mysql(db_config, table_name, column_names, rows)
-        print("ExploreData.db 数据已同步到远程MySQL数据库")
 
     except Exception as e:
         print(f"同步数据到远程数据库时出错: {str(e)}")
@@ -83,11 +84,15 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                     else:
                         columns_definitions.append(f"`{col}` TEXT")
 
-                create_table_sql = f"""
+                # 使用单行字符串格式，避免潜在的多行字符串问题
+                create_table_sql = " ".join(f"""
                 CREATE TABLE IF NOT EXISTS {table_name} (
                     {", ".join(columns_definitions)}
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-                """
+                """.split())
+
+                # 添加调试输出
+                print(f"Create table SQL: {create_table_sql}")
                 cursor.execute(create_table_sql)
 
                 if rows:
@@ -99,13 +104,18 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                     update_fields = []
                     for col in column_names:
                         if col not in ("id", "作品ID"):  # id是自增主键，作品ID是唯一标识，不需要更新
+                            # 使用双引号包裹列名，避免中文列名的问题
                             update_fields.append(f"`{col}` = VALUES(`{col}`)")
                     
-                    insert_sql = f"""
+                    # 使用单行字符串格式，避免潜在的多行字符串问题
+                    insert_sql = " ".join(f"""
                     INSERT INTO {table_name} ({columns_str})
                     VALUES ({placeholders})
                     ON DUPLICATE KEY UPDATE {", ".join(update_fields)}
-                    """
+                    """.split())
+                    
+                    # 添加调试输出
+                    print(f"Insert SQL: {insert_sql}")
                     # 调整了ON DUPLICATE KEY UPDATE部分的逻辑，当作品ID冲突时，不再更新任何字段（包括作品ID本身）
                     # 批量插入或更新数据
                     cursor.executemany(insert_sql, rows)
