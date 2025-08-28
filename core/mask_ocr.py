@@ -153,4 +153,4 @@ def imread_with_pil(path):
 if __name__ == "__main__":
     process_images()
     # 开始同步识别后的数据
-    sync_explore_data_to_remote(['data_overview_ocr','traffic_analysis_ocr'])
+    sync_explore_data_to_remote(['s_xhs_data_overview_ocr','s_xhs_traffic_analysis_ocr'])

@@ -25,7 +25,7 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
 
     # 创建表，使用作品标题和采集时间作为联合主键
     create_table_sql = f'''
-        CREATE TABLE IF NOT EXISTS {tag}_ocr (
+        CREATE TABLE IF NOT EXISTS s_xhs_{tag}_ocr (
             "作品ID" INTEGER PRIMARY KEY AUTOINCREMENT,
             "作品标题" TEXT,
             "采集时间" TEXT,
@@ -40,7 +40,7 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
     # 使用 INSERT OR IGNORE 语句，当作品标题和采集时间都相同时不插入
     table_len = len(index_mapping_data) + 2
     cursor.execute(f'''
-        INSERT OR IGNORE INTO {tag}_ocr (
+        INSERT OR IGNORE INTO s_xhs_{tag}_ocr (
             "作品标题", "采集时间", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     ''', (

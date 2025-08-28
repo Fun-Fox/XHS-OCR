@@ -5,7 +5,7 @@ load_dotenv ()
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 添加数据库同步功能
-def sync_explore_data_to_remote(table_name_list = ['data_overview_ocr','traffic_analysis_ocr']):
+def sync_explore_data_to_remote(table_name_list = ['s_xhs_data_overview_ocr','s_xhs_traffic_analysis_ocr']):
     """
     将Download文件夹下的ExploreData.db sqlite数据全量同步到远程MySQL数据库中
     """
