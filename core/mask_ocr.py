@@ -11,14 +11,21 @@ from db import save_ocr_data
 import time
 import configparser
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # OCR 引擎路径
-ocr_engine_path = r"D:\PaddleOCR-json_v1.4.1\PaddleOCR-json.exe"
+ocr_engine_path = os.getenv("OCR_ENGINE_PATH")
 
 # 遮罩图路径
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OCR 图片目录
-ocr_dir = os.path.join(root_dir, "images")
+if os.getenv("OCR_IMAGES_PATH"):
+    ocr_dir = os.getenv("OCR_IMAGES_PATH")
+else:
+    ocr_dir = os.path.join(root_dir, "images")
 
 # 初始化 OCR 引擎
 ocr = GetOcrApi(ocr_engine_path)
@@ -27,6 +34,7 @@ ocr = GetOcrApi(ocr_engine_path)
 config = configparser.ConfigParser()
 with open(os.path.join(root_dir, 'config.ini'), encoding='utf-8') as f:
     config.read_file(f)
+
 
 def process_images():
     """
@@ -52,7 +60,7 @@ def process_images():
         else:
             timestamp = int(timestamp_str)
         collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
-        
+
         # 读取原图和遮罩图
         original_img = imread_with_pil(img_path)
         mask_path = os.path.join(root_dir, "mask", f"{tag}.png")
@@ -89,13 +97,13 @@ def process_images():
         if not getObj["code"] == 100:
             print(f"识别失败: {filename}")
             continue
-        
+
         # 从配置文件中获取index_mapping_data
         index_mapping_data = []
         if config.has_section('tags') and config.has_option('tags', tag):
             index_mapping_data_str = config.get('tags', tag)
             index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
-        
+
         if len(getObj["data"]) != len(index_mapping_data):
             print("识别到的数据个数不匹配")
             continue
@@ -153,4 +161,4 @@ def imread_with_pil(path):
 if __name__ == "__main__":
     process_images()
     # 开始同步识别后的数据
-    sync_explore_data_to_remote(['s_xhs_data_overview_ocr','s_xhs_traffic_analysis_ocr'])
+    sync_explore_data_to_remote(['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr'])
