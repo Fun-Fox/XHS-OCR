@@ -41,7 +41,7 @@ python main.py --mode schedule
 python main.py --mode schedule --interval 30
 
 # 每天10:00执行一次OCR识别和数据同步
-python main.py --mode schedule --at-time "10:00"
+python main.py --mode schedule --at-time "18:00"
 
 # 每小时执行OCR识别但不进行数据同步
 python main.py --mode schedule --no-sync
