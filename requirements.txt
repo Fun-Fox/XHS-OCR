@@ -11,3 +11,4 @@ schedule
 
 # 配置文件处理
 configparser
+loguru

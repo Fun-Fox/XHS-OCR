@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -11,6 +10,7 @@ import sys
 import time
 import argparse
 from datetime import datetime
+from loguru import logger
 
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -18,29 +18,34 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.mask_ocr import process_images
 from db.data_sync import sync_explore_data_to_remote
 
+# 添加项目根目录到Python路径
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# 配置日志文件
+logger.add("logs/run_{time}.log", rotation="100 MB", encoding="utf-8")
 
 def run_ocr_task():
     """
     执行OCR识别任务
     """
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行OCR识别任务...")
+    logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行OCR识别任务...")
     try:
         process_images()
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] OCR识别任务执行完成")
+        logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] OCR识别任务执行完成")
     except Exception as e:
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] OCR识别任务执行出错: {e}")
+        logger.error(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] OCR识别任务执行出错: {e}")
 
 
 def run_sync_task():
     """
     执行数据同步任务
     """
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行数据同步任务...")
+    logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行数据同步任务...")
     try:
-        sync_explore_data_to_remote(['s_xhs_data_overview_ocr','s_xhs_traffic_analysis_ocr'])
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行完成")
+        sync_explore_data_to_remote(['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr'])
+        logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行完成")
     except Exception as e:
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行出错: {e}")
+        logger.error(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行出错: {e}")
 
 
 def run_all_tasks(sync_enabled=True):
@@ -52,7 +57,7 @@ def run_all_tasks(sync_enabled=True):
     if sync_enabled:
         run_sync_task()
     else:
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步功能已禁用")
+        logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步功能已禁用")
 
 
 def manual_run(sync_enabled=True):
@@ -60,7 +65,7 @@ def manual_run(sync_enabled=True):
     手动执行模式
     :param sync_enabled: 是否启用数据同步功能
     """
-    print("XHS-OCR 手动执行模式")
+    logger.info("XHS-OCR 手动执行模式")
     run_all_tasks(sync_enabled)
 
 
@@ -71,34 +76,34 @@ def schedule_run(interval, at_time, sync_enabled=True):
     :param at_time: 指定时间（如 "10:00"）
     :param sync_enabled: 是否启用数据同步功能
     """
-    print("XHS-OCR 定时任务模式")
-    
+    logger.info("XHS-OCR 定时任务模式")
+
     try:
         import schedule
-        
+
         if at_time:
             # 在指定时间执行
             schedule.every().day.at(at_time).do(run_all_tasks, sync_enabled=sync_enabled)
-            print(f"默认配置：每天 {at_time} 执行一次任务")
+            logger.info(f"默认配置：每天 {at_time} 执行一次任务")
         elif interval:
             # 按时间间隔执行
             schedule.every(interval).minutes.do(run_all_tasks, sync_enabled=sync_enabled)
-            print(f"默认配置：每 {interval} 分钟执行一次任务")
+            logger.info(f"默认配置：每 {interval} 分钟执行一次任务")
         else:
             # 默认每小时执行
             schedule.every().hour.do(run_all_tasks, sync_enabled=sync_enabled)
-            print("默认配置：每小时执行一次任务")
-        
-        print("定时任务已启动，按 Ctrl+C 退出")
-        
+            logger.info("默认配置：每小时执行一次任务")
+
+        logger.info("定时任务已启动，按 Ctrl+C 退出")
+
         while True:
             schedule.run_pending()
             time.sleep(1)
-            
+
     except ImportError:
-        print("错误：缺少 schedule 库")
-        print("请安装: pip install schedule")
-        print("或者使用手动执行模式: python main.py --mode manual")
+        logger.error("错误：缺少 schedule 库")
+        logger.error("请安装: pip install schedule")
+        logger.error("或者使用手动执行模式: python main.py --mode manual")
 
 
 def main():
@@ -107,8 +112,8 @@ def main():
     """
     parser = argparse.ArgumentParser(description='XHS-OCR 主程序')
     parser.add_argument(
-        '--mode', 
-        choices=['manual', 'schedule'], 
+        '--mode',
+        choices=['manual', 'schedule'],
         default='manual',
         help='运行模式: manual(手动执行) 或 schedule(定时任务)'
     )
@@ -133,9 +138,9 @@ def main():
         help='禁用数据同步功能'
     )
     parser.set_defaults(sync=True)
-    
+
     args = parser.parse_args()
-    
+
     if args.mode == 'manual':
         manual_run(args.sync)
     elif args.mode == 'schedule':
