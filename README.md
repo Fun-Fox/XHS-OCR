@@ -22,29 +22,31 @@ pip install -r requirements.txt
 
 ```bash
 # 执行OCR识别和数据同步
-python main.py
+python xhs_ocr.py
 
 # 或明确指定模式
-python main.py --mode manual
+python xhs_ocr.py --mode manual
 
 # 执行OCR识别但不进行数据同步
-python main.py --mode manual --no-sync
+python xhs_ocr.py --mode manual --no-sync
 ```
 
 ### 定时任务模式
 
 ```bash
 # 每小时执行一次OCR识别和数据同步
-python main.py --mode schedule
+python xhs_ocr.py --mode schedule
 
 # 每30分钟执行一次OCR识别和数据同步
-python main.py --mode schedule --interval 30
+python xhs_ocr.py --mode schedule --interval 30
 
 # 每天10:00执行一次OCR识别和数据同步
-python main.py --mode schedule --at-time "18:00"
+python xhs_ocr.py --mode schedule --at-time "18:00"
 
 # 每小时执行OCR识别但不进行数据同步
-python main.py --mode schedule --no-sync
+python xhs_ocr.py --mode schedule --no-sync
+
+nohup python xhs_ocr.py --mode schedule --at-time "18:00" >> run.log 2>&1 &
 ```
 
 在定时任务模式下，系统会按照指定的时间间隔或时间点自动执行OCR识别和数据同步任务。
@@ -64,7 +66,7 @@ XHS-OCR/
 ├── mask/                 # 遮罩图片
 ├── ocr_result/           # OCR识别结果
 ├── tmp/                  # 临时文件
-├── main.py              # 主入口文件
+├── xhs_ocr.py              # 主入口文件
 └── requirements.txt     # 项目依赖
 ```
 
