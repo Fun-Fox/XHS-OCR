@@ -1,0 +1,50 @@
+2025-09-01 11:40:09.971 | INFO     | __main__:manual_run:68 - XHS-OCR 手动执行模式
+2025-09-01 11:40:09.972 | INFO     | __main__:run_ocr_task:31 - [2025-09-01 11:40:09] 开始执行OCR识别任务...
+2025-09-01 11:40:09.972 | INFO     | core.mask_ocr:process_images:44 - 初始化OCR成功，进程号为33784
+2025-09-01 11:40:09.972 | INFO     | core.mask_ocr:process_images:69 - 处理图片: data_overview#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275778.png, 日期: 20250901, 设备: 172-25-1-21-5555
+2025-09-01 11:40:10.056 | INFO     | core.mask_ocr:process_images:100 - 正在处理: data_overview#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275778.png
+2025-09-01 11:40:10.275 | INFO     | core.mask_ocr:process_images:125 - 曝光数:148
+2025-09-01 11:40:10.275 | INFO     | core.mask_ocr:process_images:125 - 观看数:17
+2025-09-01 11:40:10.275 | INFO     | core.mask_ocr:process_images:125 - 点击率:10.8%
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 平均观看时长:42.9
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 完播率:47.4%
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 2秒退出率:15.8%
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 涨粉数:0
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 点赞数:0
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 评论数:0
+2025-09-01 11:40:10.276 | INFO     | core.mask_ocr:process_images:125 - 收藏数:0
+2025-09-01 11:40:10.364 | INFO     | core.mask_ocr:process_images:140 - OCR 结果已保存到: C:\Users\admin\PycharmProjects\XHS-OCR\ocr_result\data_overview#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275778.png
+2025-09-01 11:40:10.364 | INFO     | core.mask_ocr:process_images:69 - 处理图片: traffic_analysis#这个是什么类目的大象啊#1756286969.png, 日期: 20250901, 设备: 172-25-1-21-5555
+2025-09-01 11:40:10.441 | INFO     | core.mask_ocr:process_images:100 - 正在处理: traffic_analysis#这个是什么类目的大象啊#1756286969.png
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看来源-首页推荐:91.2%
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看来源-搜索:1%
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看来源-关注页面:1%
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看来源-其他来源:6.8%
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看转化率:15.3%
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看互动率:7.5%
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 曝光数:609
+2025-09-01 11:40:10.616 | INFO     | core.mask_ocr:process_images:125 - 观看数:93
+2025-09-01 11:40:10.617 | INFO     | core.mask_ocr:process_images:125 - 占总曝光:87.9%
+2025-09-01 11:40:10.617 | INFO     | core.mask_ocr:process_images:125 - 占总观看:91.2%
+2025-09-01 11:40:10.617 | INFO     | core.mask_ocr:process_images:125 - 平均观看时长:5.5
+2025-09-01 11:40:10.617 | INFO     | core.mask_ocr:process_images:125 - 点赞:6
+2025-09-01 11:40:10.617 | INFO     | core.mask_ocr:process_images:125 - 评论:1
+2025-09-01 11:40:10.617 | INFO     | core.mask_ocr:process_images:125 - 收藏:0
+2025-09-01 11:40:10.707 | INFO     | core.mask_ocr:process_images:140 - OCR 结果已保存到: C:\Users\admin\PycharmProjects\XHS-OCR\ocr_result\traffic_analysis#这个是什么类目的大象啊#1756286969.png
+2025-09-01 11:40:10.707 | INFO     | core.mask_ocr:process_images:69 - 处理图片: data_overview#没人可以拒绝的网球穿搭_来自CZXH搭配灵感_0赞_52阅读#1756275889.png, 日期: 20250901, 设备: 172-25-1-22-5555
+2025-09-01 11:40:10.784 | INFO     | core.mask_ocr:process_images:100 - 正在处理: data_overview#没人可以拒绝的网球穿搭_来自CZXH搭配灵感_0赞_52阅读#1756275889.png
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 曝光数:152
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 观看数:53
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 点击率:3.7%
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 平均观看时长:2.1
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 完播率:0%
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 2秒退出率:80%
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 涨粉数:0
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 点赞数:0
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 评论数:0
+2025-09-01 11:40:10.927 | INFO     | core.mask_ocr:process_images:125 - 收藏数:0
+2025-09-01 11:40:11.003 | INFO     | core.mask_ocr:process_images:140 - OCR 结果已保存到: C:\Users\admin\PycharmProjects\XHS-OCR\ocr_result\data_overview#没人可以拒绝的网球穿搭_来自CZXH搭配灵感_0赞_52阅读#1756275889.png
+2025-09-01 11:40:11.004 | INFO     | core.mask_ocr:process_images:144 - 程序结束。
+2025-09-01 11:40:11.006 | INFO     | __main__:run_ocr_task:34 - [2025-09-01 11:40:11] OCR识别任务执行完成
+2025-09-01 11:40:11.006 | INFO     | __main__:run_sync_task:43 - [2025-09-01 11:40:11] 开始执行数据同步任务...
+2025-09-01 11:40:15.131 | INFO     | __main__:run_sync_task:46 - [2025-09-01 11:40:15] 数据同步任务执行完成

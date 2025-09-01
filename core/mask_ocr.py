@@ -101,7 +101,7 @@ def process_images():
             getObj = ocr.run(temp_output_path)
 
             if not getObj["code"] == 100:
-                logger.error(f"识别失败: {filename}")
+                logger.error(f"识别失败: {filename}，可能数据是空的")
                 continue
 
             # 从配置文件中获取index_mapping_data
@@ -111,7 +111,7 @@ def process_images():
                 index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
 
             if len(getObj["data"]) != len(index_mapping_data):
-                logger.warning("识别到的数据个数不匹配")
+                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化")
                 continue
 
             # 提取OCR文本数据
