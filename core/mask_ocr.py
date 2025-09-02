@@ -1,3 +1,4 @@
+import datetime
 import os
 import cv2
 import numpy as np
@@ -46,7 +47,18 @@ def process_images():
         logger.info(f"连接远程OCR引擎成功，ip：{ocr.ip}，port：{ocr.port}")
 
     # 遍历 OCR 目录下的所有图片
+
+    # 获取最近3天的日期列表
+    recent_dates = []
+    for i in range(3):
+        date_str = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime('%Y%m%d')
+        recent_dates.append(date_str)
+
     for root, dirs, files in os.walk(ocr_dir):
+        # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
+        current_dir_name = os.path.basename(root)
+        if current_dir_name not in recent_dates and not any(date in root for date in recent_dates):
+            continue
         for filename in files:
             # 构建图片路径
             img_path = os.path.join(root, filename)
