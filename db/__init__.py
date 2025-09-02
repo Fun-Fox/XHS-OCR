@@ -24,7 +24,7 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
     # 对字段名进行转义，避免特殊字符导致SQL语法错误
     escaped_fields = [f'"{field}"' for field in index_mapping_data]
 
-    print(escaped_fields)
+    # print(escaped_fields)
 
     # 创建表，使用作品标题和采集时间作为联合主键
     create_table_sql = f'''

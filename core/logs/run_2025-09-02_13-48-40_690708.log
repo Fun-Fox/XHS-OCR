@@ -1,0 +1,3 @@
+2025-09-02 13:48:41.421 | INFO     | __main__:process_images:43 - 初始化OCR成功，进程号为5512
+2025-09-02 13:48:41.421 | INFO     | __main__:process_images:55 - 开始扫描ocr目录：C:\Users\admin\PycharmProjects\XHS-OCR\images
+2025-09-02 13:48:41.421 | INFO     | __main__:process_images:159 - 程序结束。

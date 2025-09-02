@@ -1,0 +1,4 @@
+2025-09-02 13:50:27.091 | INFO     | __main__:process_images:43 - 初始化OCR成功，进程号为13188
+2025-09-02 13:50:27.092 | INFO     | __main__:process_images:54 - 最近3天日期: ['20250902', '20250901', '20250831']
+2025-09-02 13:50:27.092 | INFO     | __main__:process_images:55 - 开始扫描ocr目录：C:\Users\admin\PycharmProjects\XHS-OCR\images
+2025-09-02 13:50:27.092 | ERROR    | __main__:process_images:59 - OCR目录不存在: C:\Users\admin\PycharmProjects\XHS-OCR\images

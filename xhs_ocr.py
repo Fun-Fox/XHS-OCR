@@ -10,8 +10,7 @@ import sys
 import time
 import argparse
 from datetime import datetime
-from loguru import logger
-
+from core.logger import logger
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,8 +20,6 @@ from db.data_sync import sync_explore_data_to_remote
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# 配置日志文件
-logger.add("logs/run_{time}.log", rotation="100 MB", encoding="utf-8")
 
 def run_ocr_task():
     """

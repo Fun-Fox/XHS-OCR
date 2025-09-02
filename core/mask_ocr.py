@@ -3,9 +3,8 @@ import os
 import cv2
 import numpy as np
 from PIL import Image
-from loguru import logger
+from core.logger import logger
 
-from db.data_sync import sync_explore_data_to_remote
 from core.ppocr_api import GetOcrApi
 from core.ppocr_visualize import visualize
 # 引入数据库模块
@@ -16,7 +15,6 @@ import configparser
 from dotenv import load_dotenv
 
 # 配置日志文件
-# logger.add("logs/run_{time}.log", rotation="100 MB", encoding="utf-8")
 load_dotenv()
 
 # OCR 引擎路径
@@ -53,13 +51,30 @@ def process_images():
     for i in range(3):
         date_str = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime('%Y%m%d')
         recent_dates.append(date_str)
+    logger.info(f"最近3天日期: {recent_dates}")
+    logger.info(f"开始扫描ocr目录：{ocr_dir}")
+
+    # 检查ocr目录是否存在
+    if not os.path.exists(ocr_dir):
+        logger.error(f"OCR目录不存在: {ocr_dir}")
+        return
 
     for root, dirs, files in os.walk(ocr_dir):
         # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
-        current_dir_name = os.path.basename(root)
-        if current_dir_name not in recent_dates and not any(date in root for date in recent_dates):
-            logger.info(f"只扫描最近3天的目录文件夹，跳过目录: {root}")
+        dir_contains_recent_date = any(date in root for date in recent_dates)
+
+        logger.info(f"扫描目录: {root}, 包含最近日期: {dir_contains_recent_date}")
+
+        # 如果是根目录，继续遍历子目录
+        if root == ocr_dir:
             continue
+
+        # 如果当前路径不包含最近3天的日期，则跳过
+        if not dir_contains_recent_date:
+            logger.info(f"跳过目录(非最近3天): {root}")
+            continue
+
+        logger.info(f"处理最近3天的目录: {root}")
         for filename in files:
             # 构建图片路径
             img_path = os.path.join(root, filename)
@@ -124,7 +139,7 @@ def process_images():
                 index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
 
             if len(getObj["data"]) != len(index_mapping_data):
-                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化")
+                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
                 continue
 
             # 提取OCR文本数据

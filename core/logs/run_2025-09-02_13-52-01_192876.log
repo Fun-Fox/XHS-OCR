@@ -1,0 +1,62 @@
+2025-09-02 13:52:01.816 | INFO     | __main__:process_images:43 - 初始化OCR成功，进程号为23980
+2025-09-02 13:52:01.816 | INFO     | __main__:process_images:54 - 最近3天日期: ['20250902', '20250901', '20250831']
+2025-09-02 13:52:01.816 | INFO     | __main__:process_images:55 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-09-02 13:52:01.816 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-09-02 13:52:01.817 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20250901, 包含最近日期: True
+2025-09-02 13:52:01.817 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20250901
+2025-09-02 13:52:01.817 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20250901\172-25-1-21-5555, 包含最近日期: True
+2025-09-02 13:52:01.817 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20250901\172-25-1-21-5555
+2025-09-02 13:52:01.817 | INFO     | __main__:process_images:97 - 处理图片: data_overview#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275778.png, 日期: 20250901, 设备: 172-25-1-21-5555
+2025-09-02 13:52:01.903 | INFO     | __main__:process_images:128 - 正在处理: data_overview#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275778.png
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 曝光数:148
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 观看数:17
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 点击率:10.8%
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 平均观看时长:42.9
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 完播率:47.4%
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 2秒退出率:15.8%
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 涨粉数:0
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 点赞数:0
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 评论数:0
+2025-09-02 13:52:02.160 | INFO     | __main__:process_images:153 - 收藏数:0
+2025-09-02 13:52:02.233 | INFO     | __main__:process_images:168 - OCR 结果已保存到: D:\PycharmProjects\XHS-OCR\ocr_result\data_overview#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275778.png
+2025-09-02 13:52:02.234 | INFO     | __main__:process_images:97 - 处理图片: traffic_analysis#这个是什么类目的大象啊#1756286969.png, 日期: 20250901, 设备: 172-25-1-21-5555
+2025-09-02 13:52:02.321 | INFO     | __main__:process_images:128 - 正在处理: traffic_analysis#这个是什么类目的大象啊#1756286969.png
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 观看来源-首页推荐:91.2%
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 观看来源-搜索:1%
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 观看来源-关注页面:1%
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 观看来源-其他来源:6.8%
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 观看转化率:15.3%
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 观看互动率:7.5%
+2025-09-02 13:52:02.500 | INFO     | __main__:process_images:153 - 曝光数:609
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 观看数:93
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 占总曝光:87.9%
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 占总观看:91.2%
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 平均观看时长:5.5
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 点赞:6
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 评论:1
+2025-09-02 13:52:02.501 | INFO     | __main__:process_images:153 - 收藏:0
+2025-09-02 13:52:02.579 | INFO     | __main__:process_images:168 - OCR 结果已保存到: D:\PycharmProjects\XHS-OCR\ocr_result\traffic_analysis#这个是什么类目的大象啊#1756286969.png
+2025-09-02 13:52:02.579 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20250901\172-25-1-22-5555, 包含最近日期: True
+2025-09-02 13:52:02.579 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20250901\172-25-1-22-5555
+2025-09-02 13:52:02.579 | INFO     | __main__:process_images:97 - 处理图片: data_overview#没人可以拒绝的网球穿搭_来自CZXH搭配灵感_0赞_52阅读#1756275889.png, 日期: 20250901, 设备: 172-25-1-22-5555
+2025-09-02 13:52:02.653 | INFO     | __main__:process_images:128 - 正在处理: data_overview#没人可以拒绝的网球穿搭_来自CZXH搭配灵感_0赞_52阅读#1756275889.png
+2025-09-02 13:52:02.799 | INFO     | __main__:process_images:153 - 曝光数:152
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 观看数:53
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 点击率:3.7%
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 平均观看时长:2.1
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 完播率:0%
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 2秒退出率:80%
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 涨粉数:0
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 点赞数:0
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 评论数:0
+2025-09-02 13:52:02.800 | INFO     | __main__:process_images:153 - 收藏数:0
+2025-09-02 13:52:02.863 | INFO     | __main__:process_images:168 - OCR 结果已保存到: D:\PycharmProjects\XHS-OCR\ocr_result\data_overview#没人可以拒绝的网球穿搭_来自CZXH搭配灵感_0赞_52阅读#1756275889.png
+2025-09-02 13:52:02.863 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20250901\异常测试数据, 包含最近日期: True
+2025-09-02 13:52:02.863 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20250901\异常测试数据
+2025-09-02 13:52:02.863 | INFO     | __main__:process_images:97 - 处理图片: data_overview#来抄作业啦_欧美风运动装出街穿搭_来自CZXH搭配灵感_7赞_154阅读#1756276008.png, 日期: 20250901, 设备: 异常测试数据
+2025-09-02 13:52:02.950 | INFO     | __main__:process_images:128 - 正在处理: data_overview#来抄作业啦_欧美风运动装出街穿搭_来自CZXH搭配灵感_7赞_154阅读#1756276008.png
+2025-09-02 13:52:03.097 | WARNING  | __main__:process_images:142 - 识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-09-02 13:52:03.098 | INFO     | __main__:process_images:97 - 处理图片: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png, 日期: 20250901, 设备: 异常测试数据
+2025-09-02 13:52:03.195 | INFO     | __main__:process_images:128 - 正在处理: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png
+2025-09-02 13:52:03.302 | ERROR    | __main__:process_images:132 - 识别失败: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png，可能数据是空的
+2025-09-02 13:52:03.302 | INFO     | __main__:process_images:172 - 程序结束。

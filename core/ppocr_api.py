@@ -59,8 +59,7 @@ class PPOCR_pipe:  # 调用OCR（管道模式）
             stderr=subprocess.DEVNULL,  # 丢弃stderr的内容
             startupinfo=startupinfo,  # 开启静默模式
         )
-        print(cmds)
-        print(cwd)
+
         # 启动子进程
         while True:
             if not self.ret.poll() == None:  # 子进程已退出，初始化失败
