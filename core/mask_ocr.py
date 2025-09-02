@@ -58,6 +58,7 @@ def process_images():
         # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
         current_dir_name = os.path.basename(root)
         if current_dir_name not in recent_dates and not any(date in root for date in recent_dates):
+            logger.info(f"只扫描最近3天的目录文件夹，跳过目录: {root}")
             continue
         for filename in files:
             # 构建图片路径
@@ -154,7 +155,6 @@ def process_images():
     # 结束 OCR 引擎
     ocr.exit()
     logger.info("程序结束。")
-
 
 
 def imread_with_pil(path):
