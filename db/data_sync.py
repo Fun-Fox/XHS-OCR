@@ -1,9 +1,20 @@
+import configparser
 import os
 from dotenv import load_dotenv
 
 load_dotenv ()
 current_dir = os.path.dirname(os.path.abspath(__file__))
+# 加载 config.ini
+config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.ini')
+config = configparser.ConfigParser()
+config.read(config_file)
 
+# 获取字段映射
+FIELD_MAPPING = {}
+for section in config.sections():
+    if section.startswith('fields'):
+        for key, value in config.items(section):
+            FIELD_MAPPING[value] = key  # 中文 -> 英文
 # 添加数据库同步功能
 def sync_explore_data_to_remote(table_name_list = ['s_xhs_data_overview_ocr','s_xhs_traffic_analysis_ocr']):
     """
@@ -44,8 +55,6 @@ def sync_explore_data_to_remote(table_name_list = ['s_xhs_data_overview_ocr','s_
             # 获取列名
             column_names = [description[0] for description in cursor.description]
 
-
-
             # 同步到MySQL数据库
             sync_to_mysql(db_config, table_name, column_names, rows)
             print("数据已同步到远程MySQL数据库")
@@ -79,8 +88,12 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                 # 修改表结构，将TEXT类型的主键改为VARCHAR(255)
                 columns_definitions = []
                 for col in column_names:
-                    if col == "作品ID":
-                        columns_definitions.append(f"`{col}` VARCHAR(191) PRIMARY KEY")
+                    if col in FIELD_MAPPING:
+                        eng_col = FIELD_MAPPING[col]
+                        if col == "作品ID":
+                            columns_definitions.append(f"`{eng_col}` VARCHAR(191) PRIMARY KEY COMMENT '{col}'")
+                        else:
+                            columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
                     else:
                         columns_definitions.append(f"`{col}` TEXT")
 
