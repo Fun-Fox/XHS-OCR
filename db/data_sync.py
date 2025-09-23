@@ -7,7 +7,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 # 加载 config.ini
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.ini')
 config = configparser.ConfigParser()
-config.read(config_file)
+config.read(config_file, encoding='utf-8')
 
 # 获取字段映射
 FIELD_MAPPING = {}
