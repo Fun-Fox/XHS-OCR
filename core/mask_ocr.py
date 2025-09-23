@@ -158,14 +158,14 @@ def process_images():
             textBlocks = getObj["data"]
 
             # 可视化结果
-            vis = visualize(textBlocks, temp_output_path)
-            # vis.show()
-
-            # 保存可视化结果
-            output_result_path = os.path.join(root_dir, 'ocr_result', f"{filename}")
-            vis.save(output_result_path, isText=True)
-
-            logger.info(f"OCR 结果已保存到: {output_result_path}")
+            # vis = visualize(textBlocks, temp_output_path)
+            # # vis.show()
+            #
+            # # 保存可视化结果
+            # output_result_path = os.path.join(root_dir, 'ocr_result', f"{filename}")
+            # vis.save(output_result_path, isText=True)
+            #
+            # logger.info(f"OCR 结果已保存到: {output_result_path}")
 
     # 结束 OCR 引擎
     ocr.exit()
