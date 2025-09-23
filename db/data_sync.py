@@ -2,7 +2,7 @@ import configparser
 import os
 from dotenv import load_dotenv
 
-load_dotenv ()
+load_dotenv()
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 加载 config.ini
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.ini')
@@ -15,8 +15,10 @@ for section in config.sections():
     if section.startswith('fields'):
         for key, value in config.items(section):
             FIELD_MAPPING[value] = key  # 中文 -> 英文
+
+
 # 添加数据库同步功能
-def sync_explore_data_to_remote(table_name_list = ['s_xhs_data_overview_ocr','s_xhs_traffic_analysis_ocr']):
+def sync_explore_data_to_remote(table_name_list=['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr']):
     """
     将Download文件夹下的ExploreData.db sqlite数据全量同步到远程MySQL数据库中
     """
@@ -109,28 +111,33 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                 cursor.execute(create_table_sql)
 
                 if rows:
-                    # 准备插入语句，使用ON DUPLICATE KEY UPDATE实现基于作品ID的更新
+                    # 修复：使用英文字段名而不是中文字段名
                     placeholders = ", ".join(["%s"] * len(column_names))
-                    columns_str = ", ".join([f"`{col}`" for col in column_names])
-                    
+
+                    # 映射列名为英文名
+                    mapped_column_names = []
+                    for col in column_names:
+                        if col in FIELD_MAPPING:
+                            mapped_column_names.append(FIELD_MAPPING[col])
+                        else:
+                            mapped_column_names.append(col)
+
+                    columns_str = ", ".join([f"`{col}`" for col in mapped_column_names])
+
                     # 构建ON DUPLICATE KEY UPDATE部分
                     update_fields = []
-                    for col in column_names:
-                        if col not in ("id", "作品ID"):  # id是自增主键，作品ID是唯一标识，不需要更新
-                            # 使用双引号包裹列名，避免中文列名的问题
-                            update_fields.append(f"`{col}` = VALUES(`{col}`)")
-                    
-                    # 使用单行字符串格式，避免潜在的多行字符串问题
+                    for i, col in enumerate(column_names):
+                        if col not in ("id", "作品ID"):
+                            eng_col = mapped_column_names[i] if col in FIELD_MAPPING else col
+                            update_fields.append(f"`{eng_col}` = VALUES(`{eng_col}`)")
+
                     insert_sql = " ".join(f"""
-                    INSERT INTO {table_name} ({columns_str})
-                    VALUES ({placeholders})
-                    ON DUPLICATE KEY UPDATE {", ".join(update_fields)}
-                    """.split())
-                    
-                    # 添加调试输出
-                    print(f"Insert SQL: {insert_sql}")
-                    # 调整了ON DUPLICATE KEY UPDATE部分的逻辑，当作品ID冲突时，不再更新任何字段（包括作品ID本身）
-                    # 批量插入或更新数据
+                                    INSERT INTO {table_name} ({columns_str})
+                                    VALUES ({placeholders})
+                                    ON DUPLICATE KEY UPDATE {", ".join(update_fields)}
+                                    """.split())
+
+                    print(f'insert_sql:\n{insert_sql}')
                     cursor.executemany(insert_sql, rows)
 
             # 提交事务
