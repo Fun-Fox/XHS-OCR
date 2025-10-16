@@ -1,0 +1,55 @@
+2025-10-16 12:06:28.524 | INFO     | __main__:process_images:43 - 初始化OCR成功，进程号为40044
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:54 - 最近3天日期: ['20251016', '20251015', '20251014']
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:55 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251016, 包含最近日期: True
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251016
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251016\172.25.1.78-5555, 包含最近日期: True
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251016\172.25.1.78-5555
+2025-10-16 12:06:28.525 | INFO     | __main__:process_images:97 - 处理图片: audience_analysis#如果今天星期八_DIY门牌#1760585461.png, 日期: 20251016, 设备: 172.25.1.78-5555
+2025-10-16 12:06:28.576 | ERROR    | __main__:imread_with_pil:190 - 使用PIL读取图片失败: D:\PycharmProjects\XHS-OCR\mask\audience_analysis.png, 错误: [Errno 2] No such file or directory: 'D:\\PycharmProjects\\XHS-OCR\\mask\\audience_analysis.png'
+2025-10-16 12:06:28.576 | ERROR    | __main__:process_images:110 - 遮罩图加载失败: D:\PycharmProjects\XHS-OCR\mask\audience_analysis.png
+2025-10-16 12:06:28.576 | INFO     | __main__:process_images:97 - 处理图片: data_overview#如果今天星期八_DIY门牌#1760585480.png, 日期: 20251016, 设备: 172.25.1.78-5555
+2025-10-16 12:06:28.647 | INFO     | __main__:process_images:128 - 正在处理: data_overview#如果今天星期八_DIY门牌#1760585480.png
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 曝光数:268506
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 观看数:55030
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 封面点击率:20.6%
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 平均观看时长:14.3
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 涨粉数:19
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 点赞数:2130
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 评论数:80
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 收藏数:485
+2025-10-16 12:06:28.948 | INFO     | __main__:process_images:153 - 分享数:1189
+2025-10-16 12:06:28.982 | INFO     | __main__:process_images:97 - 处理图片: traffic_analysis#如果今天星期八_DIY门牌#1760585448.png, 日期: 20251016, 设备: 172.25.1.78-5555
+2025-10-16 12:06:29.066 | INFO     | __main__:process_images:128 - 正在处理: traffic_analysis#如果今天星期八_DIY门牌#1760585448.png
+2025-10-16 12:06:29.255 | INFO     | __main__:process_images:153 - 观看来源-首页推荐:90.7%
+2025-10-16 12:06:29.255 | INFO     | __main__:process_images:153 - 观看来源-搜索:4.9%
+2025-10-16 12:06:29.255 | INFO     | __main__:process_images:153 - 观看来源-关注页面:0.5%
+2025-10-16 12:06:29.255 | INFO     | __main__:process_images:153 - 观看来源-其他来源:3.9%
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 观看转化率:21.1%
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 观看互动率:区5%
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 曝光数:233390
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 观看数:49230
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 占总曝光:88.6%
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 占总观看:90.7%
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 平均观看时长:10.6
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 点赞数:1994
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 评论数:49
+2025-10-16 12:06:29.256 | INFO     | __main__:process_images:153 - 收藏数:417
+2025-10-16 12:06:29.272 | INFO     | __main__:process_images:66 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251016\异常测试数据, 包含最近日期: True
+2025-10-16 12:06:29.273 | INFO     | __main__:process_images:77 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251016\异常测试数据
+2025-10-16 12:06:29.273 | INFO     | __main__:process_images:97 - 处理图片: data_overview#来抄作业啦_欧美风运动装出街穿搭_来自CZXH搭配灵感_7赞_154阅读#1756276008.png, 日期: 20251016, 设备: 异常测试数据
+2025-10-16 12:06:29.366 | INFO     | __main__:process_images:128 - 正在处理: data_overview#来抄作业啦_欧美风运动装出街穿搭_来自CZXH搭配灵感_7赞_154阅读#1756276008.png
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 曝光数:封面点击率12.4%
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 观看数:互动数
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 封面点击率:超过35%同类
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 平均观看时长:超过7%同类
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 涨粉数:14.3
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 点赞数:54.3%
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 评论数:J
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 收藏数:32.3%
+2025-10-16 12:06:29.511 | INFO     | __main__:process_images:153 - 分享数:1
+2025-10-16 12:06:29.522 | INFO     | __main__:process_images:97 - 处理图片: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png, 日期: 20251016, 设备: 异常测试数据
+2025-10-16 12:06:29.606 | INFO     | __main__:process_images:128 - 正在处理: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png
+2025-10-16 12:06:29.721 | ERROR    | __main__:process_images:132 - 识别失败: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png，可能数据是空的
+2025-10-16 12:06:29.721 | INFO     | __main__:process_images:172 - 程序结束。
