@@ -32,6 +32,7 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
     create_table_sql = f'''
         CREATE TABLE IF NOT EXISTS s_xhs_{tag}_ocr (
             "作品ID" INTEGER PRIMARY KEY AUTOINCREMENT,
+            "数据来源" TEXT,
             "设备IP" TEXT,
             "账号ID" TEXT,
             "作品标题" TEXT,
@@ -49,10 +50,10 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
     table_len = len(index_mapping_data) + 4  # 4 是指设备IP、作品标题、截图采集日期、OCR采集时间（这个4个字段）
     cursor.execute(f'''
         INSERT OR IGNORE INTO s_xhs_{tag}_ocr (
-            "设备IP","账号ID","作品标题", "截图采集日期","OCR采集时间", {','.join(escaped_fields)}
+            "设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     ''', (
-        ip_port_dir, account_id, post_title, date_dir, collect_time,
+        ip_port_dir, "xhs_app", account_id, post_title, date_dir, collect_time,
         *[ocr_data[i] if len(ocr_data) > i else '' for i in range(len(ocr_data))]
     ))
 
