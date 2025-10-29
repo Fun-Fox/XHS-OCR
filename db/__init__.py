@@ -53,7 +53,7 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
             "设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     ''', (
-        ip_port_dir, "xhs_app", account_id, post_title, date_dir, collect_time,
+        ip_port_dir, "1894230222988058625", account_id, post_title, date_dir, collect_time,
         *[ocr_data[i] if len(ocr_data) > i else '' for i in range(len(ocr_data))]
     ))
 
