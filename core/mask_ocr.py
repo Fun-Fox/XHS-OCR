@@ -94,7 +94,9 @@ def process_images():
 
             # 解析路径获取日期和设备IP
             parent_dir = os.path.dirname(img_path)  # 获取图片所在目录
-            ip_port_dir = os.path.basename(parent_dir)  # 获取 IP:端口 名称
+            ip_and_account = os.path.basename(parent_dir).split('#')
+            ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
+
             date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
             logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
             # 读取原图和遮罩图
@@ -141,6 +143,10 @@ def process_images():
                 index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
             # logger.info(getObj["data"])
 
+            if len(getObj["data"]) != len(index_mapping_data):
+                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                continue
+
             # 提取OCR文本数据
             ocr_texts = []
             for index, line in enumerate(getObj["data"]):
@@ -153,13 +159,10 @@ def process_images():
 
                 logger.info(f"{index_mapping_data[index]}:{text}")
 
-            if len(getObj["data"]) != len(index_mapping_data):
-                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                continue
-
             # 保存数据到数据库
             tag = re.sub(r'\d+', '', tag)
-            save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data, date_dir, ip_port_dir)
+            save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data, date_dir, ip_port_dir,
+                          account_id)
 
             # textBlocks = getObj["data"]
 
