@@ -1,5 +1,7 @@
 import datetime
 import os
+import re
+
 import cv2
 import numpy as np
 from PIL import Image
@@ -153,9 +155,10 @@ def process_images():
                 logger.info(f"{index_mapping_data[index]}:{text}")
 
             # 保存数据到数据库
+            tag = re.sub(r'\d+', '', tag)
             save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data, date_dir, ip_port_dir)
 
-            textBlocks = getObj["data"]
+            # textBlocks = getObj["data"]
 
             # 可视化结果
             # vis = visualize(textBlocks, temp_output_path)
