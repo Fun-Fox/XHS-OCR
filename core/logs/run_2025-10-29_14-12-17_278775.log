@@ -1,0 +1,86 @@
+2025-10-29 14:12:18.035 | INFO     | __main__:process_images:45 - 初始化OCR成功，进程号为28756
+2025-10-29 14:12:18.035 | INFO     | __main__:process_images:56 - 最近3天日期: ['20251029', '20251028', '20251027']
+2025-10-29 14:12:18.036 | INFO     | __main__:process_images:57 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-10-29 14:12:18.036 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-10-29 14:12:18.036 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029, 包含最近日期: True
+2025-10-29 14:12:18.036 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029
+2025-10-29 14:12:18.043 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555, 包含最近日期: True
+2025-10-29 14:12:18.044 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555
+2025-10-29 14:12:18.044 | INFO     | __main__:process_images:99 - 处理图片: audience_analysis#如果今天星期八_DIY门牌#1760585461.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-29 14:12:18.070 | ERROR    | __main__:imread_with_pil:196 - 使用PIL读取图片失败: D:\PycharmProjects\XHS-OCR\mask\audience_analysis.png, 错误: [Errno 2] No such file or directory: 'D:\\PycharmProjects\\XHS-OCR\\mask\\audience_analysis.png'
+2025-10-29 14:12:18.071 | ERROR    | __main__:process_images:112 - 遮罩图加载失败: D:\PycharmProjects\XHS-OCR\mask\audience_analysis.png
+2025-10-29 14:12:18.071 | INFO     | __main__:process_images:99 - 处理图片: data_overview#求问_孩子太有个性了咋带出门#1761715404.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-29 14:12:18.151 | INFO     | __main__:process_images:130 - 正在处理: data_overview#求问_孩子太有个性了咋带出门#1761715404.png
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 曝光数:193
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 观看数:29
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 封面点击率:10.9%
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 平均观看时长:5.2
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 涨粉数:0
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 点赞数:2
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 评论数:0
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 收藏数:1
+2025-10-29 14:12:18.384 | INFO     | __main__:process_images:153 - 分享数:0
+2025-10-29 14:12:18.404 | INFO     | __main__:process_images:99 - 处理图片: data_overview#潮玩_成年人最贵的_电子宠物#1761715513.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-29 14:12:18.494 | INFO     | __main__:process_images:130 - 正在处理: data_overview#潮玩_成年人最贵的_电子宠物#1761715513.png
+2025-10-29 14:12:18.636 | INFO     | __main__:process_images:153 - 曝光数:239
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 观看数:28
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 封面点击率:11.3%
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 平均观看时长:23.1
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 涨粉数:0
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 点赞数:0
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 评论数:0
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 收藏数:o
+2025-10-29 14:12:18.637 | INFO     | __main__:process_images:153 - 分享数:0
+2025-10-29 14:12:18.647 | INFO     | __main__:process_images:99 - 处理图片: data_overview#精致女孩_zsiga嘎子姐#1761715301.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-29 14:12:18.734 | INFO     | __main__:process_images:130 - 正在处理: data_overview#精致女孩_zsiga嘎子姐#1761715301.png
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 曝光数:239
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 观看数:31
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 封面点击率:11%
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 平均观看时长:13.3
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 涨粉数:1
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 点赞数:1
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 评论数:0
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 收藏数:1
+2025-10-29 14:12:18.882 | INFO     | __main__:process_images:153 - 分享数:0
+2025-10-29 14:12:18.892 | INFO     | __main__:process_images:99 - 处理图片: data_overview100#如果今天星期八_DIY门牌#1761649282.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-29 14:12:18.984 | INFO     | __main__:process_images:130 - 正在处理: data_overview100#如果今天星期八_DIY门牌#1761649282.png
+2025-10-29 14:12:19.127 | INFO     | __main__:process_images:153 - 观看数:57067
+2025-10-29 14:12:19.127 | INFO     | __main__:process_images:153 - 封面点击率:20.2%
+2025-10-29 14:12:19.127 | INFO     | __main__:process_images:153 - 平均观看时长:19
+2025-10-29 14:12:19.128 | INFO     | __main__:process_images:153 - 曝光数:283594
+2025-10-29 14:12:19.128 | INFO     | __main__:process_images:153 - 涨粉数:30.8
+2025-10-29 14:12:19.128 | INFO     | __main__:process_images:153 - 点赞数:2164
+2025-10-29 14:12:19.128 | INFO     | __main__:process_images:153 - 评论数:81
+2025-10-29 14:12:19.128 | INFO     | __main__:process_images:153 - 收藏数:511
+2025-10-29 14:12:19.128 | INFO     | __main__:process_images:153 - 分享数:1210
+2025-10-29 14:12:19.145 | INFO     | __main__:process_images:99 - 处理图片: traffic_analysis#如果今天星期八_DIY门牌#1760585448.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-29 14:12:19.232 | INFO     | __main__:process_images:130 - 正在处理: traffic_analysis#如果今天星期八_DIY门牌#1760585448.png
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看来源-首页推荐:90.7%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看来源-搜索:4.9%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看来源-关注页面:0.5%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看来源-其他来源:3.9%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看转化率:21.1%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看互动率:区5%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 曝光数:233390
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 观看数:49230
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 占总曝光:88.6%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 占总观看:90.7%
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 平均观看时长:10.6
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 点赞数:1994
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 评论数:49
+2025-10-29 14:12:19.428 | INFO     | __main__:process_images:153 - 收藏数:417
+2025-10-29 14:12:19.447 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029\异常测试数据, 包含最近日期: True
+2025-10-29 14:12:19.447 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029\异常测试数据
+2025-10-29 14:12:19.447 | INFO     | __main__:process_images:99 - 处理图片: data_overview#来抄作业啦_欧美风运动装出街穿搭_来自CZXH搭配灵感_7赞_154阅读#1756276008.png, 日期: 20251029, 设备: 异常测试数据
+2025-10-29 14:12:19.541 | INFO     | __main__:process_images:130 - 正在处理: data_overview#来抄作业啦_欧美风运动装出街穿搭_来自CZXH搭配灵感_7赞_154阅读#1756276008.png
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:153 - 曝光数:封面点击率12.4%
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:153 - 观看数:超过68%同类
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:153 - 封面点击率:14.3
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:153 - 平均观看时长:54.3%
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:153 - 涨粉数:32.3%
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:153 - 点赞数:1
+2025-10-29 14:12:19.661 | WARNING  | __main__:process_images:156 - 识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-10-29 14:12:19.661 | INFO     | __main__:process_images:99 - 处理图片: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png, 日期: 20251029, 设备: 异常测试数据
+2025-10-29 14:12:19.755 | INFO     | __main__:process_images:130 - 正在处理: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png
+2025-10-29 14:12:19.877 | ERROR    | __main__:process_images:134 - 识别失败: traffic_analysis#听我一句劝_运动女孩的夏天_不能没有这条_白月光_短裙_T网球穿搭T运动穿搭_来自CZXH搭配灵感_0赞_16阅读#1756275702.png，可能数据是空的
+2025-10-29 14:12:19.878 | INFO     | __main__:process_images:178 - 程序结束。

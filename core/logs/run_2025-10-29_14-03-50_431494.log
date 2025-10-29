@@ -1,0 +1,48 @@
+2025-10-29 14:03:51.069 | INFO     | __main__:process_images:45 - 初始化OCR成功，进程号为23532
+2025-10-29 14:03:51.069 | INFO     | __main__:process_images:56 - 最近3天日期: ['20251029', '20251028', '20251027']
+2025-10-29 14:03:51.069 | INFO     | __main__:process_images:57 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-10-29 14:03:51.069 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-10-29 14:03:51.070 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\120251029, 包含最近日期: True
+2025-10-29 14:03:51.070 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\120251029
+2025-10-29 14:03:51.070 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\120251029\172.25.1.78-555, 包含最近日期: True
+2025-10-29 14:03:51.070 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\120251029\172.25.1.78-555
+2025-10-29 14:03:51.070 | INFO     | __main__:process_images:99 - 处理图片: data_overview#求问_孩子太有个性了咋带出门#1761715404.png, 日期: 120251029, 设备: 172.25.1.78-555
+2025-10-29 14:03:51.183 | INFO     | __main__:process_images:130 - 正在处理: data_overview#求问_孩子太有个性了咋带出门#1761715404.png
+2025-10-29 14:03:51.420 | INFO     | __main__:process_images:153 - 曝光数:193
+2025-10-29 14:03:51.420 | INFO     | __main__:process_images:153 - 观看数:29
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 封面点击率:10.9%
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 平均观看时长:5.2
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 涨粉数:0
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 点赞数:2
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 评论数:0
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 收藏数:1
+2025-10-29 14:03:51.421 | INFO     | __main__:process_images:153 - 分享数:0
+2025-10-29 14:03:51.438 | INFO     | __main__:process_images:99 - 处理图片: data_overview#潮玩_成年人最贵的_电子宠物#1761715513.png, 日期: 120251029, 设备: 172.25.1.78-555
+2025-10-29 14:03:51.530 | INFO     | __main__:process_images:130 - 正在处理: data_overview#潮玩_成年人最贵的_电子宠物#1761715513.png
+2025-10-29 14:03:51.669 | INFO     | __main__:process_images:153 - 曝光数:239
+2025-10-29 14:03:51.669 | INFO     | __main__:process_images:153 - 观看数:28
+2025-10-29 14:03:51.669 | INFO     | __main__:process_images:153 - 封面点击率:11.3%
+2025-10-29 14:03:51.670 | INFO     | __main__:process_images:153 - 平均观看时长:23.1
+2025-10-29 14:03:51.670 | INFO     | __main__:process_images:153 - 涨粉数:0
+2025-10-29 14:03:51.670 | INFO     | __main__:process_images:153 - 点赞数:0
+2025-10-29 14:03:51.670 | INFO     | __main__:process_images:153 - 评论数:0
+2025-10-29 14:03:51.670 | INFO     | __main__:process_images:153 - 收藏数:o
+2025-10-29 14:03:51.670 | INFO     | __main__:process_images:153 - 分享数:0
+2025-10-29 14:03:51.688 | INFO     | __main__:process_images:99 - 处理图片: data_overview#精致女孩_zsiga嘎子姐#1761715301.png, 日期: 120251029, 设备: 172.25.1.78-555
+2025-10-29 14:03:51.775 | INFO     | __main__:process_images:130 - 正在处理: data_overview#精致女孩_zsiga嘎子姐#1761715301.png
+2025-10-29 14:03:51.914 | INFO     | __main__:process_images:153 - 曝光数:239
+2025-10-29 14:03:51.914 | INFO     | __main__:process_images:153 - 观看数:31
+2025-10-29 14:03:51.914 | INFO     | __main__:process_images:153 - 封面点击率:11%
+2025-10-29 14:03:51.914 | INFO     | __main__:process_images:153 - 平均观看时长:13.3
+2025-10-29 14:03:51.914 | INFO     | __main__:process_images:153 - 涨粉数:1
+2025-10-29 14:03:51.915 | INFO     | __main__:process_images:153 - 点赞数:1
+2025-10-29 14:03:51.915 | INFO     | __main__:process_images:153 - 评论数:0
+2025-10-29 14:03:51.915 | INFO     | __main__:process_images:153 - 收藏数:1
+2025-10-29 14:03:51.915 | INFO     | __main__:process_images:153 - 分享数:0
+2025-10-29 14:03:51.931 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251016, 包含最近日期: False
+2025-10-29 14:03:51.932 | INFO     | __main__:process_images:76 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251016
+2025-10-29 14:03:51.932 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251016\172.25.1.78-5555, 包含最近日期: False
+2025-10-29 14:03:51.932 | INFO     | __main__:process_images:76 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251016\172.25.1.78-5555
+2025-10-29 14:03:51.932 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251016\异常测试数据, 包含最近日期: False
+2025-10-29 14:03:51.932 | INFO     | __main__:process_images:76 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251016\异常测试数据
+2025-10-29 14:03:51.933 | INFO     | __main__:process_images:178 - 程序结束。

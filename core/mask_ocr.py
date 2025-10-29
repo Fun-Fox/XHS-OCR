@@ -139,10 +139,7 @@ def process_images():
             if config.has_section('tags') and config.has_option('tags', tag):
                 index_mapping_data_str = config.get('tags', tag)
                 index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
-
-            if len(getObj["data"]) != len(index_mapping_data):
-                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                continue
+            # logger.info(getObj["data"])
 
             # 提取OCR文本数据
             ocr_texts = []
@@ -150,9 +147,15 @@ def process_images():
                 text = str(line['text'])
                 if '秒' in text:
                     text = text.replace('秒', '')
+                elif 'o' in text:
+                    text = text.replace('o', '0')
                 ocr_texts.append(text)
 
                 logger.info(f"{index_mapping_data[index]}:{text}")
+
+            if len(getObj["data"]) != len(index_mapping_data):
+                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                continue
 
             # 保存数据到数据库
             tag = re.sub(r'\d+', '', tag)

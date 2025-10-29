@@ -94,6 +94,10 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                         eng_col = FIELD_MAPPING[col]
                         if col == "作品ID":
                             columns_definitions.append(f"`{eng_col}` VARCHAR(191) PRIMARY KEY COMMENT '{col}'")
+                        elif col == "截图采集日期":
+                            columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
+                        elif col == "OCR采集时间":
+                            columns_definitions.append(f"`{eng_col}` DATETIME COMMENT '{col}'")
                         else:
                             columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
                     else:
