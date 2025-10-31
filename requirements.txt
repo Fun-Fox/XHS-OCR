@@ -10,3 +10,10 @@ schedule
 # 配置文件处理
 configparser
 loguru
+
+#torch==2.6.0
+#transformers==4.46.3
+#tokenizers==0.20.3
+#einops
+#addict
+#easydict

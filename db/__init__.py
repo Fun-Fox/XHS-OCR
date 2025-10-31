@@ -47,12 +47,13 @@ def save_ocr_data(tag, post_title: str, collect_time: str, ocr_data: List[str], 
     conn.commit()
 
     # 使用 INSERT OR IGNORE 语句，当作品标题和OCR采集时间都相同时不插入
-    table_len = len(index_mapping_data) + 4  # 4 是指设备IP、作品标题、截图采集日期、OCR采集时间（这个4个字段）
-    cursor.execute(f'''
+    table_len = len(index_mapping_data) + 6  # 4 是指"设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间"（这个4个字段）
+    sql_str =f"""
         INSERT OR IGNORE INTO s_xhs_{tag}_ocr (
             "设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
-    ''', (
+    """
+    cursor.execute(sql_str, (
         ip_port_dir, "1894230222988058625", account_id, post_title, date_dir, collect_time,
         *[ocr_data[i] if len(ocr_data) > i else '' for i in range(len(ocr_data))]
     ))

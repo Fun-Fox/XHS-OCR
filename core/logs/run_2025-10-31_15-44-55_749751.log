@@ -1,0 +1,33 @@
+2025-10-31 15:44:56.480 | INFO     | __main__:process_images:45 - 初始化OCR成功，进程号为32672
+2025-10-31 15:44:56.480 | INFO     | __main__:process_images:56 - 最近3天日期: ['20251031', '20251030', '20251029']
+2025-10-31 15:44:56.480 | INFO     | __main__:process_images:57 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-10-31 15:44:56.480 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-10-31 15:44:56.481 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029, 包含最近日期: True
+2025-10-31 15:44:56.481 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029
+2025-10-31 15:44:56.488 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555, 包含最近日期: True
+2025-10-31 15:44:56.488 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555
+2025-10-31 15:44:56.489 | INFO     | __main__:process_images:104 - 处理图片: data_overview#小香风女孩报道#1761891703.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-31 15:44:56.604 | INFO     | __main__:process_images:135 - 正在处理: data_overview#小香风女孩报道#1761891703.png
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 曝光数:430
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 观看数:94
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 封面点击率:18.6%
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 平均观看时长:28.3
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 涨粉数:0
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 点赞数:2
+2025-10-31 15:44:56.825 | INFO     | __main__:process_images:163 - 评论数:0
+2025-10-31 15:44:56.826 | INFO     | __main__:process_images:163 - 收藏数:0
+2025-10-31 15:44:56.826 | INFO     | __main__:process_images:163 - 分享数:1
+2025-10-31 15:44:56.844 | INFO     | __main__:process_images:104 - 处理图片: data_overview#朋友_别买了_你家里都快没地儿了#1761891916.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-31 15:44:56.932 | INFO     | __main__:process_images:135 - 正在处理: data_overview#朋友_别买了_你家里都快没地儿了#1761891916.png
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 曝光数:214
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 观看数:31
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 封面点击率:13.6%
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 平均观看时长:34
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 涨粉数:0
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 点赞数:0
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 评论数:0
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 收藏数:0
+2025-10-31 15:44:57.075 | INFO     | __main__:process_images:163 - 分享数:0
+2025-10-31 15:44:57.093 | INFO     | __main__:process_images:104 - 处理图片: data_overview100#咦她怎么长得跟我一样#1761891806.png, 日期: 20251029, 设备: 172.25.1.78-5555
+2025-10-31 15:44:57.188 | INFO     | __main__:process_images:135 - 正在处理: data_overview100#咦她怎么长得跟我一样#1761891806.png
+2025-10-31 15:44:57.326 | WARNING  | __main__:process_images:150 - 识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
