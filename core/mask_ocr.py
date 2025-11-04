@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import os
 import re
@@ -9,8 +10,9 @@ from core.logger import logger
 
 from core.ppocr_api import GetOcrApi
 from core.ppocr_visualize import visualize
+from core.user_profile import get_user_profile_data
 # 引入数据库模块
-from db import save_ocr_data
+from db import save_ocr_data, save_userinfo_data
 import time
 import configparser
 
@@ -79,6 +81,7 @@ def preprocess_image(image):
 
     return binary
 
+
 def enhance_image(image, alpha=1.5, beta=50):
     """
     增加图像的对比度和亮度
@@ -94,6 +97,7 @@ def enhance_image(image, alpha=1.5, beta=50):
     # 使用公式：output = alpha * input + beta
     enhanced_img = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
     return enhanced_img
+
 
 def process_images():
     """
@@ -138,96 +142,117 @@ def process_images():
         for filename in files:
             # 构建图片路径
             img_path = os.path.join(root, filename)
-            post_info = os.path.basename(filename).split('#')
 
-            tag = post_info[0]
-            post_title = post_info[1]
-            # 将时间戳转换为可读时间格式
-            timestamp_str = post_info[2]
-            if '.' in timestamp_str:
-                timestamp = int(timestamp_str.split('.')[0])
-            else:
-                timestamp = int(timestamp_str)
-            collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
-
-            # 解析路径获取日期和设备IP
-            parent_dir = os.path.dirname(img_path)  # 获取图片所在目录
-            if '#' in os.path.basename(parent_dir):
-
+            if tag == "profile_page":
+                user_info = os.path.basename(filename).split('#')
+                author_profile_url = user_info[1]
+                # 将时间戳转换为可读时间格式
+                timestamp_str = user_info[-1]
+                if '.' in timestamp_str:
+                    timestamp = int(timestamp_str.split('.')[0])
+                else:
+                    timestamp = int(timestamp_str)
+                collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
+                parent_dir = os.path.dirname(img_path)
+                user_info = asyncio.run(get_user_profile_data(author_profile_url))
                 ip_and_account = os.path.basename(parent_dir).split('#')
-                ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
+                ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]
+                save_userinfo_data(user_info, ip_port_dir, account_id,collect_time)
             else:
-                ip_port_dir, account_id = os.path.basename(parent_dir), '无'
-            date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
-            logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
-            # 读取原图和遮罩图
-            original_img = imread_with_pil(img_path)
-            mask_path = os.path.join(root_dir, "mask", f"{tag}.png")
-            mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
+                post_info = os.path.basename(filename).split('#')
+                tag = post_info[0]
+                post_title = post_info[1]
+                # 将时间戳转换为可读时间格式
+                timestamp_str = post_info[2]
+                if '.' in timestamp_str:
+                    timestamp = int(timestamp_str.split('.')[0])
+                else:
+                    timestamp = int(timestamp_str)
+                collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
 
-            # 检查原图是否有效
-            if original_img is None:
-                logger.error(f"原图加载失败: {img_path}")
-                continue
+                # 解析路径获取日期和设备IP
+                parent_dir = os.path.dirname(img_path)  # 获取图片所在目录
+                if '#' in os.path.basename(parent_dir):
+                    ip_and_account = os.path.basename(parent_dir).split('#')
+                    ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
+                else:
+                    ip_port_dir, account_id = os.path.basename(parent_dir), '无'
+                date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
+                logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
+                # 读取原图和遮罩图
+                original_img = imread_with_pil(img_path)
+                mask_path = os.path.join(root_dir, "mask", f"{tag}.png")
+                mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
 
-            # 检查遮罩图是否有效
-            if mask_img is None:
-                logger.error(f"遮罩图加载失败: {mask_path}")
-                continue
+                # 检查原图是否有效
+                if original_img is None:
+                    logger.error(f"原图加载失败: {img_path}")
+                    continue
 
-            # 确保遮罩图与原图尺寸一致
-            if original_img.shape[:2] != mask_img.shape[:2]:
-                logger.warning(f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
-                continue
+                # 检查遮罩图是否有效
+                if mask_img is None:
+                    logger.error(f"遮罩图加载失败: {mask_path}")
+                    continue
 
-            # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
-            alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
-            result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
-            result_img = result_img.astype(np.uint8)
+                # 确保遮罩图与原图尺寸一致
+                if original_img.shape[:2] != mask_img.shape[:2]:
+                    logger.warning(f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
+                    continue
 
-            # 将结果保存为临时文件
-            temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
-            # 放大
-            result_img = upscale_image(result_img, scale_factor=2)
-            result_img = enhance_image(result_img, alpha=1, beta=30)  # 增加对比度和亮度
-            cv2.imwrite(temp_output_path, result_img)
+                # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
+                alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
+                result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
+                result_img = result_img.astype(np.uint8)
 
-            # 执行 OCR 识别
-            logger.info(f"正在处理: {filename}")
-            getObj = ocr.run(temp_output_path)
+                # 将结果保存为临时文件
+                temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
+                # 放大
+                result_img = upscale_image(result_img, scale_factor=2)
+                result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                cv2.imwrite(temp_output_path, result_img)
 
-            if not getObj["code"] == 100:
-                logger.error(f"识别失败: {filename}，可能数据是空的")
-                continue
+                # 从配置文件中获取index_mapping_data
+                index_mapping_data = []
+                if config.has_section('tags') and config.has_option('tags', tag):
+                    index_mapping_data_str = config.get('tags', tag)
+                    index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
+                    # logger.info(getObj["data"])
+                # 执行 OCR 识别
+                # 使用快速的蒙版识别方式，使用VLM OCR方式
+                logger.info(f"正在处理: {filename}")
 
-            # 从配置文件中获取index_mapping_data
-            index_mapping_data = []
-            if config.has_section('tags') and config.has_option('tags', tag):
-                index_mapping_data_str = config.get('tags', tag)
-                index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
-            # logger.info(getObj["data"])
+                getObj = ocr.run(temp_output_path)
 
-            # 提取OCR文本数据
-            ocr_texts = []
-            for index, line in enumerate(getObj["data"]):
-                text = str(line['text'])
-                if '秒' in text:
-                    text = text.replace('秒', '')
-                elif 'o' in text:
-                    text = text.replace('o', '0')
-                ocr_texts.append(text)
+                if not getObj["code"] == 100:
+                    logger.error(f"识别失败: {filename}，可能数据是空的")
+                    continue
 
-                logger.info(f"{index_mapping_data[index]}:{text}")
+                # 提取OCR文本数据
+                ocr_texts = []
+                for index, line in enumerate(getObj["data"]):
+                    text = str(line['text'])
+                    if '秒' in text:
+                        text = text.replace('秒', '')
+                    elif 'o' in text:
+                        text = text.replace('o', '0')
 
-            if len(getObj["data"]) != len(index_mapping_data):
-                logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                continue
+                    # logger.info(f"{index}:{text}")
+                    # 判断text为数字或%的时候，才打印
+                    # 判断text为数字或%的时候，才打印
+                    if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
+                        ocr_texts.append(text)
+                        logger.info(f"{index_mapping_data[index]}:{text}")
+                    # logger.info(f"{index_mapping_data[index]}:{text}")
 
-            # 保存数据到数据库
-            tag = re.sub(r'\d+', '', tag)
-            print(f"tag:{tag}")
-            save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data, date_dir, ip_port_dir,
-                          account_id)
+                if len(getObj["data"]) != len(index_mapping_data):
+                    logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                    continue
+
+                # 保存数据到数据库
+                tag = re.sub(r'\d+', '', tag)
+                print(f"tag:{tag}")
+                save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data, date_dir, ip_port_dir,
+                              account_id)
 
             # textBlocks = getObj["data"]
 
@@ -241,8 +266,8 @@ def process_images():
             #
             # logger.info(f"OCR 结果已保存到: {output_result_path}")
 
-    # 结束 OCR 引擎
-    ocr.exit()
+        # 结束 OCR 引擎
+        ocr.exit()
     logger.info("程序结束。")
 
 
