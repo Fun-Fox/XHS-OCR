@@ -141,19 +141,17 @@ def process_images():
         logger.info(f"处理最近3天的目录: {root}")
         for filename in files:
             # 构建图片路径
-            img_path = os.path.join(root, filename)
+            file_path = os.path.join(root, filename)
 
-            if tag == "profile_page":
-                user_info = os.path.basename(filename).split('#')
-                author_profile_url = user_info[1]
-                # 将时间戳转换为可读时间格式
-                timestamp_str = user_info[-1]
-                if '.' in timestamp_str:
-                    timestamp = int(timestamp_str.split('.')[0])
-                else:
-                    timestamp = int(timestamp_str)
-                collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
-                parent_dir = os.path.dirname(img_path)
+            if filename == "profile_url.txt":
+                # 如果文件名是profile_url.txt 则读取文件，并且使用当前时间戳
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    author_profile_url = f.read().strip()
+                    # 使用当前时间戳
+                    current_timestamp = int(time.time())
+                    collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(current_timestamp))
+
+                parent_dir = os.path.dirname(file_path)
                 user_info = asyncio.run(get_user_profile_data(author_profile_url))
                 ip_and_account = os.path.basename(parent_dir).split('#')
                 ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]
@@ -171,7 +169,7 @@ def process_images():
                 collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
 
                 # 解析路径获取日期和设备IP
-                parent_dir = os.path.dirname(img_path)  # 获取图片所在目录
+                parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
                 if '#' in os.path.basename(parent_dir):
                     ip_and_account = os.path.basename(parent_dir).split('#')
                     ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
@@ -180,13 +178,13 @@ def process_images():
                 date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
                 logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
                 # 读取原图和遮罩图
-                original_img = imread_with_pil(img_path)
+                original_img = imread_with_pil(file_path)
                 mask_path = os.path.join(root_dir, "mask", f"{tag}.png")
                 mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
 
                 # 检查原图是否有效
                 if original_img is None:
-                    logger.error(f"原图加载失败: {img_path}")
+                    logger.error(f"原图加载失败: {file_path}")
                     continue
 
                 # 检查遮罩图是否有效
