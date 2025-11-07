@@ -1,15 +1,13 @@
 import asyncio
 import datetime
+import json
 import os
 import re
-
 import cv2
 import numpy as np
 from PIL import Image
 from core.logger import logger
-
 from core.ppocr_api import GetOcrApi
-from core.ppocr_visualize import visualize
 from core.user_profile import get_user_profile_data
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
@@ -29,10 +27,13 @@ root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OCR 图片目录
 ocr_dir = os.getenv("OCR_IMAGES_PATH", os.path.join(root_dir, "images"))
+if not ocr_engine_path:
+    logger.error("OCR_ENGINE_PATH 环境变量未设置")
 
+if not os.path.exists(ocr_engine_path):
+    logger.error(f"OCR引擎路径不存在: {ocr_engine_path}")
 # 初始化 OCR 引擎
 ocr = GetOcrApi(ocr_engine_path)
-
 # 读取配置文件
 config = configparser.ConfigParser()
 with open(os.path.join(root_dir, 'config.ini'), encoding='utf-8') as f:
@@ -100,6 +101,17 @@ def enhance_image(image, alpha=1.5, beta=50):
 
 
 def process_images():
+    try:
+        import subprocess
+        import sys
+        # 安装 Chromium 浏览器（如果尚未安装）
+        result = subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"],
+                                capture_output=True, text=True)
+        if result.returncode != 0:
+            logger.warning(f"Playwright 安装失败: {result.stderr}")
+        logger.info(f"Playwright chromium 安装成功")
+    except ImportError:
+        logger.warning("playwright 模块未安装，某些功能可能不可用")
     """
     处理OCR目录下的所有图片
     """
@@ -147,26 +159,41 @@ def process_images():
                 # 如果文件名是profile_url.txt 则读取文件，并且使用当前时间戳
                 with open(file_path, 'r', encoding='utf-8') as f:
                     author_profile_url = f.read().strip()
-                    # 使用当前时间戳
-                    current_timestamp = int(time.time())
-                    collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(current_timestamp))
-
+                    # 获取文件最后修改时间
+                    modified_time = os.path.getmtime(file_path)
+                    collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modified_time))
                 parent_dir = os.path.dirname(file_path)
                 user_info = asyncio.run(get_user_profile_data(author_profile_url))
-                ip_and_account = os.path.basename(parent_dir).split('#')
-                ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]
-                save_userinfo_data(user_info, ip_port_dir, account_id,collect_time)
-            else:
-                post_info = os.path.basename(filename).split('#')
-                tag = post_info[0]
-                post_title = post_info[1]
-                # 将时间戳转换为可读时间格式
-                timestamp_str = post_info[2]
-                if '.' in timestamp_str:
-                    timestamp = int(timestamp_str.split('.')[0])
+
+                ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
+                save_userinfo_data(user_info, ip_port_dir, account_id, collect_time)
+            elif ".png" in filename:
+                tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
+                json_filename = f"{post_title}.json"
+                json_file_path = os.path.join(root, json_filename)
+                logger.info(f"处理文件: {json_file_path}")
+                if os.path.exists(json_file_path):
+                    try:
+                        with open(json_file_path, 'r', encoding='utf-8') as f:
+                            json_data = json.load(f)
+                            note_link = json_data.get("note_link", "")
+                            post_content = json_data.get("post_content", "")
+                            clean_title = json_data.get("clean_title", "")
+                    except Exception as e:
+                        logger.error(f"读取JSON文件失败: {json_file_path}, 错误: {e}")
                 else:
-                    timestamp = int(timestamp_str)
-                collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
+                    logger.warning(f"JSON文件不存在: {json_file_path}")
+                # 获取post_title查找当前目录下的同名json文件，读取数据 note_link,post_content,clean_title
+                # {
+                #     "note_link": "http://xhslink.com/o/1wQYKbI86o4",
+                #     "post_content": "",
+                #     "title": "笔记,小香风女孩报道,来自吃土潮玩收藏家,4赞，141阅读",
+                #     "clean_title": "小香风女孩报道",
+                #     "timestamp": "2025-11-07 04:08:28"
+                # }
+
+                modified_time = os.path.getmtime(file_path)
+                collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modified_time))
 
                 # 解析路径获取日期和设备IP
                 parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
@@ -175,6 +202,7 @@ def process_images():
                     ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
                 else:
                     ip_port_dir, account_id = os.path.basename(parent_dir), '无'
+
                 date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
                 logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
                 # 读取原图和遮罩图
@@ -205,8 +233,8 @@ def process_images():
                 # 将结果保存为临时文件
                 temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
                 # 放大
-                result_img = upscale_image(result_img, scale_factor=2)
-                result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                # result_img = upscale_image(result_img, scale_factor=2)
+                # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
                 cv2.imwrite(temp_output_path, result_img)
 
                 # 从配置文件中获取index_mapping_data
@@ -222,7 +250,8 @@ def process_images():
                 getObj = ocr.run(temp_output_path)
 
                 if not getObj["code"] == 100:
-                    logger.error(f"识别失败: {filename}，可能数据是空的")
+                    logger.info(f"识别结果: {getObj}")
+                    logger.error(f"识别失败: {filename}")
                     continue
 
                 # 提取OCR文本数据
@@ -249,7 +278,8 @@ def process_images():
                 # 保存数据到数据库
                 tag = re.sub(r'\d+', '', tag)
                 print(f"tag:{tag}")
-                save_ocr_data(tag, post_title, collect_time, ocr_texts, index_mapping_data, date_dir, ip_port_dir,
+                save_ocr_data(tag, post_title, note_link, collect_time, ocr_texts, index_mapping_data, date_dir,
+                              ip_port_dir,
                               account_id)
 
             # textBlocks = getObj["data"]

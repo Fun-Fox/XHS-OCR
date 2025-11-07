@@ -1,0 +1,9 @@
+2025-11-07 14:01:10.409 | INFO     | __main__:process_images:108 - 初始化OCR成功，进程号为26048
+2025-11-07 14:01:10.409 | INFO     | __main__:process_images:119 - 最近3天日期: ['20251107', '20251106', '20251105']
+2025-11-07 14:01:10.409 | INFO     | __main__:process_images:120 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-07 14:01:10.409 | INFO     | __main__:process_images:131 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-07 14:01:10.409 | INFO     | __main__:process_images:131 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029, 包含最近日期: False
+2025-11-07 14:01:10.409 | INFO     | __main__:process_images:139 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251029
+2025-11-07 14:01:10.410 | INFO     | __main__:process_images:131 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555, 包含最近日期: False
+2025-11-07 14:01:10.410 | INFO     | __main__:process_images:139 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555
+2025-11-07 14:01:10.410 | INFO     | __main__:process_images:286 - 程序结束。

@@ -1,0 +1,10 @@
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:112 - Playwright chromium 安装成功
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:119 - 初始化OCR成功，进程号为26524
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:130 - 最近3天日期: ['20251107', '20251106', '20251105']
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:131 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029, 包含最近日期: False
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:150 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251029
+2025-11-07 14:06:39.241 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555, 包含最近日期: False
+2025-11-07 14:06:39.242 | INFO     | __main__:process_images:150 - 跳过目录(非最近3天): D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555
+2025-11-07 14:06:39.242 | INFO     | __main__:process_images:297 - 程序结束。

@@ -1,0 +1,36 @@
+2025-11-07 14:50:07.602 | INFO     | __main__:process_images:112 - Playwright chromium 安装成功
+2025-11-07 14:50:07.602 | INFO     | __main__:process_images:119 - 初始化OCR成功，进程号为18080
+2025-11-07 14:50:07.603 | INFO     | __main__:process_images:130 - 最近3天日期: ['20251107', '20251106', '20251105']
+2025-11-07 14:50:07.603 | INFO     | __main__:process_images:131 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-07 14:50:07.603 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-07 14:50:07.603 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251107, 包含最近日期: True
+2025-11-07 14:50:07.611 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251107
+2025-11-07 14:50:07.612 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-07 14:50:07.612 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358
+2025-11-07 14:50:07.612 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\咦她怎么长得跟我一样.json
+2025-11-07 14:50:07.612 | INFO     | __main__:process_images:207 - 处理图片: data_overview#咦她怎么长得跟我一样.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 14:50:07.737 | INFO     | __main__:process_images:248 - 正在处理: data_overview#咦她怎么长得跟我一样.png
+2025-11-07 14:50:07.737 | ERROR    | __main__:process_images:253 - 识别失败: data_overview#咦她怎么长得跟我一样.png，可能数据是空的
+2025-11-07 14:50:07.737 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\小香风女孩报道.json
+2025-11-07 14:50:07.737 | INFO     | __main__:process_images:207 - 处理图片: data_overview#小香风女孩报道.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 14:50:07.841 | INFO     | __main__:process_images:248 - 正在处理: data_overview#小香风女孩报道.png
+2025-11-07 14:50:07.841 | ERROR    | __main__:process_images:253 - 识别失败: data_overview#小香风女孩报道.png，可能数据是空的
+2025-11-07 14:50:07.841 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\朋友_别买了_你家里都快没地儿了.json
+2025-11-07 14:50:07.842 | INFO     | __main__:process_images:207 - 处理图片: data_overview#朋友_别买了_你家里都快没地儿了.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 14:50:07.943 | INFO     | __main__:process_images:248 - 正在处理: data_overview#朋友_别买了_你家里都快没地儿了.png
+2025-11-07 14:50:07.943 | ERROR    | __main__:process_images:253 - 识别失败: data_overview#朋友_别买了_你家里都快没地儿了.png，可能数据是空的
+2025-11-07 14:50:14.464 | INFO     | core.user_profile:get_user_profile_data:52 - user_info：
+{'desc': '喜欢潮玩的0️⃣0️⃣后\r\n潮玩🌟好物分享\r\n励志成为中国最牛潮玩店👍🏻', 'images': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mtvp04s4s6g5q6bshiocc7vhffm2ug?imageView2/2/w/360/format/webp', 'nickname': '吃土潮玩收藏家', 'red_id': '18914376495', 'follows': '0', 'fans': '2', 'interaction': '16'}
+2025-11-07 14:50:14.660 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\咦她怎么长得跟我一样.json
+2025-11-07 14:50:14.660 | INFO     | __main__:process_images:207 - 处理图片: traffic_analysis#咦她怎么长得跟我一样.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 14:50:14.777 | INFO     | __main__:process_images:248 - 正在处理: traffic_analysis#咦她怎么长得跟我一样.png
+2025-11-07 14:50:14.777 | ERROR    | __main__:process_images:253 - 识别失败: traffic_analysis#咦她怎么长得跟我一样.png，可能数据是空的
+2025-11-07 14:50:14.777 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\小香风女孩报道.json
+2025-11-07 14:50:14.777 | INFO     | __main__:process_images:207 - 处理图片: traffic_analysis#小香风女孩报道.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 14:50:14.882 | INFO     | __main__:process_images:248 - 正在处理: traffic_analysis#小香风女孩报道.png
+2025-11-07 14:50:14.882 | ERROR    | __main__:process_images:253 - 识别失败: traffic_analysis#小香风女孩报道.png，可能数据是空的
+2025-11-07 14:50:14.882 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\朋友_别买了_你家里都快没地儿了.json
+2025-11-07 14:50:14.882 | INFO     | __main__:process_images:207 - 处理图片: traffic_analysis#朋友_别买了_你家里都快没地儿了.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 14:50:14.998 | INFO     | __main__:process_images:248 - 正在处理: traffic_analysis#朋友_别买了_你家里都快没地儿了.png
+2025-11-07 14:50:14.998 | ERROR    | __main__:process_images:253 - 识别失败: traffic_analysis#朋友_别买了_你家里都快没地儿了.png，可能数据是空的
+2025-11-07 14:50:14.998 | INFO     | __main__:process_images:298 - 程序结束。

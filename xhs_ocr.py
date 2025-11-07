@@ -14,7 +14,7 @@ from core.logger import logger
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from core.mask_ocr import process_images
+from core.run import process_images
 from db.data_sync import sync_explore_data_to_remote
 
 # 添加项目根目录到Python路径
