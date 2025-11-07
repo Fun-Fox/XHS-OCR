@@ -1,0 +1,24 @@
+2025-11-07 15:19:20.559 | INFO     | __main__:process_images:112 - Playwright chromium 安装成功
+2025-11-07 15:19:20.559 | INFO     | __main__:process_images:119 - 初始化OCR成功，进程号为20540
+2025-11-07 15:19:20.559 | INFO     | __main__:process_images:130 - 最近3天日期: ['20251107', '20251106', '20251105']
+2025-11-07 15:19:20.559 | INFO     | __main__:process_images:131 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-07 15:19:20.559 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-07 15:19:20.559 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251107, 包含最近日期: True
+2025-11-07 15:19:20.567 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251107
+2025-11-07 15:19:20.568 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-07 15:19:20.568 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358
+2025-11-07 15:19:20.568 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\咦她怎么长得跟我一样.json
+2025-11-07 15:19:20.568 | INFO     | __main__:process_images:207 - 处理图片: data_overview#咦她怎么长得跟我一样.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 15:19:20.650 | INFO     | __main__:process_images:248 - 正在处理: data_overview#咦她怎么长得跟我一样.png
+2025-11-07 15:19:20.651 | INFO     | __main__:process_images:253 - 识别结果: {'code': 901, 'data': '引擎实例不存在。'}
+2025-11-07 15:19:20.651 | ERROR    | __main__:process_images:254 - 识别失败: data_overview#咦她怎么长得跟我一样.png
+2025-11-07 15:19:20.651 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\小香风女孩报道.json
+2025-11-07 15:19:20.651 | INFO     | __main__:process_images:207 - 处理图片: data_overview#小香风女孩报道.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 15:19:20.717 | INFO     | __main__:process_images:248 - 正在处理: data_overview#小香风女孩报道.png
+2025-11-07 15:19:20.717 | INFO     | __main__:process_images:253 - 识别结果: {'code': 901, 'data': '引擎实例不存在。'}
+2025-11-07 15:19:20.717 | ERROR    | __main__:process_images:254 - 识别失败: data_overview#小香风女孩报道.png
+2025-11-07 15:19:20.717 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251107\172.25.1.41#1944609540455948358\朋友_别买了_你家里都快没地儿了.json
+2025-11-07 15:19:20.717 | INFO     | __main__:process_images:207 - 处理图片: data_overview#朋友_别买了_你家里都快没地儿了.png, 日期: 20251107, 设备: 172.25.1.41
+2025-11-07 15:19:20.785 | INFO     | __main__:process_images:248 - 正在处理: data_overview#朋友_别买了_你家里都快没地儿了.png
+2025-11-07 15:19:20.785 | INFO     | __main__:process_images:253 - 识别结果: {'code': 901, 'data': '引擎实例不存在。'}
+2025-11-07 15:19:20.785 | ERROR    | __main__:process_images:254 - 识别失败: data_overview#朋友_别买了_你家里都快没地儿了.png
