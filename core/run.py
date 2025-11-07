@@ -233,8 +233,8 @@ def process_images():
                 # 将结果保存为临时文件
                 temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
                 # 放大
-                # result_img = upscale_image(result_img, scale_factor=2)
-                # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                result_img = upscale_image(result_img, scale_factor=2)
+                result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
                 cv2.imwrite(temp_output_path, result_img)
 
                 # 从配置文件中获取index_mapping_data
@@ -294,8 +294,8 @@ def process_images():
             #
             # logger.info(f"OCR 结果已保存到: {output_result_path}")
 
-        # 结束 OCR 引擎
-        ocr.exit()
+    # 结束 OCR 引擎
+    ocr.exit()
     logger.info("程序结束。")
 
 

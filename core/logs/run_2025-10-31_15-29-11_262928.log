@@ -1,8 +1,0 @@
-2025-10-31 15:29:12.399 | INFO     | __main__:process_images:45 - 初始化OCR成功，进程号为30204
-2025-10-31 15:29:12.400 | INFO     | __main__:process_images:56 - 最近3天日期: ['20251031', '20251030', '20251029']
-2025-10-31 15:29:12.400 | INFO     | __main__:process_images:57 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
-2025-10-31 15:29:12.400 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
-2025-10-31 15:29:12.400 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029, 包含最近日期: True
-2025-10-31 15:29:12.400 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029
-2025-10-31 15:29:12.400 | INFO     | __main__:process_images:68 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555, 包含最近日期: True
-2025-10-31 15:29:12.401 | INFO     | __main__:process_images:79 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251029\172.25.1.78-5555
