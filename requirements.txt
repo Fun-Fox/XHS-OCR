@@ -11,11 +11,12 @@ schedule>=1.2.2
 configparser>=7.2.0
 loguru>=0.7.3
 playwright>=1.55.0
-pytesseract
-
 #accelerate==1.11.0
 #einops==0.8.1
 #fsspec==2025.9.0
+torch==2.9.0
+torchvision
+surya-ocr==0.17.0
 
 #safetensors==0.6.2
 #sentencepiece==0.2.1

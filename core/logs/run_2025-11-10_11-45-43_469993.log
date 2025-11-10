@@ -1,0 +1,226 @@
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:112 - Playwright chromium 安装成功
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:119 - 初始化OCR成功，进程号为30892
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:130 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:131 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110, 包含最近日期: True
+2025-11-10 11:45:44.747 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110
+2025-11-10 11:45:44.748 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-10 11:45:44.748 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358
+2025-11-10 11:45:44.748 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 11:45:44.748 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 11:45:44.748 | INFO     | __main__:process_images:208 - 处理图片: data_overview#zsiga_嘎子姐美美穿搭.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:44.835 | INFO     | __main__:process_images:250 - 正在处理: data_overview#zsiga_嘎子姐美美穿搭.png
+2025-11-10 11:45:45.080 | INFO     | __main__:process_images:273 - 曝光数:1685
+2025-11-10 11:45:45.080 | INFO     | __main__:process_images:273 - 观看数:242
+2025-11-10 11:45:45.080 | INFO     | __main__:process_images:273 - 封面点击率:15.2%
+2025-11-10 11:45:45.080 | INFO     | __main__:process_images:273 - 平均观看时长:286.8
+2025-11-10 11:45:45.081 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:45.081 | INFO     | __main__:process_images:273 - 点赞数:6
+2025-11-10 11:45:45.081 | INFO     | __main__:process_images:273 - 评论数:2
+2025-11-10 11:45:45.081 | INFO     | __main__:process_images:273 - 收藏数:4
+2025-11-10 11:45:45.081 | WARNING  | __main__:process_images:277 - 识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-11-10 11:45:45.081 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 11:45:45.081 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 11:45:45.081 | INFO     | __main__:process_images:208 - 处理图片: data_overview#Zsiga今天是_小公主嘎.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:45.186 | INFO     | __main__:process_images:250 - 正在处理: data_overview#Zsiga今天是_小公主嘎.png
+2025-11-10 11:45:45.320 | INFO     | __main__:process_images:273 - 曝光数:991
+2025-11-10 11:45:45.320 | INFO     | __main__:process_images:273 - 观看数:94
+2025-11-10 11:45:45.320 | INFO     | __main__:process_images:273 - 封面点击率:8.9%
+2025-11-10 11:45:45.320 | INFO     | __main__:process_images:273 - 平均观看时长:59.4
+2025-11-10 11:45:45.320 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:45.320 | INFO     | __main__:process_images:273 - 点赞数:2
+2025-11-10 11:45:45.321 | INFO     | __main__:process_images:273 - 评论数:2
+2025-11-10 11:45:45.321 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:45.321 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:45.321 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 11:45:45.321 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 11:45:45.321 | INFO     | __main__:process_images:208 - 处理图片: data_overview#Zsiga嘎子姐入手后一发不可收拾.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:45.431 | INFO     | __main__:process_images:250 - 正在处理: data_overview#Zsiga嘎子姐入手后一发不可收拾.png
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 曝光数:438
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 观看数:89
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 封面点击率:19.5%
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 平均观看时长:21.1
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 点赞数:2
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:45.569 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:45.570 | INFO     | __main__:process_images:273 - 分享数:2
+2025-11-10 11:45:45.570 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\假期结束_带上dimoo返程啦.json
+2025-11-10 11:45:45.570 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\假期结束_带上dimoo返程啦.json
+2025-11-10 11:45:45.570 | INFO     | __main__:process_images:208 - 处理图片: data_overview#假期结束_带上dimoo返程啦.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:45.662 | INFO     | __main__:process_images:250 - 正在处理: data_overview#假期结束_带上dimoo返程啦.png
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 曝光数:1028
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 观看数:105
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 封面点击率:10.6%
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 平均观看时长:16.3
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 点赞数:0
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:45.802 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\咦她怎么长得跟我一样.json
+2025-11-10 11:45:45.803 | INFO     | __main__:process_images:208 - 处理图片: data_overview#咦她怎么长得跟我一样.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:45.912 | INFO     | __main__:process_images:250 - 正在处理: data_overview#咦她怎么长得跟我一样.png
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 曝光数:1780
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 观看数:292
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 封面点击率:16.4%
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 平均观看时长:32.8
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 点赞数:11
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 评论数:3
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 收藏数:1
+2025-11-10 11:45:46.058 | INFO     | __main__:process_images:273 - 分享数:4
+2025-11-10 11:45:46.075 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐今日ootd.json
+2025-11-10 11:45:46.075 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐今日ootd.json
+2025-11-10 11:45:46.076 | INFO     | __main__:process_images:208 - 处理图片: data_overview#嘎子姐今日ootd.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:46.160 | INFO     | __main__:process_images:250 - 正在处理: data_overview#嘎子姐今日ootd.png
+2025-11-10 11:45:46.298 | INFO     | __main__:process_images:273 - 曝光数:1216
+2025-11-10 11:45:46.298 | INFO     | __main__:process_images:273 - 观看数:174
+2025-11-10 11:45:46.298 | INFO     | __main__:process_images:273 - 封面点击率:14.1%
+2025-11-10 11:45:46.298 | INFO     | __main__:process_images:273 - 平均观看时长:345.3
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:273 - 点赞数:2
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:273 - 评论数:2
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:273 - 收藏数:2
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:273 - 分享数:2
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐姐今天ootd.json
+2025-11-10 11:45:46.299 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐姐今天ootd.json
+2025-11-10 11:45:46.299 | INFO     | __main__:process_images:208 - 处理图片: data_overview#嘎子姐姐今天ootd.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:46.394 | INFO     | __main__:process_images:250 - 正在处理: data_overview#嘎子姐姐今天ootd.png
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 曝光数:796
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 观看数:114
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 封面点击率:14.7%
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 平均观看时长:32.5
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 点赞数:5
+2025-11-10 11:45:46.536 | INFO     | __main__:process_images:273 - 评论数:2
+2025-11-10 11:45:46.537 | INFO     | __main__:process_images:273 - 收藏数:3
+2025-11-10 11:45:46.537 | INFO     | __main__:process_images:273 - 分享数:1
+2025-11-10 11:45:46.537 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\如果今天星期八_DIY门牌.json
+2025-11-10 11:45:46.537 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\如果今天星期八_DIY门牌.json
+2025-11-10 11:45:46.537 | INFO     | __main__:process_images:208 - 处理图片: data_overview#如果今天星期八_DIY门牌.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:46.640 | INFO     | __main__:process_images:250 - 正在处理: data_overview#如果今天星期八_DIY门牌.png
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 曝光数:301400
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 观看数:59330
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 封面点击率:19.8%
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 平均观看时长:11.7
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 涨粉数:19
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 点赞数:2217
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 评论数:83
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 收藏数:544
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:273 - 分享数:1233
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\小香风女孩报道.json
+2025-11-10 11:45:46.777 | INFO     | __main__:process_images:208 - 处理图片: data_overview#小香风女孩报道.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:46.867 | INFO     | __main__:process_images:250 - 正在处理: data_overview#小香风女孩报道.png
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 曝光数:808
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 观看数:143
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 封面点击率:18%
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 平均观看时长:1066.7
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 点赞数:4
+2025-11-10 11:45:47.005 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:47.006 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:47.006 | INFO     | __main__:process_images:273 - 分享数:1
+2025-11-10 11:45:47.022 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我和我的咖啡搭伙人.json
+2025-11-10 11:45:47.022 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我和我的咖啡搭伙人.json
+2025-11-10 11:45:47.022 | INFO     | __main__:process_images:208 - 处理图片: data_overview#我和我的咖啡搭伙人.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:47.115 | INFO     | __main__:process_images:250 - 正在处理: data_overview#我和我的咖啡搭伙人.png
+2025-11-10 11:45:47.256 | INFO     | __main__:process_images:273 - 曝光数:271
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 观看数:39
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 封面点击率:11.8%
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 平均观看时长:17.1
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 点赞数:1
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 收藏数:1
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:273 - 分享数:1
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我的小甜心_zsiga嘎子姐.json
+2025-11-10 11:45:47.257 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我的小甜心_zsiga嘎子姐.json
+2025-11-10 11:45:47.257 | INFO     | __main__:process_images:208 - 处理图片: data_overview#我的小甜心_zsiga嘎子姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:47.345 | INFO     | __main__:process_images:250 - 正在处理: data_overview#我的小甜心_zsiga嘎子姐.png
+2025-11-10 11:45:47.487 | INFO     | __main__:process_images:273 - 曝光数:795
+2025-11-10 11:45:47.487 | INFO     | __main__:process_images:273 - 观看数:105
+2025-11-10 11:45:47.487 | INFO     | __main__:process_images:273 - 封面点击率:13.4%
+2025-11-10 11:45:47.487 | INFO     | __main__:process_images:273 - 平均观看时长:141.2
+2025-11-10 11:45:47.487 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:47.496 | INFO     | __main__:process_images:273 - 点赞数:1
+2025-11-10 11:45:47.496 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:47.496 | INFO     | __main__:process_images:273 - 收藏数:1
+2025-11-10 11:45:47.496 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:47.496 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\朋友_别买了_你家里都快没地儿了.json
+2025-11-10 11:45:47.496 | INFO     | __main__:process_images:208 - 处理图片: data_overview#朋友_别买了_你家里都快没地儿了.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:47.597 | INFO     | __main__:process_images:250 - 正在处理: data_overview#朋友_别买了_你家里都快没地儿了.png
+2025-11-10 11:45:47.730 | INFO     | __main__:process_images:273 - 曝光数:246
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 观看数:36
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 封面点击率:13.8%
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 平均观看时长:37.3
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 点赞数:0
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:47.731 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:47.740 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求推荐好看的泡泡玛特手机壳.json
+2025-11-10 11:45:47.740 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求推荐好看的泡泡玛特手机壳.json
+2025-11-10 11:45:47.741 | INFO     | __main__:process_images:208 - 处理图片: data_overview#求推荐好看的泡泡玛特手机壳.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:47.849 | INFO     | __main__:process_images:250 - 正在处理: data_overview#求推荐好看的泡泡玛特手机壳.png
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 曝光数:848
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 观看数:72
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 封面点击率:8.3%
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 平均观看时长:30.2
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 点赞数:1
+2025-11-10 11:45:47.984 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:47.985 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:47.985 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:47.985 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求问_孩子太有个性了咋带出门.json
+2025-11-10 11:45:47.985 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求问_孩子太有个性了咋带出门.json
+2025-11-10 11:45:47.985 | INFO     | __main__:process_images:208 - 处理图片: data_overview#求问_孩子太有个性了咋带出门.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:48.085 | INFO     | __main__:process_images:250 - 正在处理: data_overview#求问_孩子太有个性了咋带出门.png
+2025-11-10 11:45:48.182 | INFO     | __main__:process_images:255 - 识别结果: {'code': 101, 'data': 'No text found in image. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\1762746348.074938.png"'}
+2025-11-10 11:45:48.182 | ERROR    | __main__:process_images:256 - 识别失败: data_overview#求问_孩子太有个性了咋带出门.png
+2025-11-10 11:45:48.182 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\潮玩_成年人最贵的_电子宠物.json
+2025-11-10 11:45:48.182 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\潮玩_成年人最贵的_电子宠物.json
+2025-11-10 11:45:48.182 | INFO     | __main__:process_images:208 - 处理图片: data_overview#潮玩_成年人最贵的_电子宠物.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:48.272 | INFO     | __main__:process_images:250 - 正在处理: data_overview#潮玩_成年人最贵的_电子宠物.png
+2025-11-10 11:45:48.411 | INFO     | __main__:process_images:273 - 曝光数:290
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 观看数:36
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 封面点击率:11.4%
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 平均观看时长:24.3
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 点赞数:0
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\看我社会拽姐.json
+2025-11-10 11:45:48.412 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\看我社会拽姐.json
+2025-11-10 11:45:48.412 | INFO     | __main__:process_images:208 - 处理图片: data_overview#看我社会拽姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:48.504 | INFO     | __main__:process_images:250 - 正在处理: data_overview#看我社会拽姐.png
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 曝光数:490
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 观看数:39
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 封面点击率:8%
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 平均观看时长:48.5
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 点赞数:1
+2025-11-10 11:45:48.646 | INFO     | __main__:process_images:273 - 评论数:2
+2025-11-10 11:45:48.647 | INFO     | __main__:process_images:273 - 收藏数:2
+2025-11-10 11:45:48.647 | INFO     | __main__:process_images:273 - 分享数:0
+2025-11-10 11:45:48.647 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\精致女孩_zsiga嘎子姐.json
+2025-11-10 11:45:48.647 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\精致女孩_zsiga嘎子姐.json
+2025-11-10 11:45:48.647 | INFO     | __main__:process_images:208 - 处理图片: data_overview#精致女孩_zsiga嘎子姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:48.745 | INFO     | __main__:process_images:250 - 正在处理: data_overview#精致女孩_zsiga嘎子姐.png
+2025-11-10 11:45:48.832 | INFO     | __main__:process_images:255 - 识别结果: {'code': 101, 'data': 'No text found in image. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\1762746348.7357435.png"'}
+2025-11-10 11:45:48.832 | ERROR    | __main__:process_images:256 - 识别失败: data_overview#精致女孩_zsiga嘎子姐.png
+2025-11-10 11:45:48.832 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\谁说星星人长得像曾志伟的_我回不去了.json
+2025-11-10 11:45:48.832 | WARNING  | __main__:process_images:186 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\谁说星星人长得像曾志伟的_我回不去了.json
+2025-11-10 11:45:48.832 | INFO     | __main__:process_images:208 - 处理图片: data_overview#谁说星星人长得像曾志伟的_我回不去了.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:45:48.929 | INFO     | __main__:process_images:250 - 正在处理: data_overview#谁说星星人长得像曾志伟的_我回不去了.png
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 曝光数:1181
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 观看数:45
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 封面点击率:3.6%
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 平均观看时长:20.6
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 涨粉数:0
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 点赞数:0
+2025-11-10 11:45:49.066 | INFO     | __main__:process_images:273 - 评论数:0
+2025-11-10 11:45:49.067 | INFO     | __main__:process_images:273 - 收藏数:0
+2025-11-10 11:45:49.067 | INFO     | __main__:process_images:273 - 分享数:0

@@ -1,0 +1,35 @@
+2025-11-10 11:44:41.053 | INFO     | __main__:process_images:112 - Playwright chromium 安装成功
+2025-11-10 11:44:41.053 | INFO     | __main__:process_images:119 - 初始化OCR成功，进程号为21768
+2025-11-10 11:44:41.053 | INFO     | __main__:process_images:130 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 11:44:41.053 | INFO     | __main__:process_images:131 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-10 11:44:41.053 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-10 11:44:41.053 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110, 包含最近日期: True
+2025-11-10 11:44:41.054 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110
+2025-11-10 11:44:41.054 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-10 11:44:41.054 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358
+2025-11-10 11:44:41.054 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 11:44:41.054 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 11:44:41.054 | INFO     | __main__:process_images:207 - 处理图片: data_overview#zsiga_嘎子姐美美穿搭.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:44:41.142 | INFO     | __main__:process_images:249 - 正在处理: data_overview#zsiga_嘎子姐美美穿搭.png
+2025-11-10 11:44:41.372 | INFO     | __main__:process_images:272 - 曝光数:1685
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 观看数:242
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 封面点击率:15.2%
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 平均观看时长:286.8
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 涨粉数:0
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 点赞数:6
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 评论数:2
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:272 - 收藏数:4
+2025-11-10 11:44:41.373 | WARNING  | __main__:process_images:276 - 识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 11:44:41.373 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 11:44:41.373 | INFO     | __main__:process_images:207 - 处理图片: data_overview#Zsiga今天是_小公主嘎.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:44:41.469 | INFO     | __main__:process_images:249 - 正在处理: data_overview#Zsiga今天是_小公主嘎.png
+2025-11-10 11:44:41.602 | INFO     | __main__:process_images:272 - 曝光数:991
+2025-11-10 11:44:41.603 | INFO     | __main__:process_images:272 - 观看数:94
+2025-11-10 11:44:41.603 | INFO     | __main__:process_images:272 - 封面点击率:8.9%
+2025-11-10 11:44:41.603 | INFO     | __main__:process_images:272 - 平均观看时长:59.4
+2025-11-10 11:44:41.603 | INFO     | __main__:process_images:272 - 涨粉数:0
+2025-11-10 11:44:41.603 | INFO     | __main__:process_images:272 - 点赞数:2
+2025-11-10 11:44:41.604 | INFO     | __main__:process_images:272 - 评论数:2
+2025-11-10 11:44:41.604 | INFO     | __main__:process_images:272 - 收藏数:0
+2025-11-10 11:44:41.604 | INFO     | __main__:process_images:272 - 分享数:0

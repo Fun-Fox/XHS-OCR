@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from core.logger import logger
-from core.ppocr_api import GetOcrApi
+from core.ocr import sort_text_lines_by_position, ocr
 from core.user_profile import get_user_profile_data
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
@@ -27,13 +27,13 @@ root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OCR 图片目录
 ocr_dir = os.getenv("OCR_IMAGES_PATH", os.path.join(root_dir, "images"))
-if not ocr_engine_path:
-    logger.error("OCR_ENGINE_PATH 环境变量未设置")
-
-if not os.path.exists(ocr_engine_path):
-    logger.error(f"OCR引擎路径不存在: {ocr_engine_path}")
+# if not ocr_engine_path:
+#     logger.error("OCR_ENGINE_PATH 环境变量未设置")
+#
+# if not os.path.exists(ocr_engine_path):
+#     logger.error(f"OCR引擎路径不存在: {ocr_engine_path}")
 # 初始化 OCR 引擎
-ocr = GetOcrApi(ocr_engine_path)
+# ocr = GetOcrApi(ocr_engine_path)
 # 读取配置文件
 config = configparser.ConfigParser()
 with open(os.path.join(root_dir, 'config.ini'), encoding='utf-8') as f:
@@ -115,10 +115,10 @@ def process_images():
     """
     处理OCR目录下的所有图片
     """
-    if ocr.getRunningMode() == "local":
-        logger.info(f"初始化OCR成功，进程号为{ocr.ret.pid}")
-    elif ocr.getRunningMode() == "remote":
-        logger.info(f"连接远程OCR引擎成功，ip：{ocr.ip}，port：{ocr.port}")
+    # if ocr.getRunningMode() == "local":
+    #     logger.info(f"初始化OCR成功，进程号为{ocr.ret.pid}")
+    # elif ocr.getRunningMode() == "remote":
+    #     logger.info(f"连接远程OCR引擎成功，ip：{ocr.ip}，port：{ocr.port}")
 
     # 遍历 OCR 目录下的所有图片
 
@@ -128,7 +128,7 @@ def process_images():
         date_str = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime('%Y%m%d')
         recent_dates.append(date_str)
     logger.info(f"最近3天日期: {recent_dates}")
-    logger.info(f"开始扫描ocr目录：{ocr_dir}")
+    # logger.info(f"开始扫描ocr目录：{ocr_dir}")
 
     # 检查ocr目录是否存在
     if not os.path.exists(ocr_dir):
@@ -172,6 +172,7 @@ def process_images():
                 json_filename = f"{post_title}.json"
                 json_file_path = os.path.join(root, json_filename)
                 logger.info(f"处理文件: {json_file_path}")
+                note_link = ""
                 if os.path.exists(json_file_path):
                     try:
                         with open(json_file_path, 'r', encoding='utf-8') as f:
@@ -232,9 +233,10 @@ def process_images():
 
                 # 将结果保存为临时文件
                 temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
+                # temp_output_path = os.path.join(root_dir, r"tmp", f"{time.time()}.png")
                 # 放大
-                result_img = upscale_image(result_img, scale_factor=2)
-                result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                # result_img = upscale_image(result_img, scale_factor=2)
+                # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
                 cv2.imwrite(temp_output_path, result_img)
 
                 # 从配置文件中获取index_mapping_data
@@ -246,57 +248,71 @@ def process_images():
                 # 执行 OCR 识别
                 # 使用快速的蒙版识别方式，使用VLM OCR方式
                 logger.info(f"正在处理: {filename}")
+                img = Image.open(temp_output_path)
+                # 执行OCR
+                img_pred = ocr(img, with_bboxes=True)
+                sorted_lines = sort_text_lines_by_position(img_pred.text_lines)
+                # getObj = ocr.run(temp_output_path)
+                # if not getObj["code"] == 100:
+                #     logger.info(f"识别结果: {getObj}")
+                #     logger.error(f"识别失败: {filename}")
+                #     continue
+                #
+                # # 提取OCR文本数据
+                # ocr_texts = []
+                # for index, line in enumerate(getObj["data"]):
+                #     text = str(line['text'])
+                #     if '秒' in text:
+                #         text = text.replace('秒', '')
+                #     elif 'o' in text:
+                #         text = text.replace('o', '0')
+                #
+                #     # logger.info(f"{index}:{text}")
+                #     # 判断text为数字或%的时候，才打印
+                #     # 判断text为数字或%的时候，才打印
+                #     if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
+                #         ocr_texts.append(text)
+                #         logger.info(f"{index_mapping_data[index]}:{text}")
+                #     # logger.info(f"{index_mapping_data[index]}:{text}")
 
-                getObj = ocr.run(temp_output_path)
+                # if len(getObj["data"]) != len(index_mapping_data):
+                #     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                #     continue
 
-                if not getObj["code"] == 100:
-                    logger.info(f"识别结果: {getObj}")
-                    logger.error(f"识别失败: {filename}")
-                    continue
-
-                # 提取OCR文本数据
                 ocr_texts = []
-                for index, line in enumerate(getObj["data"]):
-                    text = str(line['text'])
-                    if '秒' in text:
-                        text = text.replace('秒', '')
-                    elif 'o' in text:
-                        text = text.replace('o', '0')
+                for line in sorted_lines:
+                    text = line.text
+                    text = text.replace('秒', '').replace(' ', '').replace('o', '0').replace('<b>', '').replace('</b>',                                                                     '')
+                    ocr_texts.append(text)
+                print(ocr_texts)
 
-                    # logger.info(f"{index}:{text}")
-                    # 判断text为数字或%的时候，才打印
-                    # 判断text为数字或%的时候，才打印
-                    if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
-                        ocr_texts.append(text)
-                        logger.info(f"{index_mapping_data[index]}:{text}")
-                    # logger.info(f"{index_mapping_data[index]}:{text}")
-
-                if len(getObj["data"]) != len(index_mapping_data):
+                if len(ocr_texts) != len(index_mapping_data):
                     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
                     continue
 
                 # 保存数据到数据库
                 tag = re.sub(r'\d+', '', tag)
-                print(f"tag:{tag}")
+                # if note_link:
                 save_ocr_data(tag, post_title, note_link, collect_time, ocr_texts, index_mapping_data, date_dir,
                               ip_port_dir,
                               account_id)
 
-            # textBlocks = getObj["data"]
+        # textBlocks = getObj["data"]
 
-            # 可视化结果
-            # vis = visualize(textBlocks, temp_output_path)
-            # # vis.show()
-            #
-            # # 保存可视化结果
-            # output_result_path = os.path.join(root_dir, 'ocr_result', f"{filename}")
-            # vis.save(output_result_path, isText=True)
-            #
-            # logger.info(f"OCR 结果已保存到: {output_result_path}")
+        # 可视化结果
+        # vis = visualize(textBlocks, temp_output_path)
+        # # vis.show()
+        #
+        # # 保存可视化结果
+        # output_result_path = os.path.join(root_dir, 'ocr_result', f"{filename}")
+        # vis.save(output_result_path, isText=True)
+        #
+        # logger.info(f"OCR 结果已保存到: {output_result_path}")
 
-    # 结束 OCR 引擎
-    ocr.exit()
-    logger.info("程序结束。")
+
+# 结束 OCR 引擎
+# ocr.exit()
+logger.info("程序结束。")
 
 
 def imread_with_pil(path):

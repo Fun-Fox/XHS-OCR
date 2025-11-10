@@ -1,0 +1,13 @@
+2025-11-10 12:43:18.083 | INFO     | __main__:process_images:113 - Playwright chromium 安装成功
+2025-11-10 12:43:18.084 | INFO     | __main__:process_images:120 - 初始化OCR成功，进程号为17908
+2025-11-10 12:43:18.084 | INFO     | __main__:process_images:131 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 12:43:18.084 | INFO     | __main__:process_images:132 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-10 12:43:18.084 | INFO     | __main__:process_images:143 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-10 12:43:18.084 | INFO     | __main__:process_images:143 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110, 包含最近日期: True
+2025-11-10 12:43:18.091 | INFO     | __main__:process_images:154 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110
+2025-11-10 12:43:18.092 | INFO     | __main__:process_images:143 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-10 12:43:18.092 | INFO     | __main__:process_images:154 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358
+2025-11-10 12:43:18.092 | INFO     | __main__:process_images:175 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 12:43:18.092 | WARNING  | __main__:process_images:187 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 12:43:18.092 | INFO     | __main__:process_images:209 - 处理图片: data_overview#zsiga_嘎子姐美美穿搭.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 12:43:18.170 | INFO     | __main__:process_images:251 - 正在处理: data_overview#zsiga_嘎子姐美美穿搭.png

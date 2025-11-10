@@ -1,0 +1,114 @@
+2025-11-10 11:40:28.373 | INFO     | __main__:process_images:112 - Playwright chromium 安装成功
+2025-11-10 11:40:28.374 | INFO     | __main__:process_images:119 - 初始化OCR成功，进程号为8380
+2025-11-10 11:40:28.374 | INFO     | __main__:process_images:130 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 11:40:28.374 | INFO     | __main__:process_images:131 - 开始扫描ocr目录：D:\PycharmProjects\XHS-OCR\images
+2025-11-10 11:40:28.374 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-10 11:40:28.374 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110, 包含最近日期: True
+2025-11-10 11:40:28.375 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110
+2025-11-10 11:40:28.375 | INFO     | __main__:process_images:142 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-10 11:40:28.375 | INFO     | __main__:process_images:153 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358
+2025-11-10 11:40:28.375 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 11:40:28.375 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 11:40:28.375 | INFO     | __main__:process_images:207 - 处理图片: data_overview#zsiga_嘎子姐美美穿搭.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.452 | INFO     | __main__:process_images:249 - 正在处理: data_overview#zsiga_嘎子姐美美穿搭.png
+2025-11-10 11:40:28.452 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#zsiga_嘎子姐美美穿搭.png"'}
+2025-11-10 11:40:28.452 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#zsiga_嘎子姐美美穿搭.png
+2025-11-10 11:40:28.452 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 11:40:28.453 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 11:40:28.453 | INFO     | __main__:process_images:207 - 处理图片: data_overview#Zsiga今天是_小公主嘎.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.523 | INFO     | __main__:process_images:249 - 正在处理: data_overview#Zsiga今天是_小公主嘎.png
+2025-11-10 11:40:28.523 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#Zsiga今天是_小公主嘎.png"'}
+2025-11-10 11:40:28.524 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#Zsiga今天是_小公主嘎.png
+2025-11-10 11:40:28.524 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 11:40:28.524 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 11:40:28.524 | INFO     | __main__:process_images:207 - 处理图片: data_overview#Zsiga嘎子姐入手后一发不可收拾.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.596 | INFO     | __main__:process_images:249 - 正在处理: data_overview#Zsiga嘎子姐入手后一发不可收拾.png
+2025-11-10 11:40:28.596 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#Zsiga嘎子姐入手后一发不可收拾.png"'}
+2025-11-10 11:40:28.596 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#Zsiga嘎子姐入手后一发不可收拾.png
+2025-11-10 11:40:28.596 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\假期结束_带上dimoo返程啦.json
+2025-11-10 11:40:28.596 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\假期结束_带上dimoo返程啦.json
+2025-11-10 11:40:28.596 | INFO     | __main__:process_images:207 - 处理图片: data_overview#假期结束_带上dimoo返程啦.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.669 | INFO     | __main__:process_images:249 - 正在处理: data_overview#假期结束_带上dimoo返程啦.png
+2025-11-10 11:40:28.717 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#假期结束_带上dimoo返程啦.png"'}
+2025-11-10 11:40:28.717 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#假期结束_带上dimoo返程啦.png
+2025-11-10 11:40:28.717 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\咦她怎么长得跟我一样.json
+2025-11-10 11:40:28.717 | INFO     | __main__:process_images:207 - 处理图片: data_overview#咦她怎么长得跟我一样.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.789 | INFO     | __main__:process_images:249 - 正在处理: data_overview#咦她怎么长得跟我一样.png
+2025-11-10 11:40:28.789 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#咦她怎么长得跟我一样.png"'}
+2025-11-10 11:40:28.789 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#咦她怎么长得跟我一样.png
+2025-11-10 11:40:28.789 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐今日ootd.json
+2025-11-10 11:40:28.789 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐今日ootd.json
+2025-11-10 11:40:28.789 | INFO     | __main__:process_images:207 - 处理图片: data_overview#嘎子姐今日ootd.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.864 | INFO     | __main__:process_images:249 - 正在处理: data_overview#嘎子姐今日ootd.png
+2025-11-10 11:40:28.864 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#嘎子姐今日ootd.png"'}
+2025-11-10 11:40:28.864 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#嘎子姐今日ootd.png
+2025-11-10 11:40:28.865 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐姐今天ootd.json
+2025-11-10 11:40:28.865 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐姐今天ootd.json
+2025-11-10 11:40:28.865 | INFO     | __main__:process_images:207 - 处理图片: data_overview#嘎子姐姐今天ootd.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:28.944 | INFO     | __main__:process_images:249 - 正在处理: data_overview#嘎子姐姐今天ootd.png
+2025-11-10 11:40:28.944 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#嘎子姐姐今天ootd.png"'}
+2025-11-10 11:40:28.944 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#嘎子姐姐今天ootd.png
+2025-11-10 11:40:28.944 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\如果今天星期八_DIY门牌.json
+2025-11-10 11:40:28.944 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\如果今天星期八_DIY门牌.json
+2025-11-10 11:40:28.945 | INFO     | __main__:process_images:207 - 处理图片: data_overview#如果今天星期八_DIY门牌.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.024 | INFO     | __main__:process_images:249 - 正在处理: data_overview#如果今天星期八_DIY门牌.png
+2025-11-10 11:40:29.024 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#如果今天星期八_DIY门牌.png"'}
+2025-11-10 11:40:29.024 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#如果今天星期八_DIY门牌.png
+2025-11-10 11:40:29.024 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\小香风女孩报道.json
+2025-11-10 11:40:29.024 | INFO     | __main__:process_images:207 - 处理图片: data_overview#小香风女孩报道.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.089 | INFO     | __main__:process_images:249 - 正在处理: data_overview#小香风女孩报道.png
+2025-11-10 11:40:29.090 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#小香风女孩报道.png"'}
+2025-11-10 11:40:29.090 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#小香风女孩报道.png
+2025-11-10 11:40:29.090 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我和我的咖啡搭伙人.json
+2025-11-10 11:40:29.090 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我和我的咖啡搭伙人.json
+2025-11-10 11:40:29.090 | INFO     | __main__:process_images:207 - 处理图片: data_overview#我和我的咖啡搭伙人.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.162 | INFO     | __main__:process_images:249 - 正在处理: data_overview#我和我的咖啡搭伙人.png
+2025-11-10 11:40:29.162 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#我和我的咖啡搭伙人.png"'}
+2025-11-10 11:40:29.162 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#我和我的咖啡搭伙人.png
+2025-11-10 11:40:29.162 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我的小甜心_zsiga嘎子姐.json
+2025-11-10 11:40:29.162 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我的小甜心_zsiga嘎子姐.json
+2025-11-10 11:40:29.162 | INFO     | __main__:process_images:207 - 处理图片: data_overview#我的小甜心_zsiga嘎子姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.237 | INFO     | __main__:process_images:249 - 正在处理: data_overview#我的小甜心_zsiga嘎子姐.png
+2025-11-10 11:40:29.237 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#我的小甜心_zsiga嘎子姐.png"'}
+2025-11-10 11:40:29.237 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#我的小甜心_zsiga嘎子姐.png
+2025-11-10 11:40:29.237 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\朋友_别买了_你家里都快没地儿了.json
+2025-11-10 11:40:29.238 | INFO     | __main__:process_images:207 - 处理图片: data_overview#朋友_别买了_你家里都快没地儿了.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.307 | INFO     | __main__:process_images:249 - 正在处理: data_overview#朋友_别买了_你家里都快没地儿了.png
+2025-11-10 11:40:29.307 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#朋友_别买了_你家里都快没地儿了.png"'}
+2025-11-10 11:40:29.307 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#朋友_别买了_你家里都快没地儿了.png
+2025-11-10 11:40:29.307 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求推荐好看的泡泡玛特手机壳.json
+2025-11-10 11:40:29.307 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求推荐好看的泡泡玛特手机壳.json
+2025-11-10 11:40:29.307 | INFO     | __main__:process_images:207 - 处理图片: data_overview#求推荐好看的泡泡玛特手机壳.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.380 | INFO     | __main__:process_images:249 - 正在处理: data_overview#求推荐好看的泡泡玛特手机壳.png
+2025-11-10 11:40:29.380 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#求推荐好看的泡泡玛特手机壳.png"'}
+2025-11-10 11:40:29.380 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#求推荐好看的泡泡玛特手机壳.png
+2025-11-10 11:40:29.380 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求问_孩子太有个性了咋带出门.json
+2025-11-10 11:40:29.380 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\求问_孩子太有个性了咋带出门.json
+2025-11-10 11:40:29.380 | INFO     | __main__:process_images:207 - 处理图片: data_overview#求问_孩子太有个性了咋带出门.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.460 | INFO     | __main__:process_images:249 - 正在处理: data_overview#求问_孩子太有个性了咋带出门.png
+2025-11-10 11:40:29.460 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#求问_孩子太有个性了咋带出门.png"'}
+2025-11-10 11:40:29.460 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#求问_孩子太有个性了咋带出门.png
+2025-11-10 11:40:29.461 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\潮玩_成年人最贵的_电子宠物.json
+2025-11-10 11:40:29.461 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\潮玩_成年人最贵的_电子宠物.json
+2025-11-10 11:40:29.461 | INFO     | __main__:process_images:207 - 处理图片: data_overview#潮玩_成年人最贵的_电子宠物.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.534 | INFO     | __main__:process_images:249 - 正在处理: data_overview#潮玩_成年人最贵的_电子宠物.png
+2025-11-10 11:40:29.535 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#潮玩_成年人最贵的_电子宠物.png"'}
+2025-11-10 11:40:29.535 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#潮玩_成年人最贵的_电子宠物.png
+2025-11-10 11:40:29.535 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\看我社会拽姐.json
+2025-11-10 11:40:29.535 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\看我社会拽姐.json
+2025-11-10 11:40:29.535 | INFO     | __main__:process_images:207 - 处理图片: data_overview#看我社会拽姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.610 | INFO     | __main__:process_images:249 - 正在处理: data_overview#看我社会拽姐.png
+2025-11-10 11:40:29.611 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#看我社会拽姐.png"'}
+2025-11-10 11:40:29.611 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#看我社会拽姐.png
+2025-11-10 11:40:29.611 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\精致女孩_zsiga嘎子姐.json
+2025-11-10 11:40:29.611 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\精致女孩_zsiga嘎子姐.json
+2025-11-10 11:40:29.611 | INFO     | __main__:process_images:207 - 处理图片: data_overview#精致女孩_zsiga嘎子姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.685 | INFO     | __main__:process_images:249 - 正在处理: data_overview#精致女孩_zsiga嘎子姐.png
+2025-11-10 11:40:29.685 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#精致女孩_zsiga嘎子姐.png"'}
+2025-11-10 11:40:29.685 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#精致女孩_zsiga嘎子姐.png
+2025-11-10 11:40:29.685 | INFO     | __main__:process_images:174 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\谁说星星人长得像曾志伟的_我回不去了.json
+2025-11-10 11:40:29.685 | WARNING  | __main__:process_images:185 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\谁说星星人长得像曾志伟的_我回不去了.json
+2025-11-10 11:40:29.685 | INFO     | __main__:process_images:207 - 处理图片: data_overview#谁说星星人长得像曾志伟的_我回不去了.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 11:40:29.763 | INFO     | __main__:process_images:249 - 正在处理: data_overview#谁说星星人长得像曾志伟的_我回不去了.png
+2025-11-10 11:40:29.763 | INFO     | __main__:process_images:254 - 识别结果: {'code': 200, 'data': 'Image path dose not exist. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\data_overview#谁说星星人长得像曾志伟的_我回不去了.png"'}
+2025-11-10 11:40:29.763 | ERROR    | __main__:process_images:255 - 识别失败: data_overview#谁说星星人长得像曾志伟的_我回不去了.png

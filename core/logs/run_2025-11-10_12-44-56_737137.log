@@ -1,0 +1,19 @@
+2025-11-10 12:45:00.809 | INFO     | __main__:process_images:113 - Playwright chromium 安装成功
+2025-11-10 12:45:00.809 | INFO     | __main__:process_images:131 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 12:45:00.809 | INFO     | __main__:process_images:143 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-10 12:45:00.809 | INFO     | __main__:process_images:143 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110, 包含最近日期: True
+2025-11-10 12:45:00.809 | INFO     | __main__:process_images:154 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110
+2025-11-10 12:45:00.810 | INFO     | __main__:process_images:143 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-10 12:45:00.818 | INFO     | __main__:process_images:154 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358
+2025-11-10 12:45:00.818 | INFO     | __main__:process_images:175 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 12:45:00.818 | WARNING  | __main__:process_images:187 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 12:45:00.819 | INFO     | __main__:process_images:209 - 处理图片: data_overview#zsiga_嘎子姐美美穿搭.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 12:45:00.900 | INFO     | __main__:process_images:251 - 正在处理: data_overview#zsiga_嘎子姐美美穿搭.png
+2025-11-10 12:45:03.792 | INFO     | __main__:process_images:175 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 12:45:03.792 | WARNING  | __main__:process_images:187 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 12:45:03.792 | INFO     | __main__:process_images:209 - 处理图片: data_overview#Zsiga今天是_小公主嘎.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 12:45:03.859 | INFO     | __main__:process_images:251 - 正在处理: data_overview#Zsiga今天是_小公主嘎.png
+2025-11-10 12:45:06.637 | INFO     | __main__:process_images:175 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 12:45:06.637 | WARNING  | __main__:process_images:187 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 12:45:06.637 | INFO     | __main__:process_images:209 - 处理图片: data_overview#Zsiga嘎子姐入手后一发不可收拾.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 12:45:06.704 | INFO     | __main__:process_images:251 - 正在处理: data_overview#Zsiga嘎子姐入手后一发不可收拾.png
