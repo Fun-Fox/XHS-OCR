@@ -1,4 +1,3 @@
-
 from surya.common.surya.schema import TaskNames
 from surya.detection import DetectionPredictor
 from surya.foundation import FoundationPredictor

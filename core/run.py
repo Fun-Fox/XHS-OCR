@@ -8,6 +8,7 @@ import numpy as np
 from PIL import Image
 from core.logger import logger
 from core.ocr import sort_text_lines_by_position, ocr
+
 from core.user_profile import get_user_profile_data
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
@@ -19,21 +20,26 @@ from dotenv import load_dotenv
 # 配置日志文件
 load_dotenv()
 
-# OCR 引擎路径
-ocr_engine_path = os.getenv("OCR_ENGINE_PATH")
-
 # 遮罩图路径
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OCR 图片目录
 ocr_dir = os.getenv("OCR_IMAGES_PATH", os.path.join(root_dir, "images"))
-# if not ocr_engine_path:
-#     logger.error("OCR_ENGINE_PATH 环境变量未设置")
-#
-# if not os.path.exists(ocr_engine_path):
-#     logger.error(f"OCR引擎路径不存在: {ocr_engine_path}")
-# 初始化 OCR 引擎
-# ocr = GetOcrApi(ocr_engine_path)
+ocr_engine = os.getenv("OCR_ENGINE", "surya")
+
+if ocr_engine == "PaddleOCR":
+    from core.ppocr_api import GetOcrApi
+
+    # OCR 引擎路径
+    ocr_engine_path = os.getenv("OCR_ENGINE_PATH")
+    if not ocr_engine_path:
+        logger.error("OCR_ENGINE_PATH 环境变量未设置")
+
+    if not os.path.exists(ocr_engine_path):
+        logger.error(f"OCR引擎路径不存在: {ocr_engine_path}")
+    # 初始化 OCR 引擎
+    ocr = GetOcrApi(ocr_engine_path)
+
 # 读取配置文件
 config = configparser.ConfigParser()
 with open(os.path.join(root_dir, 'config.ini'), encoding='utf-8') as f:
@@ -115,10 +121,11 @@ def process_images():
     """
     处理OCR目录下的所有图片
     """
-    # if ocr.getRunningMode() == "local":
-    #     logger.info(f"初始化OCR成功，进程号为{ocr.ret.pid}")
-    # elif ocr.getRunningMode() == "remote":
-    #     logger.info(f"连接远程OCR引擎成功，ip：{ocr.ip}，port：{ocr.port}")
+    if ocr_engine == "PaddleOCR":
+        if ocr.getRunningMode() == "local":
+            logger.info(f"初始化OCR成功，进程号为{ocr.ret.pid}")
+        elif ocr.getRunningMode() == "remote":
+            logger.info(f"连接远程OCR引擎成功，ip：{ocr.ip}，port：{ocr.port}")
 
     # 遍历 OCR 目录下的所有图片
 
@@ -244,19 +251,22 @@ def process_images():
                 if config.has_section('tags') and config.has_option('tags', tag):
                     index_mapping_data_str = config.get('tags', tag)
                     index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
-                    # logger.info(getObj["data"])
                 # 执行 OCR 识别
                 # 使用快速的蒙版识别方式，使用VLM OCR方式
                 logger.info(f"正在处理: {filename}")
-                img = Image.open(temp_output_path)
-                # 执行OCR
-                img_pred = ocr(img, with_bboxes=True)
-                sorted_lines = sort_text_lines_by_position(img_pred.text_lines)
-                # getObj = ocr.run(temp_output_path)
-                # if not getObj["code"] == 100:
-                #     logger.info(f"识别结果: {getObj}")
-                #     logger.error(f"识别失败: {filename}")
-                #     continue
+
+                if ocr_engine == "PaddleOCR":
+                    getObj = ocr.run(temp_output_path)
+                    if not getObj["code"] == 100:
+                        logger.info(f"识别结果: {getObj}")
+                        logger.error(f"识别失败: {filename}")
+                        continue
+                    sorted_lines = getObj["data"]
+                else:
+                    # 执行OCR
+                    img = Image.open(temp_output_path)
+                    img_pred = ocr(img, with_bboxes=True)
+                    sorted_lines = sort_text_lines_by_position(img_pred.text_lines)
                 #
                 # # 提取OCR文本数据
                 # ocr_texts = []
@@ -281,8 +291,12 @@ def process_images():
 
                 ocr_texts = []
                 for line in sorted_lines:
-                    text = line.text
-                    text = text.replace('秒', '').replace(' ', '').replace('o', '0').replace('<b>', '').replace('</b>',                                                                     '')
+                    if ocr_engine == "PaddleOCR":
+                        text = str(line['text'])
+                    else:
+                        text = line.text
+                    text = text.replace('秒', '').replace(' ', '').replace('o', '0').replace('<b>', '').replace('</b>',
+                                                                                                                '')
                     ocr_texts.append(text)
                 print(ocr_texts)
 
