@@ -1,0 +1,4 @@
+2025-11-10 16:36:01.706 | INFO     | __main__:<module>:329 - 程序结束。
+2025-11-10 16:36:02.122 | INFO     | __main__:process_images:118 - Playwright chromium 安装成功
+2025-11-10 16:36:02.122 | INFO     | __main__:process_images:137 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 16:36:02.122 | ERROR    | __main__:process_images:142 - OCR目录不存在: D:\PycharmProjects\XHS-OCR\images"
