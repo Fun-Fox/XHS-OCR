@@ -1,0 +1,53 @@
+2025-11-10 16:33:00.409 | INFO     | __main__:<module>:329 - 程序结束。
+2025-11-10 16:33:00.810 | INFO     | __main__:process_images:118 - Playwright chromium 安装成功
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:137 - 最近3天日期: ['20251110', '20251109', '20251108']
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:149 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:149 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110, 包含最近日期: True
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:160 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:149 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358, 包含最近日期: True
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:160 - 处理最近3天的目录: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 16:33:00.811 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\zsiga_嘎子姐美美穿搭.json
+2025-11-10 16:33:00.811 | INFO     | __main__:process_images:215 - 处理图片: data_overview#zsiga_嘎子姐美美穿搭.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:00.893 | INFO     | __main__:process_images:256 - 正在处理: data_overview#zsiga_嘎子姐美美穿搭.png
+2025-11-10 16:33:03.834 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 16:33:03.834 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga今天是_小公主嘎.json
+2025-11-10 16:33:03.834 | INFO     | __main__:process_images:215 - 处理图片: data_overview#Zsiga今天是_小公主嘎.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:03.902 | INFO     | __main__:process_images:256 - 正在处理: data_overview#Zsiga今天是_小公主嘎.png
+2025-11-10 16:33:06.739 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 16:33:06.740 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\Zsiga嘎子姐入手后一发不可收拾.json
+2025-11-10 16:33:06.740 | INFO     | __main__:process_images:215 - 处理图片: data_overview#Zsiga嘎子姐入手后一发不可收拾.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:06.809 | INFO     | __main__:process_images:256 - 正在处理: data_overview#Zsiga嘎子姐入手后一发不可收拾.png
+2025-11-10 16:33:09.738 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\假期结束_带上dimoo返程啦.json
+2025-11-10 16:33:09.738 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\假期结束_带上dimoo返程啦.json
+2025-11-10 16:33:09.738 | INFO     | __main__:process_images:215 - 处理图片: data_overview#假期结束_带上dimoo返程啦.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:09.813 | INFO     | __main__:process_images:256 - 正在处理: data_overview#假期结束_带上dimoo返程啦.png
+2025-11-10 16:33:12.951 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\咦她怎么长得跟我一样.json
+2025-11-10 16:33:12.951 | INFO     | __main__:process_images:215 - 处理图片: data_overview#咦她怎么长得跟我一样.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:13.020 | INFO     | __main__:process_images:256 - 正在处理: data_overview#咦她怎么长得跟我一样.png
+2025-11-10 16:33:15.923 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐今日ootd.json
+2025-11-10 16:33:15.923 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐今日ootd.json
+2025-11-10 16:33:15.923 | INFO     | __main__:process_images:215 - 处理图片: data_overview#嘎子姐今日ootd.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:15.994 | INFO     | __main__:process_images:256 - 正在处理: data_overview#嘎子姐今日ootd.png
+2025-11-10 16:33:19.282 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐姐今天ootd.json
+2025-11-10 16:33:19.282 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\嘎子姐姐今天ootd.json
+2025-11-10 16:33:19.283 | INFO     | __main__:process_images:215 - 处理图片: data_overview#嘎子姐姐今天ootd.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:19.350 | INFO     | __main__:process_images:256 - 正在处理: data_overview#嘎子姐姐今天ootd.png
+2025-11-10 16:33:22.372 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\如果今天星期八_DIY门牌.json
+2025-11-10 16:33:22.372 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\如果今天星期八_DIY门牌.json
+2025-11-10 16:33:22.372 | INFO     | __main__:process_images:215 - 处理图片: data_overview#如果今天星期八_DIY门牌.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:22.441 | INFO     | __main__:process_images:256 - 正在处理: data_overview#如果今天星期八_DIY门牌.png
+2025-11-10 16:33:25.801 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\小香风女孩报道.json
+2025-11-10 16:33:25.801 | INFO     | __main__:process_images:215 - 处理图片: data_overview#小香风女孩报道.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:25.871 | INFO     | __main__:process_images:256 - 正在处理: data_overview#小香风女孩报道.png
+2025-11-10 16:33:29.201 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我和我的咖啡搭伙人.json
+2025-11-10 16:33:29.202 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我和我的咖啡搭伙人.json
+2025-11-10 16:33:29.202 | INFO     | __main__:process_images:215 - 处理图片: data_overview#我和我的咖啡搭伙人.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:29.271 | INFO     | __main__:process_images:256 - 正在处理: data_overview#我和我的咖啡搭伙人.png
+2025-11-10 16:33:32.376 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我的小甜心_zsiga嘎子姐.json
+2025-11-10 16:33:32.376 | WARNING  | __main__:process_images:193 - JSON文件不存在: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\我的小甜心_zsiga嘎子姐.json
+2025-11-10 16:33:32.376 | INFO     | __main__:process_images:215 - 处理图片: data_overview#我的小甜心_zsiga嘎子姐.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:32.445 | INFO     | __main__:process_images:256 - 正在处理: data_overview#我的小甜心_zsiga嘎子姐.png
+2025-11-10 16:33:35.528 | INFO     | __main__:process_images:181 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251110\172.25.1.41#1944609540455948358\朋友_别买了_你家里都快没地儿了.json
+2025-11-10 16:33:35.528 | INFO     | __main__:process_images:215 - 处理图片: data_overview#朋友_别买了_你家里都快没地儿了.png, 日期: 20251110, 设备: 172.25.1.41
+2025-11-10 16:33:35.599 | INFO     | __main__:process_images:256 - 正在处理: data_overview#朋友_别买了_你家里都快没地儿了.png
