@@ -1,4 +1,3 @@
-import os
 
 from surya.common.surya.schema import TaskNames
 from surya.detection import DetectionPredictor

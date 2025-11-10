@@ -1,7 +1,6 @@
-import re
 import sqlite3
 import os
-from typing import Dict, List
+from typing import  List
 
 # 获取当前文件所在目录
 current_dir = os.path.dirname(os.path.abspath(__file__))

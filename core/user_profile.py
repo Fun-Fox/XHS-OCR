@@ -1,4 +1,4 @@
-from logger import logger
+from core.logger import logger
 
 async def get_user_profile_data(author_profile_url):
     from playwright.async_api import async_playwright

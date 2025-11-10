@@ -6,9 +6,9 @@ import re
 import cv2
 import numpy as np
 from PIL import Image
-from logger import logger
-from ocr import sort_text_lines_by_position, ocr
-from user_profile import get_user_profile_data
+from core.logger import logger
+from core.ocr import sort_text_lines_by_position, ocr
+from core.user_profile import get_user_profile_data
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
 import time
