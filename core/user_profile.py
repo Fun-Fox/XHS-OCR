@@ -1,5 +1,9 @@
-from core.logger import logger
+import os
 
+from core.logger import logger
+from dotenv import load_dotenv
+# 加载环境变量
+load_dotenv()
 async def get_user_profile_data(author_profile_url):
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
@@ -7,7 +11,8 @@ async def get_user_profile_data(author_profile_url):
             headless=True,  # 保持headless模式
         )
         context = await browser.new_context()
-        cookie_str = "abRequestId=dbb2a223-61fa-5f7d-b929-9c358ea6d049; a1=19a48741019h08vwqsc9n7135g555j7365gdeh3ht50000230323; webId=bb6a2be9ab3649da1e8a762e4c1eac1d; gid=yj04fiWDDDKWyj04YW4y82xqyjx8YhEAMSjIkx9Wyq2k2f2822VWqd888Jq8qJq84jS8fif0; web_session=0400697664e070a8934007f03c3b4b64708352; customer-sso-sid=68c51756919605332687258275m4jiee22zdldtf; x-user-id-creator.xiaohongshu.com=599bb8fa6a6a693f0c70c316; customerClientId=255154908648415; access-token-creator.xiaohongshu.com=customer.creator.AT-68c517569196053326888962kkyqhmtaobfpjqk3; galaxy_creator_session_id=nyykGgynplQT7inAtHNCai92I4R6idRrD1ts; galaxy.creator.beaker.session.id=1762340789805049445724; xsecappid=xhs-pc-web; webBuild=4.84.4; websectiga=2845367ec3848418062e761c09db7caf0e8b79d132ccdd1a4f8e64a11d0cac0d; sec_poison_id=6be1d465-197c-4821-983f-572d57bfcd4e; loadts=1762498122328"
+        # 从环境变量中获取cookie
+        cookie_str = os.getenv("COOKIE_STRING")
         if cookie_str:
             # 解析 cookie 字符串为字典
             cookies_dict = {}
