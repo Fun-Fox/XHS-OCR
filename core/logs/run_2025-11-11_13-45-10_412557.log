@@ -1,0 +1,5 @@
+2025-11-11 13:45:15.211 | INFO     | __main__:<module>:355 - 程序结束。
+2025-11-11 13:45:15.833 | INFO     | __main__:process_images:118 - Playwright chromium 安装成功
+2025-11-11 13:45:15.833 | INFO     | __main__:process_images:126 - 初始化OCR成功，进程号为18852
+2025-11-11 13:45:15.833 | INFO     | __main__:process_images:137 - 最近3天日期: ['20251111', '20251110', '20251109']
+2025-11-11 13:45:15.833 | ERROR    | __main__:process_images:142 - OCR目录不存在: /home/callfans/ocr/

@@ -251,7 +251,26 @@ def process_images():
                 # 放大
                 # result_img = upscale_image(result_img, scale_factor=2)
                 # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
-                cv2.imwrite(temp_output_path, result_img)
+                cv2.imwrite(temp_output_path, result_img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
+
+                # 等待文件写入完成并验证
+                timeout = 5  # 超时时间（秒）
+                start_time = time.time()
+                while not os.path.exists(temp_output_path):
+                    if time.time() - start_time > timeout:
+                        logger.error(f"文件写入超时: {temp_output_path}")
+                        break
+                    time.sleep(0.1)
+
+                # 验证文件是否写入成功
+                if os.path.exists(temp_output_path):
+                    file_size = os.path.getsize(temp_output_path)
+                    if file_size > 0:
+                        logger.info(f"临时文件保存完成，大小: {file_size} bytes")
+                    else:
+                        logger.warning(f"临时文件写入完成但大小为0: {temp_output_path}")
+                else:
+                    logger.error(f"临时文件保存失败: {temp_output_path}")
 
                 # 从配置文件中获取index_mapping_data
                 index_mapping_data = []
