@@ -308,7 +308,7 @@ def process_images():
                 print(ocr_texts)
 
                 if len(ocr_texts) != len(index_mapping_data):
-                    logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                    logger.warning(f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
                     continue
 
                 # 保存数据到数据库
