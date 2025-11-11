@@ -65,7 +65,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
     # 创建表，使用作品标题和OCR采集时间作为联合主键
     create_table_sql = f'''
         CREATE TABLE IF NOT EXISTS s_xhs_{tag}_ocr (
-            "作品ID" INTEGER PRIMARY KEY AUTOINCREMENT,
+            "数据ID" INTEGER PRIMARY KEY AUTOINCREMENT,
             "数据来源" TEXT,
             "设备IP" TEXT,
             "账号ID" TEXT,

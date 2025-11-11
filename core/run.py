@@ -173,7 +173,7 @@ def process_images():
                 user_info = asyncio.run(get_user_profile_data(author_profile_url))
 
                 ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
-                save_userinfo_data(user_info, ip_port_dir, account_id, collect_time)
+                save_userinfo_data(user_info, ip_port_dir, account_id, collect_time,author_profile_url)
             elif ".png" in filename:
                 tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                 json_filename = f"{post_title}.json"

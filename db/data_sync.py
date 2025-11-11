@@ -92,7 +92,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                 for col in column_names:
                     if col in FIELD_MAPPING:
                         eng_col = FIELD_MAPPING[col]
-                        if col == "作品ID":
+                        if col == "数据ID":
                             columns_definitions.append(f"`{eng_col}` VARCHAR(191) PRIMARY KEY COMMENT '{col}'")
                         elif col == "采集日期":
                             columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
@@ -131,7 +131,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                     # 构建ON DUPLICATE KEY UPDATE部分
                     update_fields = []
                     for i, col in enumerate(column_names):
-                        if col not in ("id", "作品ID"):
+                        if col not in ("id", "数据ID"):
                             eng_col = mapped_column_names[i] if col in FIELD_MAPPING else col
                             update_fields.append(f"`{eng_col}` = VALUES(`{eng_col}`)")
 
