@@ -53,7 +53,6 @@ async def get_user_profile_data(author_profile_url):
                 user_info['fans'] = next((item['count'] for item in interactions if item['type'] == 'fans'), 0)
                 user_info['interaction'] = next(
                     (item['count'] for item in interactions if item['type'] == 'interaction'), 0)
-                logger.info(f"user_info：\n{user_info}")
         except Exception as e:
             logger.info(f"处理页面时出错: {author_profile_url}, 错误: {str(e)}")
 

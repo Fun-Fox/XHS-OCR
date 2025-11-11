@@ -170,10 +170,17 @@ def process_images():
                     modified_time = os.path.getmtime(file_path)
                     collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modified_time))
                 parent_dir = os.path.dirname(file_path)
-                user_info = asyncio.run(get_user_profile_data(author_profile_url))
+                try:
+                    user_info = asyncio.run(get_user_profile_data(author_profile_url))
 
-                ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
-                save_userinfo_data(user_info, ip_port_dir, account_id, collect_time,author_profile_url)
+                    ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
+                    if user_info:
+                        logger.info(f"保存用户信息成功: {user_info}")
+                        save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url)
+                    else:
+                        logger.error(f"获取用户信息失败: {author_profile_url}")
+                except Exception as e:
+                    logger.error(f"获取用户信息失败: {author_profile_url}")
             elif ".png" in filename:
                 tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                 json_filename = f"{post_title}.json"
