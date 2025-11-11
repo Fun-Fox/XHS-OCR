@@ -321,13 +321,19 @@ def process_images():
                         text = str(line['text'])
                     else:
                         text = line.text
-                    text = text.replace('秒', '').replace(' ', '').replace('o', '0').replace('<b>', '').replace('</b>',
-                                                                                                                '')
-                    ocr_texts.append(text)
+                    text = re.sub(r'[\u4e00-\u9fff]+', '', text)
+                    text = (text.replace('秒', '')
+                            .replace(' ', '')
+                            .replace('o', '0')
+                            .replace('<b>', '')
+                            .replace('</b>',''))
+                    if text:
+                        ocr_texts.append(text)
                 print(ocr_texts)
 
                 if len(ocr_texts) != len(index_mapping_data):
-                    logger.warning(f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                    logger.warning(
+                        f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
                     continue
 
                 # 保存数据到数据库
