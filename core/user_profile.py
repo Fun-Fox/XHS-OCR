@@ -31,7 +31,7 @@ async def get_user_profile_data(author_profile_url):
         # 这里可以添加获取用户资料的具体逻辑
         try:
             await page.goto("https://www.xiaohongshu.com/user/profile/68cbe46500000000210230ff", timeout=30000)
-            await page.wait_for_timeout(5000)
+            await page.wait_for_timeout(10000)
 
             # 获取用户基本信息
             user_data = await page.evaluate('() => window.__INITIAL_STATE__?.user.userPageData._rawValue')
