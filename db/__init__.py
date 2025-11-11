@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from typing import  List
+from typing import List
 
 # 获取当前文件所在目录
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -8,7 +8,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, 'ocr_data.db')
 
 
-def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time):
+def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     create_table_sql = f'''
@@ -22,6 +22,7 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time):
                 "关注数" TEXT,
                 "粉丝数" TEXT,
                 "获赞与收藏" TEXT,
+                "链接" TEXT,
                 UNIQUE("账号ID", "采集时间")
             )
         '''
@@ -30,13 +31,13 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time):
 
     sql_str = f"""
             INSERT OR IGNORE INTO s_xhs_user_info_ocr (
-                "设备IP","数据来源","账号ID","账号昵称","采集时间", "关注数","粉丝数", "获赞与收藏"
+                "设备IP","数据来源","账号ID","账号昵称","采集时间", "关注数","粉丝数", "获赞与收藏","链接"
             ) VALUES (?,?,?,?,?,?,?,?)
         """
     cursor.execute(sql_str, (
         ip_port_dir, "1894230222988058625", account_id, user_info['nickname'], collect_time, user_info['follows'],
         user_info['fans'],
-        user_info['interaction'],
+        user_info['interaction'], author_profile_url
     ))
 
     conn.commit()
@@ -70,7 +71,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
             "设备IP" TEXT,
             "账号ID" TEXT,
             "作品标题" TEXT,
-            "作品链接" TEXT,
+            "链接" TEXT,
             "采集日期" TEXT,
             "采集时间" TEXT,
             {(' TEXT, '.join(escaped_fields)) + ' TEXT' if escaped_fields else ''},
@@ -85,7 +86,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
     table_len = len(index_mapping_data) + 7  # 4 是指"设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间"（这个4个字段）
     sql_str = f"""
         INSERT OR IGNORE INTO s_xhs_{tag}_ocr (
-            "设备IP","数据来源","账号ID","作品标题", "作品链接","采集日期","采集时间", {','.join(escaped_fields)}
+            "设备IP","数据来源","账号ID","作品标题", "链接","采集日期","采集时间", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     """
     cursor.execute(sql_str, (
