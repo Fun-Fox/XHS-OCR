@@ -32,7 +32,7 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
     sql_str = f"""
             INSERT OR IGNORE INTO s_xhs_user_info_ocr (
                 "设备IP","数据来源","账号ID","账号昵称","采集时间", "关注数","粉丝数", "获赞与收藏","链接"
-            ) VALUES (?,?,?,?,?,?,?,?)
+            ) VALUES (?,?,?,?,?,?,?,?,?)
         """
     cursor.execute(sql_str, (
         ip_port_dir, "1894230222988058625", account_id, user_info['nickname'], collect_time, user_info['follows'],
