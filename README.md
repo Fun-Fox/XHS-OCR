@@ -1,3 +1,75 @@
+# XHS OCR 数据融合同步工具
+
+XHS OCR 数据融合同步工具是一个用于处理小红书OCR识别数据的工具包，支持数据融合、同步和流水线处理。
+
+## 功能特性
+
+- 支持多种数据融合方式（关联融合、非关联融合）
+- 支持本地SQLite数据库和远程MySQL数据库
+- 提供完整的数据处理流水线
+- 支持时间范围筛选
+- 支持命令行接口
+
+## 安装
+
+```bash
+pip install .
+```
+
+## 使用方法
+
+### 作为命令行工具使用
+
+```bash
+# 运行完整的数据处理流水线
+xhs-ocr-merge --mode full --days 3
+
+# 运行部分流水线 - 视频总览数据处理
+xhs-ocr-merge --mode video_overview --days 3
+
+# 运行部分流水线 - 数据总览处理
+xhs-ocr-merge --mode data_overview --days 3
+
+# 运行部分流水线 - 趋势分析数据处理
+xhs-ocr-merge --mode traffic_analysis --days 3
+
+# 运行部分流水线 - 远程数据库同步
+xhs-ocr-merge --mode remote_merge
+```
+
+### 作为Python模块使用
+
+```python
+from db.pipeline import run_data_processing_pipeline, run_partial_pipeline
+
+# 运行完整的数据处理流水线
+run_data_processing_pipeline(days=3)
+
+# 运行部分流水线
+run_partial_pipeline(mode='video_overview', days=3)
+```
+
+## 流水线处理步骤
+
+1. **视频总览数据处理** - 将视频的顶部与底部数据进行关联合并
+2. **总览数据处理** - 将视频数据与图文数据进行非关联合并
+3. **趋势分析数据处理** - 将视频数据与图文数据进行非关合并不合并
+4. **远程数据库同步** - 将数据分析与趋势分析进行关联合并并同步到远程数据库
+
+## 配置
+
+需要在环境变量中配置以下参数用于远程数据库连接：
+
+- `MYSQL_HOST`: MySQL服务器地址
+- `MYSQL_PORT`: MySQL端口
+- `MYSQL_USER`: MySQL用户名
+- `MYSQL_PASSWORD`: MySQL密码
+- `MYSQL_DATABASE`: MySQL数据库名
+
+## 许可证
+
+MIT
+
 # XHS-OCR - 小红书数据OCR识别系统
 
 一个用于识别小红书图片数据并保存到数据库的OCR系统。

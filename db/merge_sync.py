@@ -20,38 +20,30 @@ for section in config.sections():
             FIELD_MAPPING[value] = key  # 中文 -> 英文
 
 
-def sync_explore_data_merge_to_remote(table_name_list=['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr'], 
+def sync_explore_data_merge_to_remote(table_name_list=None,
                                       merged_table_name="s_xhs_merged_data_ocr",
                                       merge_type="related",
-                                      business_time_filter=None):
+                                      business_time_filter=None,
+                                      target_db="remote"):
     """
-    将多个表的数据融合后同步到远程MySQL数据库中
+    将多个表的数据融合后同步到数据库中
     
     参数:
     table_name_list: 要融合的表名列表
     merged_table_name: 融合后数据存储的目标表名
     merge_type: 融合类型，可选"related"(关联融合)或"unrelated"(非关联融合)
     business_time_filter: 业务时间筛选条件，格式为字典{"column": "采集时间", "days": 3}表示最近3天数据
+    target_db: 目标数据库，可选"remote"(远程MySQL)或"local"(本地SQLite)
     
     融合规则：
     1. 关联融合：以"数据ID"作为关联键进行行合并
     2. 非关联融合：简单地将所有表的列合并，行数据分别保留
     """
+    # 修复可变默认参数问题
+    if table_name_list is None:
+        table_name_list = []
+
     try:
-        # 从环境变量获取数据库配置
-        db_config = {
-            "host": os.getenv("MYSQL_HOST", "localhost"),
-            "port": int(os.getenv("MYSQL_PORT", 3306)),
-            "user": os.getenv("MYSQL_USER", ""),
-            "password": os.getenv("MYSQL_PASSWORD", ""),
-            "database": os.getenv("MYSQL_DATABASE", "")
-        }
-
-        # 如果没有配置数据库，则跳过同步
-        if not all([db_config["host"], db_config["user"], db_config["password"], db_config["database"]]):
-            print("未配置远程数据库，跳过数据同步")
-            return
-
         # 获取ExploreData.db路径
         db_path = os.path.join(current_dir, 'ocr_data.db')
 
@@ -63,23 +55,23 @@ def sync_explore_data_merge_to_remote(table_name_list=['s_xhs_data_overview_ocr'
         # 连接本地SQLite数据库
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         # 检查所有表是否存在，如果其中任何一张表不存在，则不进行融合同步
         existing_tables = []
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         for row in cursor.fetchall():
             existing_tables.append(row[0])
-        
+
         for table_name in table_name_list:
             if table_name not in existing_tables:
                 print(f"表 {table_name} 不存在，中止融合同步")
                 conn.close()
                 return
-        
+
         # 收集所有表的数据
         all_table_data = {}
         all_columns = set()
-        
+
         for table_name in table_name_list:
             # 构建查询语句
             if business_time_filter and business_time_filter.get("column") and business_time_filter.get("days"):
@@ -92,21 +84,21 @@ def sync_explore_data_merge_to_remote(table_name_list=['s_xhs_data_overview_ocr'
             else:
                 # 查询所有数据
                 cursor.execute(f"SELECT * FROM {table_name}")
-            
+
             rows = cursor.fetchall()
 
             # 获取列名
             column_names = [description[0] for description in cursor.description]
-            
+
             # 存储表数据
             all_table_data[table_name] = {
                 'columns': column_names,
                 'rows': rows
             }
-            
+
             # 收集所有列名
             all_columns.update(column_names)
-        
+
         # 根据融合类型构建数据
         merged_columns = list(all_columns)
         if merge_type == "related":
@@ -115,16 +107,36 @@ def sync_explore_data_merge_to_remote(table_name_list=['s_xhs_data_overview_ocr'
         else:  # unrelated
             merged_rows = merge_table_data_unrelated(all_table_data, merged_columns)
             print(f"使用非关联融合方式处理数据")
-        
-        # 同步到MySQL数据库
-        sync_to_mysql(db_config, merged_table_name, merged_columns, merged_rows)
-        print(f"融合数据已同步到远程MySQL数据库，表名: {merged_table_name}，融合类型: {merge_type}")
-        
+
+        # 根据目标数据库类型进行同步
+        if target_db == "remote":
+            # 同步到远程MySQL数据库
+            db_config = {
+                "host": os.getenv("MYSQL_HOST", "localhost"),
+                "port": int(os.getenv("MYSQL_PORT", 3306)),
+                "user": os.getenv("MYSQL_USER", ""),
+                "password": os.getenv("MYSQL_PASSWORD", ""),
+                "database": os.getenv("MYSQL_DATABASE", "")
+            }
+
+            # 如果没有配置数据库，则跳过同步
+            if not all([db_config["host"], db_config["user"], db_config["password"], db_config["database"]]):
+                print("未配置远程数据库，跳过数据同步")
+                conn.close()
+                return
+
+            sync_to_mysql(db_config, merged_table_name, merged_columns, merged_rows)
+            print(f"融合数据已同步到远程MySQL数据库，表名: {merged_table_name}，融合类型: {merge_type}")
+        else:
+            # 保存到本地SQLite数据库
+            sync_to_local_sqlite(db_path, merged_table_name, merged_columns, merged_rows)
+            print(f"融合数据已保存到本地SQLite数据库，表名: {merged_table_name}，融合类型: {merge_type}")
+
         # 关闭本地数据库连接
         conn.close()
 
     except Exception as e:
-        print(f"融合同步数据到远程数据库时出错: {str(e)}")
+        print(f"融合同步数据时出错: {str(e)}")
 
 
 def merge_table_data_related(all_table_data, merged_columns):
@@ -133,30 +145,30 @@ def merge_table_data_related(all_table_data, merged_columns):
     """
     # 创建一个字典来存储合并后的数据，以数据ID为键
     merged_data = {}
-    
+
     # 遍历每个表的数据
     for table_name, table_data in all_table_data.items():
         columns = table_data['columns']
         rows = table_data['rows']
-        
+
         # 找到数据ID列的索引
         id_index = columns.index('数据ID') if '数据ID' in columns else -1
-        
+
         if id_index == -1:
             print(f"表 {table_name} 中未找到数据ID列，跳过该表的合并")
             continue
-            
+
         # 遍历每一行数据
         for row in rows:
             data_id = row[id_index]
-            
+
             # 如果该数据ID还没有记录，则创建新记录
             if data_id not in merged_data:
                 merged_data[data_id] = [''] * len(merged_columns)
                 # 设置数据ID
                 id_col_index = merged_columns.index('数据ID')
                 merged_data[data_id][id_col_index] = data_id
-            
+
             # 将当前行的数据填充到合并后的记录中
             for i, col_name in enumerate(columns):
                 if col_name in merged_columns:
@@ -164,7 +176,7 @@ def merge_table_data_related(all_table_data, merged_columns):
                     # 只有当目标位置为空或者当前值不为空时才更新
                     if merged_data[data_id][col_index] == '' or row[i] != '':
                         merged_data[data_id][col_index] = row[i]
-    
+
     # 将字典转换为列表格式
     return list(merged_data.values())
 
@@ -174,25 +186,25 @@ def merge_table_data_unrelated(all_table_data, merged_columns):
     非关联融合：将所有表的行数据简单合并，不进行关联
     """
     merged_rows = []
-    
+
     # 遍历每个表的数据
     for table_name, table_data in all_table_data.items():
         columns = table_data['columns']
         rows = table_data['rows']
-        
+
         # 为每一行创建完整列的记录
         for row in rows:
             # 创建一个新的完整行记录
             full_row = [''] * len(merged_columns)
-            
+
             # 将当前行的数据填充到完整记录中
             for i, col_name in enumerate(columns):
                 if col_name in merged_columns:
                     col_index = merged_columns.index(col_name)
                     full_row[col_index] = row[i]
-            
+
             merged_rows.append(full_row)
-    
+
     return merged_rows
 
 
@@ -221,9 +233,9 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                     FROM information_schema.tables 
                     WHERE table_schema = %s AND table_name = %s
                 """, (db_config.get("database", ""), table_name))
-                
+
                 table_exists = cursor.fetchone()['COUNT(*)'] > 0
-                
+
                 # 如果表不存在，则创建表
                 if not table_exists:
                     print(f"表 {table_name} 不存在，正在创建...")
@@ -232,7 +244,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                     # 如果表存在，检查是否有新增字段需要添加
                     print(f"表 {table_name} 已存在，检查是否需要新增字段...")
                     add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
-                
+
                 if rows:
                     placeholders = ", ".join(["%s"] * len(column_names))
 
@@ -275,9 +287,72 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
         print(f"同步到 MySQL 数据库时出错: {str(e)}")
 
 
+def sync_to_local_sqlite(db_path, table_name, column_names, rows):
+    """
+    同步数据到本地SQLite数据库
+    支持表不存在时创建表，字段不存在时新增字段
+    """
+    try:
+        # 连接本地SQLite数据库
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # 检查表是否存在
+        cursor.execute("""
+            SELECT name 
+            FROM sqlite_master 
+            WHERE type='table' AND name=?
+        """, (table_name,))
+
+        table_exists = cursor.fetchone() is not None
+
+        # 如果表不存在，则创建表
+        if not table_exists:
+            print(f"表 {table_name} 不存在，正在创建...")
+            create_table_if_not_exists_sqlite(cursor, table_name, column_names)
+        else:
+            # 如果表存在，检查是否有新增字段需要添加
+            print(f"表 {table_name} 已存在，检查是否需要新增字段...")
+            add_missing_columns_sqlite(cursor, table_name, column_names)
+
+        if rows:
+            # 构建插入语句
+            placeholders = ", ".join(["?" for _ in column_names])
+            columns_str = ", ".join([f'"{col}"' for col in column_names])
+
+            # 构建ON CONFLICT UPDATE部分
+            update_fields = []
+            for col in column_names:
+                if col not in ("id", "数据ID"):
+                    update_fields.append(f'"{col}" = ?')
+
+            # 准备数据用于更新冲突
+            insert_data = []
+            for row in rows:
+                insert_data.append(tuple(row))
+
+            insert_sql = f"""
+                INSERT INTO {table_name} ({columns_str})
+                VALUES ({placeholders})
+            """
+
+            print(f'insert_sql:\n{insert_sql}')
+            cursor.executemany(insert_sql, insert_data)
+
+        # 提交事务
+        conn.commit()
+        print(f"成功同步 {len(rows)} 条记录到本地SQLite数据库")
+
+        # 关闭连接
+        conn.close()
+
+    except Exception as e:
+        print(f"同步到本地SQLite数据库时出错: {str(e)}")
+
+
 def create_table_if_not_exists(cursor, table_name, column_names):
     """
-    如果表不存在则创建表
+    如果表不存在则创建表 (MySQL)
     """
     columns_definitions = []
     for col in column_names:
@@ -293,20 +368,45 @@ def create_table_if_not_exists(cursor, table_name, column_names):
                 columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
         else:
             columns_definitions.append(f"`{col}` TEXT")
-    
+
     create_table_sql = " ".join(f"""
     CREATE TABLE {table_name} (
         {", ".join(columns_definitions)}
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     """.split())
-    
+
+    print(f"Create table SQL: {create_table_sql}")
+    cursor.execute(create_table_sql)
+
+
+def create_table_if_not_exists_sqlite(cursor, table_name, column_names):
+    """
+    如果表不存在则创建表 (SQLite)
+    """
+    columns_definitions = []
+    for col in column_names:
+        if col == "数据ID":
+            columns_definitions.append(f'"{col}" TEXT PRIMARY KEY')
+        elif col == "采集日期":
+            columns_definitions.append(f'"{col}" DATE')
+        elif col == "采集时间":
+            columns_definitions.append(f'"{col}" DATETIME')
+        else:
+            columns_definitions.append(f'"{col}" TEXT')
+
+    create_table_sql = f"""
+    CREATE TABLE {table_name} (
+        {", ".join(columns_definitions)}
+    )
+    """
+
     print(f"Create table SQL: {create_table_sql}")
     cursor.execute(create_table_sql)
 
 
 def add_missing_columns(cursor, table_name, column_names, database_name):
     """
-    为已存在的表添加缺失的字段
+    为已存在的表添加缺失的字段 (MySQL)
     """
     # 获取表中已存在的字段
     cursor.execute("""
@@ -314,14 +414,14 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
         FROM information_schema.columns 
         WHERE table_schema = %s AND table_name = %s
     """, (database_name, table_name))
-    
+
     existing_columns = [row['column_name'] for row in cursor.fetchall()]
-    
+
     # 检查是否有新增字段
     for col in column_names:
         # 映射中文字段名为英文名
         eng_col = FIELD_MAPPING.get(col, col)
-        
+
         # 检查英文字段名是否已存在
         if eng_col not in existing_columns:
             # 添加缺失的字段
@@ -336,7 +436,7 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
                     alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{eng_col}` TEXT COMMENT '{col}'"
             else:
                 alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{col}` TEXT"
-            
+
             print(f"添加缺失字段: {alter_sql}")
             try:
                 cursor.execute(alter_sql)
@@ -344,18 +444,66 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
                 print(f"添加字段 {eng_col} 时出错: {str(e)}")
 
 
+def add_missing_columns_sqlite(cursor, table_name, column_names):
+    """
+    为已存在的表添加缺失的字段 (SQLite)
+    """
+    # 获取表中已存在的字段
+    cursor.execute(f"PRAGMA table_info({table_name})")
+    existing_columns = [row[1] for row in cursor.fetchall()]
+
+    # 检查是否有新增字段
+    for col in column_names:
+        if col not in existing_columns:
+            # 添加缺失的字段
+            if col == "数据ID":
+                alter_sql = f'ALTER TABLE {table_name} ADD COLUMN "{col}" TEXT PRIMARY KEY'
+            elif col == "采集日期":
+                alter_sql = f'ALTER TABLE {table_name} ADD COLUMN "{col}" DATE'
+            elif col == "采集时间":
+                alter_sql = f'ALTER TABLE {table_name} ADD COLUMN "{col}" DATETIME'
+            else:
+                alter_sql = f'ALTER TABLE {table_name} ADD COLUMN "{col}" TEXT'
+
+            print(f"添加缺失字段: {alter_sql}")
+            try:
+                cursor.execute(alter_sql)
+            except Exception as e:
+                print(f"添加字段 {col} 时出错: {str(e)}")
+
+
 if __name__ == "__main__":
-    # 示例用法 - 关联融合，只同步最近3天的数据
+    # 关联融合，保存到当前数据库中 (将视频的顶部与底部数据进行关联合并)-- 视频总览数据，本地加工
+    sync_explore_data_merge_to_remote(
+        table_name_list=['s_xhs_video_data_overview_top_ocr', 's_video_data_overview_bottom_ocr'],
+        merged_table_name="s_xhs_video_data_overview_ocr",
+        merge_type="related",
+        business_time_filter={"column": "采集日期", "days": 3},
+        target_db="local"
+    )
+
+    # 非关联融合，保存到当前数据库中(将视频数据与图文数据进行非关联合并)--总览数据，本地加工
+    sync_explore_data_merge_to_remote(
+        table_name_list=['s_xhs_note_data_overview_ocr', 's_xhs_video_data_overview_ocr'],
+        merged_table_name="s_xhs_data_overview_ocr",
+        merge_type="unrelated",
+        business_time_filter={"column": "采集日期", "days": 3},
+        target_db="local"
+    )
+
+    # 非关联融合，保存到当前数据库中(将视频数据与图文数据进行非关联合并)--趋势分析数据，本地加工
+    sync_explore_data_merge_to_remote(
+        table_name_list=['s_xhs_note_traffic_analysis_ocr', 's_xhs_video_traffic_analysis_ocr'],
+        merged_table_name="s_xhs_traffic_analysis_ocr",
+        merge_type="unrelated",
+        business_time_filter={"column": "采集日期", "days": 3},
+        target_db="local"
+    )
+
+    # 关联融合，同步远程数据库 (将 数据分析 与 趋势分析 进行关联合并，同步远程）
     sync_explore_data_merge_to_remote(
         table_name_list=['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr'],
         merged_table_name="s_xhs_merged_data_ocr",
         merge_type="related",
-        business_time_filter={"column": "采集时间", "days": 3}
+        target_db="remote"
     )
-    
-    # 示例用法 - 非关联融合，同步所有数据
-    # sync_explore_data_merge_to_remote(
-    #     table_name_list=['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr'],
-    #     merged_table_name="s_xhs_merged_data_ocr",
-    #     merge_type="unrelated"
-    # )

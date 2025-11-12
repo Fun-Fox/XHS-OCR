@@ -40,6 +40,7 @@ def run_sync_task():
     logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行数据同步任务...")
     try:
         sync_explore_data_to_remote(['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr','s_xhs_user_info_ocr'])
+
         logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行完成")
     except Exception as e:
         logger.error(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行出错: {e}")
