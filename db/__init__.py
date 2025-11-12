@@ -8,7 +8,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, 'ocr_data.db')
 
 
-def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url):
+def save_userinfo_data(user_info, ip_port_dir, account_id, collect_date, author_profile_url):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     create_table_sql = f'''
@@ -18,7 +18,7 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
                 "设备IP" TEXT,
                 "账号ID" TEXT,
                 "账号昵称" TEXT,
-                "采集时间" TEXT,
+                "采集日期" TEXT,
                 "关注数" TEXT,
                 "粉丝数" TEXT,
                 "获赞与收藏" TEXT,
@@ -31,11 +31,11 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
 
     sql_str = f"""
             INSERT OR IGNORE INTO s_xhs_user_info_ocr (
-                "设备IP","数据来源","账号ID","账号昵称","采集时间", "关注数","粉丝数", "获赞与收藏","链接"
+                "设备IP","数据来源","账号ID","账号昵称","采集日期", "关注数","粉丝数", "获赞与收藏","链接"
             ) VALUES (?,?,?,?,?,?,?,?,?)
         """
     cursor.execute(sql_str, (
-        ip_port_dir, "1894230222988058625", account_id, user_info['nickname'], collect_time, user_info['follows'],
+        ip_port_dir, "1894230222988058625", account_id, user_info['nickname'], collect_date, user_info['follows'],
         user_info['fans'],
         user_info['interaction'], author_profile_url
     ))
@@ -44,8 +44,8 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
     conn.close()
 
 
-def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_data: List[str], index_mapping_data,
-                  date_dir,
+def save_ocr_data(tag, post_title: str, note_link: str, content_type: str, ocr_data: List[str], index_mapping_data,
+                  collect_date,
                   ip_port_dir, account_id: str, ):
     """
     保存OCR识别数据到数据库
@@ -73,7 +73,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
             "作品标题" TEXT,
             "链接" TEXT,
             "采集日期" TEXT,
-            "采集时间" TEXT,
+            "内容类型" TEXT,
             {(' TEXT, '.join(escaped_fields)) + ' TEXT' if escaped_fields else ''},
             UNIQUE("作品标题", "采集时间")
         )
@@ -86,11 +86,11 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
     table_len = len(index_mapping_data) + 7  # 4 是指"设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间"（这个4个字段）
     sql_str = f"""
         INSERT OR IGNORE INTO s_xhs_{tag}_ocr (
-            "设备IP","数据来源","账号ID","作品标题", "链接","采集日期","采集时间", {','.join(escaped_fields)}
+            "设备IP","数据来源","账号ID","作品标题", "链接","采集日期","内容类型", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     """
     cursor.execute(sql_str, (
-        ip_port_dir, "1894230222988058625", account_id, post_title, note_link, date_dir, collect_time,
+        ip_port_dir, "1894230222988058625", account_id, post_title, note_link, collect_date, content_type,
         *[ocr_data[i] if len(ocr_data) > i else '' for i in range(len(ocr_data))]
     ))
 

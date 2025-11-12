@@ -162,20 +162,23 @@ def process_images():
         for filename in files:
             # 构建图片路径
             file_path = os.path.join(root, filename)
+            parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
+            date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
+            collect_date = date_dir
 
             if filename == "profile_url.txt":
                 # 如果文件名是profile_url.txt 则读取文件，并且使用当前时间戳
                 with open(file_path, 'r', encoding='utf-8') as f:
                     author_profile_url = f.read().strip()
-                    # 获取文件最后修改时间
-                    modified_time = os.path.getmtime(file_path)
-                    # 使用北京时间
-                    import pytz
-
-                    utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
-                    beijing_tz = pytz.timezone('Asia/Shanghai')
-                    beijing_time = utc_dt.astimezone(beijing_tz)
-                    collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
+                    # # 获取文件最后修改时间
+                    # modified_time = os.path.getmtime(file_path)
+                    # # 使用北京时间
+                    # import pytz
+                    #
+                    # utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
+                    # beijing_tz = pytz.timezone('Asia/Shanghai')
+                    # beijing_time = utc_dt.astimezone(beijing_tz)
+                    # collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
 
                 parent_dir = os.path.dirname(file_path)
                 try:
@@ -188,7 +191,7 @@ def process_images():
                     # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
                     if isinstance(user_info, dict):
                         logger.info(f"保存用户信息成功: {user_info}")
-                        save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url)
+                        save_userinfo_data(user_info, ip_port_dir, account_id, collect_date, author_profile_url)
                     else:
                         logger.error(f"获取用户信息失败: {author_profile_url}")
                 except Exception as e:
@@ -219,23 +222,20 @@ def process_images():
                 #     "timestamp": "2025-11-07 04:08:28"
                 # }
 
-                modified_time = os.path.getmtime(file_path)
+                # modified_time = os.path.getmtime(file_path)
                 # 使用北京时间
-                import pytz
-                utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
-                beijing_tz = pytz.timezone('Asia/Shanghai')
-                beijing_time = utc_dt.astimezone(beijing_tz)
-                collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
+                # import pytz
+                # utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
+                # beijing_tz = pytz.timezone('Asia/Shanghai')
+                # beijing_time = utc_dt.astimezone(beijing_tz)
+                # collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
 
-                # 解析路径获取日期和设备IP
-                parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
                 if '#' in os.path.basename(parent_dir):
                     ip_and_account = os.path.basename(parent_dir).split('#')
                     ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
                 else:
                     ip_port_dir, account_id = os.path.basename(parent_dir), '无'
 
-                date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
                 logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
                 # 读取原图和遮罩图
                 original_img = imread_with_pil(file_path)
@@ -356,7 +356,12 @@ def process_images():
                 # 保存数据到数据库
                 tag = re.sub(r'\d+', '', tag)
                 # if note_link:
-                save_ocr_data(tag, post_title, note_link, collect_time, ocr_texts, index_mapping_data, date_dir,
+                if 'video' in tag:
+                    content_type = "视频"
+                else:
+                    content_type = "图文"
+
+                save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data, collect_date,
                               ip_port_dir,
                               account_id)
 
