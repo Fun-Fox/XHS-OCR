@@ -131,10 +131,11 @@ def process_images():
 
     # 获取最近2天的日期列表
     recent_dates = []
-    for i in range(2):
+    day = int(os.getenv("OCR_RECENT_DAYS", "2"))
+    for i in range(day):
         date_str = (datetime.now() - timedelta(days=i)).strftime('%Y%m%d')
         recent_dates.append(date_str)
-    logger.info(f"最近3天日期: {recent_dates}")
+    logger.info(f"最近{day}天日期: {recent_dates}")
     # logger.info(f"开始扫描ocr目录：{ocr_dir}")
 
     # 检查ocr目录是否存在
@@ -154,10 +155,10 @@ def process_images():
 
         # 如果当前路径不包含最近3天的日期，则跳过
         if not dir_contains_recent_date:
-            logger.info(f"跳过目录(非最近3天): {root}")
+            logger.info(f"跳过目录(非最近{day}天): {root}")
             continue
 
-        logger.info(f"处理最近3天的目录: {root}")
+        logger.info(f"处理最近{day}天的目录: {root}")
         for filename in files:
             # 构建图片路径
             file_path = os.path.join(root, filename)
