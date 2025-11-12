@@ -185,7 +185,7 @@ def process_images():
                     else:
                         ip_port_dir, account_id = os.path.basename(parent_dir), '无'
                     # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
-                    if user_info and isinstance(user_info, dict) and len(user_info) > 0:
+                    if isinstance(user_info, dict):
                         logger.info(f"保存用户信息成功: {user_info}")
                         save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url)
                     else:
