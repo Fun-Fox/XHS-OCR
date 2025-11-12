@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import json
 import os
 import re
@@ -14,6 +13,7 @@ from core.user_profile import get_user_profile_data
 from db import save_ocr_data, save_userinfo_data
 import time
 import configparser
+from datetime import datetime, timedelta
 
 from dotenv import load_dotenv
 
@@ -129,10 +129,10 @@ def process_images():
 
     # 遍历 OCR 目录下的所有图片
 
-    # 获取最近3天的日期列表
+    # 获取最近2天的日期列表
     recent_dates = []
-    for i in range(3):
-        date_str = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime('%Y%m%d')
+    for i in range(2):
+        date_str = (datetime.now() - timedelta(days=i)).strftime('%Y%m%d')
         recent_dates.append(date_str)
     logger.info(f"最近3天日期: {recent_dates}")
     # logger.info(f"开始扫描ocr目录：{ocr_dir}")
@@ -168,13 +168,24 @@ def process_images():
                     author_profile_url = f.read().strip()
                     # 获取文件最后修改时间
                     modified_time = os.path.getmtime(file_path)
-                    collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modified_time))
+                    # 使用北京时间
+                    import pytz
+
+                    utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
+                    beijing_tz = pytz.timezone('Asia/Shanghai')
+                    beijing_time = utc_dt.astimezone(beijing_tz)
+                    collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
+
                 parent_dir = os.path.dirname(file_path)
                 try:
                     user_info = asyncio.run(get_user_profile_data(author_profile_url))
-
-                    ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
-                    if user_info:
+                    # 检查目录名是否包含 # 字符
+                    if '#' in os.path.basename(parent_dir):
+                        ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
+                    else:
+                        ip_port_dir, account_id = os.path.basename(parent_dir), '无'
+                    # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
+                    if isinstance(user_info, dict) and len(user_info) > 0:
                         logger.info(f"保存用户信息成功: {user_info}")
                         save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url)
                     else:
@@ -208,7 +219,12 @@ def process_images():
                 # }
 
                 modified_time = os.path.getmtime(file_path)
-                collect_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modified_time))
+                # 使用北京时间
+                import pytz
+                utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
+                beijing_tz = pytz.timezone('Asia/Shanghai')
+                beijing_time = utc_dt.astimezone(beijing_tz)
+                collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
 
                 # 解析路径获取日期和设备IP
                 parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
@@ -326,7 +342,7 @@ def process_images():
                             .replace(' ', '')
                             .replace('o', '0')
                             .replace('<b>', '')
-                            .replace('</b>',''))
+                            .replace('</b>', ''))
                     if text:
                         ocr_texts.append(text)
                 print(ocr_texts)

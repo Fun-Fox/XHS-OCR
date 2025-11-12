@@ -65,6 +65,6 @@ async def get_user_profile_data(author_profile_url):
         return user_info
 
 if  __name__  == '__main__':
-    url = "https://www.xiaohongshu.com/user/profile/68c7e3fb000000001900dd44?xsec_token=YB5vV99fgAbo5SjaNLrP6TeM1z4afeVTTayfNNDNTYSaI%3D&xsec_source=app_share&xhsshare=CopyLink&shareRedId=OD5FN0g4Sks2NzUyOTgwNjc8OTdISTo9&apptime=1762833624&share_id=50f7f7c5993545c1a8a5f0aab2f30cb6&share_channel=copy_link"
+    url = " https://www.xiaohongshu.com/user/profile/68cbe46500000000210230ff?xsec_token=YB16-3tCmjZSI123FYHe5WZadV-EkO4yRHHjwDBlCCwMc%3D&xsec_source=app_share&xhsshare=CopyLink&shareRedId=OD5FQkg5Oj42NzUyOTgwNjg0OTk3NUxP&apptime=1762488020&share_id=db96def4b491439492ef707587214394&share_channel=copy_link"
     user_info = asyncio.run(get_user_profile_data(url))
     print(user_info)
