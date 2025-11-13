@@ -73,8 +73,8 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
             table_exists = any(table_name.lower() == existing_table.lower() for existing_table in existing_tables)
             if not table_exists:
                 logger.warning(f"表 {table_name} 不存在，中止融合同步")
-                table_name_list.remove(table_name)
                 conn.close()
+                return
 
         # 收集所有表的数据
         all_table_data = {}
@@ -101,7 +101,6 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
 
             # 获取列名
             column_names = [description[0] for description in cursor.description]
-
             logger.debug(f"列名: {column_names}")
 
             # 存储表数据
@@ -146,7 +145,25 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
             logger.debug(f"融合后前3行数据示例: {merged_rows[:3]}")
 
         # 根据目标数据库类型进行同步
-        if target_db == "local":
+        if target_db == "remote":
+            # 同步到远程MySQL数据库
+            db_config = {
+                "host": os.getenv("MYSQL_HOST", "localhost"),
+                "port": int(os.getenv("MYSQL_PORT", 3306)),
+                "user": os.getenv("MYSQL_USER", ""),
+                "password": os.getenv("MYSQL_PASSWORD", ""),
+                "database": os.getenv("MYSQL_DATABASE", "")
+            }
+
+            # 如果没有配置数据库，则跳过同步
+            if not all([db_config["host"], db_config["user"], db_config["password"], db_config["database"]]):
+                logger.warning("未配置远程数据库，跳过数据同步")
+                conn.close()
+                return
+
+            sync_to_mysql(db_config, merged_table_name, merged_columns, merged_rows, related_key)
+            logger.info(f"融合数据已同步到远程MySQL数据库，表名: {merged_table_name}，融合类型: {merge_type}")
+        else:
             # 保存到本地SQLite数据库
             sync_to_local_sqlite(db_path, merged_table_name, merged_columns, merged_rows, related_key)
             logger.info(f"融合数据已保存到本地SQLite数据库，表名: {merged_table_name}，融合类型: {merge_type}")
@@ -246,6 +263,97 @@ def merge_table_data_unrelated(all_table_data, merged_columns):
 
     logger.info(f"非关联融合完成，共处理 {len(merged_rows)} 行数据，其中包括所有原始数据行（即使无关联）")
     return merged_rows
+
+
+def sync_to_mysql(db_config, table_name, column_names, rows, related_key=None):
+    """
+    同步数据到MySQL数据库
+    支持表不存在时创建表，字段不存在时新增字段
+    """
+    try:
+        # 创建MySQL连接
+        mysql_conn = pymysql.connect(
+            host=db_config.get("host", "localhost"),
+            port=db_config.get("port", 3306),
+            user=db_config.get("user", ""),
+            password=db_config.get("password", ""),
+            database=db_config.get("database", ""),
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+
+        try:
+            with mysql_conn.cursor() as cursor:
+                # 检查表是否存在
+                cursor.execute("""
+                    SELECT COUNT(*) 
+                    FROM information_schema.tables 
+                    WHERE table_schema = %s AND table_name = %s
+                """, (db_config.get("database", ""), table_name))
+
+                table_exists = cursor.fetchone()['COUNT(*)'] > 0
+
+                # 如果表不存在，则创建表
+                if not table_exists:
+                    logger.info(f"表 {table_name} 不存在，正在创建...")
+                    create_table_if_not_exists(cursor, table_name, column_names, related_key)
+                else:
+                    # 如果表存在，检查是否有新增字段需要添加
+                    logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
+                    add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
+
+                if rows:
+                    # 构建插入语句，排除id字段，因为它是自增的
+                    filtered_columns = [col for col in column_names if col != 'id']
+                    placeholders = ", ".join(["%s"] * len(filtered_columns))
+
+                    # 映射列名为英文名
+                    mapped_column_names = []
+                    for col in filtered_columns:
+                        if col in FIELD_MAPPING:
+                            mapped_column_names.append(FIELD_MAPPING[col])
+                        else:
+                            mapped_column_names.append(col)
+
+                    columns_str = ", ".join([f"`{col}`" for col in mapped_column_names])
+
+                    # 构建ON DUPLICATE KEY UPDATE部分
+                    update_fields = []
+                    for i, col in enumerate(filtered_columns):
+                        if col not in ("id", "数据ID"):
+                            eng_col = mapped_column_names[i] if col in FIELD_MAPPING else col
+                            update_fields.append(f"`{eng_col}` = VALUES(`{eng_col}`)")
+
+                    insert_sql = " ".join(f"""
+                                    INSERT INTO {table_name} ({columns_str})
+                                    VALUES ({placeholders})
+                                    ON DUPLICATE KEY UPDATE {", ".join(update_fields)}
+                                    """.split())
+
+                    logger.debug(f'MySQL插入SQL:\n{insert_sql}')
+                    # 准备数据用于插入，过滤掉id列的数据
+                    insert_data = []
+                    for row in rows:
+                        # 过滤掉id列的数据
+                        filtered_row = []
+                        for i, col in enumerate(column_names):
+                            if col in filtered_columns:
+                                filtered_row.append(row[i])
+                        insert_data.append(tuple(filtered_row))
+
+                    cursor.executemany(insert_sql, insert_data)
+
+            # 提交事务
+            mysql_conn.commit()
+            logger.info(f"成功同步 {len(rows)} 条记录到MySQL数据库")
+
+        finally:
+            mysql_conn.close()
+
+    except ImportError:
+        logger.error("缺少 pymysql 库，请安装: pip install pymysql")
+    except Exception as e:
+        logger.error(f"同步到 MySQL 数据库时出错: {str(e)}")
 
 
 def sync_to_local_sqlite(db_path, table_name, column_names, rows, related_key=None):
@@ -354,6 +462,59 @@ def sync_to_local_sqlite(db_path, table_name, column_names, rows, related_key=No
         logger.error(f"同步到本地SQLite数据库时出错: {str(e)}")
 
 
+def create_table_if_not_exists(cursor, table_name, column_names, related_key=None):
+    """
+    如果表不存在则创建表 (MySQL)
+    """
+    columns_definitions = []
+    
+    # 添加自增ID字段作为主键
+    columns_definitions.append('`id` BIGINT AUTO_INCREMENT PRIMARY KEY')
+
+    # 处理related_key作为唯一约束
+    primary_keys = []
+    if related_key:
+        # 确保related_key是列表格式
+        if isinstance(related_key, str):
+            primary_keys = [related_key]
+        else:
+            primary_keys = related_key
+
+    for col in column_names:
+        if col in FIELD_MAPPING:
+            eng_col = FIELD_MAPPING[col]
+            columns_definitions.append(f"`{col}` TEXT COMMENT '{col}'")
+        else:
+            columns_definitions.append(f"`{col}` TEXT")
+
+    # 如果有related_key，则将其设置为唯一约束
+    unique_constraint = ""
+    if primary_keys:
+        # 确保所有主键字段都在列定义中
+        existing_primary_keys = [key for key in primary_keys if (key in column_names) or (
+                key in FIELD_MAPPING and FIELD_MAPPING[key] in [col.split()[0].strip('`') for col in
+                                                                columns_definitions])]
+        if existing_primary_keys:
+            # 映射中文字段名为英文名
+            mapped_primary_keys = []
+            for key in existing_primary_keys:
+                if key in FIELD_MAPPING:
+                    mapped_primary_keys.append(FIELD_MAPPING[key])
+                else:
+                    mapped_primary_keys.append(key)
+            unique_constraint = f", UNIQUE KEY unique_constraint ({', '.join([f'`{key}`' for key in mapped_primary_keys])})"
+
+    create_table_sql = " ".join(f"""
+    CREATE TABLE {table_name} (
+        {", ".join(columns_definitions)}
+        {unique_constraint}
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    """.split())
+
+    logger.debug(f"MySQL创建表SQL: {create_table_sql}")
+    cursor.execute(create_table_sql)
+
+
 def create_table_if_not_exists_sqlite(cursor, table_name, column_names, related_key=None):
     """
     如果表不存在则创建表 (SQLite)
@@ -361,7 +522,7 @@ def create_table_if_not_exists_sqlite(cursor, table_name, column_names, related_
     columns_definitions = []
     #
     # 添加自增ID字段作为主键
-    # columns_definitions.append('"id" INTEGER PRIMARY KEY AUTOINCREMENT')
+    columns_definitions.append('"id" INTEGER PRIMARY KEY AUTOINCREMENT')
 
     # 处理related_key作为主键或唯一约束
     primary_keys = []
@@ -395,6 +556,41 @@ def create_table_if_not_exists_sqlite(cursor, table_name, column_names, related_
     cursor.execute(create_table_sql)
 
 
+def add_missing_columns(cursor, table_name, column_names, database_name):
+    """
+    为已存在的表添加缺失的字段 (MySQL)
+    """
+    # 获取表中已存在的字段
+    cursor.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_schema = %s AND table_name = %s
+    """, (database_name, table_name))
+
+    existing_columns = [row['column_name'] for row in cursor.fetchall()]
+
+    # 检查是否有新增字段
+    added_columns = []
+    for col in column_names:
+        # 映射中文字段名为英文名
+        eng_col = FIELD_MAPPING.get(col, col)
+
+        # 检查英文字段名是否已存在
+        if eng_col not in existing_columns:
+            # 添加缺失的字段
+            alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{col}` TEXT"
+
+            logger.info(f"添加缺失字段: {alter_sql}")
+            try:
+                cursor.execute(alter_sql)
+                added_columns.append(eng_col)
+            except Exception as e:
+                logger.error(f"添加字段 {eng_col} 时出错: {str(e)}")
+
+    if added_columns:
+        logger.info(f"MySQL表 {table_name} 新增了 {len(added_columns)} 个字段: {added_columns}")
+
+
 def add_missing_columns_sqlite(cursor, table_name, column_names):
     """
     为已存在的表添加缺失的字段 (SQLite)
@@ -419,3 +615,4 @@ def add_missing_columns_sqlite(cursor, table_name, column_names):
 
     if added_columns:
         logger.info(f"SQLite表 {table_name} 新增了 {len(added_columns)} 个字段: {added_columns}")
+
