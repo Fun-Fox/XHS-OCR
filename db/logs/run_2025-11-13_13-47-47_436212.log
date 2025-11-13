@@ -1,0 +1,67 @@
+2025-11-13 13:47:47.437 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:52 - 使用数据库文件路径: D:\PycharmProjects\XHS-OCR\db\ocr_data.db
+2025-11-13 13:47:47.438 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:69 - 数据库中已存在的表: ['s_xhs_note_data_overview_ocr', 'sqlite_sequence', 's_xhs_note_traffic_analysis_ocr', 's_xhs_user_info_ocr', 's_xhs_video_data_overview_bottom_ocr', 's_xhs_video_data_overview_top_ocr', 's_xhs_video_traffic_analysis_ocr', 's_xhs_traffic_analysis_ocr']
+2025-11-13 13:47:47.438 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:92 - 执行查询: SELECT * FROM s_xhs_video_data_overview_top_ocr WHERE 采集日期 >= ? 参数: 20251110
+2025-11-13 13:47:47.446 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:100 - 查询结果行数: 1
+2025-11-13 13:47:47.446 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:104 - 列名: ['数据ID', '数据来源', '设备IP', '账号ID', '作品标题', '链接', '采集日期', '内容类型', '曝光数', '观看数', '封面点击率', '平均观看时长', '完播率', '2秒退出率', '涨粉数']
+2025-11-13 13:47:47.447 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:116 - 表 s_xhs_video_data_overview_top_ocr 查询到 1 行数据
+2025-11-13 13:47:47.447 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:120 - 表 s_xhs_video_data_overview_top_ocr 前3行数据示例: [(2, '1894230222988058625', '172.25.1.41', '1944609540455948358', '这个嘎子姐的星星卡点太美萌了', 'http://xhslink.com/o/9lIlKBscMet', '20251112', '视频', '279', '59', '10.4%', '5.2', '16.3%', '49%', '0')]
+2025-11-13 13:47:47.447 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:92 - 执行查询: SELECT * FROM s_xhs_video_data_overview_bottom_ocr WHERE 采集日期 >= ? 参数: 20251110
+2025-11-13 13:47:47.447 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:100 - 查询结果行数: 1
+2025-11-13 13:47:47.447 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:104 - 列名: ['数据ID', '数据来源', '设备IP', '账号ID', '作品标题', '链接', '采集日期', '内容类型', '点赞数', '评论数', '收藏数', '分享数', '弹幕数']
+2025-11-13 13:47:47.447 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:116 - 表 s_xhs_video_data_overview_bottom_ocr 查询到 1 行数据
+2025-11-13 13:47:47.447 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:120 - 表 s_xhs_video_data_overview_bottom_ocr 前3行数据示例: [(1, '1894230222988058625', '172.25.1.41', '1944609540455948358', '这个嘎子姐的星星卡点太美萌了', 'http://xhslink.com/o/9lIlKBscMet', '20251112', '视频', '3', '0', '1', '0', '0')]
+2025-11-13 13:47:47.447 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:133 - 开始进行 related 类型的数据融合，关联键: 账号ID, 设备IP, 采集日期, 链接
+2025-11-13 13:47:47.447 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:134 - 融合后的表结构包含 20 列: ['内容类型', '作品标题', '采集日期', '封面点击率', '收藏数', '数据来源', '评论数', '平均观看时长', '链接', '弹幕数', '点赞数', '曝光数', '完播率', '2秒退出率', '数据ID', '设备IP', '分享数', '账号ID', '观看数', '涨粉数']
+2025-11-13 13:47:47.447 | INFO     | db.merge_sync:merge_table_data_related:236 - 关联融合完成，共关联 1 个项目（具有来自多个表的数据）
+2025-11-13 13:47:47.447 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:138 - 使用关联融合方式处理数据，融合后共有 1 行数据
+2025-11-13 13:47:47.447 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:145 - 融合后前3行数据示例: [['视频', '这个嘎子姐的星星卡点太美萌了', '20251112', '10.4%', '1', '1894230222988058625', '0', '5.2', 'http://xhslink.com/o/9lIlKBscMet', '0', '3', '279', '16.3%', '49%', 1, '172.25.1.41', '0', '1944609540455948358', '59', '0']]
+2025-11-13 13:47:47.448 | DEBUG    | db.merge_sync:sync_to_local_sqlite:358 - 连接到SQLite数据库: D:\PycharmProjects\XHS-OCR\db\ocr_data.db
+2025-11-13 13:47:47.448 | DEBUG    | db.merge_sync:sync_to_local_sqlite:368 - 表 s_xhs_video_data_overview_ocr 是否存在: False
+2025-11-13 13:47:47.448 | INFO     | db.merge_sync:sync_to_local_sqlite:372 - 表 s_xhs_video_data_overview_ocr 不存在，正在创建...
+2025-11-13 13:47:47.449 | DEBUG    | db.merge_sync:create_table_if_not_exists_sqlite:542 - 将为表 s_xhs_video_data_overview_ocr 设置主键: ['账号ID', '设备IP', '采集日期', '链接']
+2025-11-13 13:47:47.449 | DEBUG    | db.merge_sync:create_table_if_not_exists_sqlite:551 - SQLite创建表SQL: 
+    CREATE TABLE s_xhs_video_data_overview_ocr (
+        "内容类型" TEXT, "作品标题" TEXT, "采集日期" DATE, "封面点击率" TEXT, "收藏数" TEXT, "数据来源" TEXT, "评论数" TEXT, "平均观看时长" TEXT, "链接" TEXT, "弹幕数" TEXT, "点赞数" TEXT, "曝光数" TEXT, "完播率" TEXT, "2秒退出率" TEXT, "数据ID" INTEGER PRIMARY KEY AUTOINCREMENT, "设备IP" TEXT, "分享数" TEXT, "账号ID" TEXT, "观看数" TEXT, "涨粉数" TEXT
+        , PRIMARY KEY ("账号ID", "设备IP", "采集日期", "链接")
+    )
+    
+2025-11-13 13:47:47.449 | ERROR    | db.merge_sync:sync_to_local_sqlite:445 - 同步到本地SQLite数据库时出错: table "s_xhs_video_data_overview_ocr" has more than one primary key
+2025-11-13 13:47:47.449 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:169 - 融合数据已保存到本地SQLite数据库，表名: s_xhs_video_data_overview_ocr，融合类型: related
+2025-11-13 13:47:47.449 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:52 - 使用数据库文件路径: D:\PycharmProjects\XHS-OCR\db\ocr_data.db
+2025-11-13 13:47:47.449 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:69 - 数据库中已存在的表: ['s_xhs_note_data_overview_ocr', 'sqlite_sequence', 's_xhs_note_traffic_analysis_ocr', 's_xhs_user_info_ocr', 's_xhs_video_data_overview_bottom_ocr', 's_xhs_video_data_overview_top_ocr', 's_xhs_video_traffic_analysis_ocr', 's_xhs_traffic_analysis_ocr']
+2025-11-13 13:47:47.449 | WARNING  | db.merge_sync:sync_explore_data_merge_to_remote:75 - 表 s_xhs_video_data_overview_ocr 不存在，中止融合同步
+2025-11-13 13:47:47.450 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:52 - 使用数据库文件路径: D:\PycharmProjects\XHS-OCR\db\ocr_data.db
+2025-11-13 13:47:47.450 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:69 - 数据库中已存在的表: ['s_xhs_note_data_overview_ocr', 'sqlite_sequence', 's_xhs_note_traffic_analysis_ocr', 's_xhs_user_info_ocr', 's_xhs_video_data_overview_bottom_ocr', 's_xhs_video_data_overview_top_ocr', 's_xhs_video_traffic_analysis_ocr', 's_xhs_traffic_analysis_ocr']
+2025-11-13 13:47:47.450 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:92 - 执行查询: SELECT * FROM s_xhs_note_traffic_analysis_ocr WHERE 采集日期 >= ? 参数: 20251110
+2025-11-13 13:47:47.450 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:100 - 查询结果行数: 1
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:104 - 列名: ['数据ID', '数据来源', '设备IP', '账号ID', '作品标题', '链接', '采集日期', '内容类型', '观看来源-首页推荐', '观看来源-搜索', '观看来源-关注页面', '观看来源-其他来源', '观看转化率', '观看互动率', '曝光数', '观看数', '占总曝光', '占总观看', '平均观看时长', '点赞数', '评论数', '收藏数']
+2025-11-13 13:47:47.451 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:116 - 表 s_xhs_note_traffic_analysis_ocr 查询到 1 行数据
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:120 - 表 s_xhs_note_traffic_analysis_ocr 前3行数据示例: [(1, '1894230222988058625', '172.25.1.41', '1944609540455948358', '嘎子姐换脚教程来啦', 'http://xhslink.com/o/8sOLOcSMMhF', '20251112', '图文', '6.6%', '3.3%', '2%', '15.7%', '14.6%', '1.8%', '752', '110', '80.3%', '72.4%', '9.3', '2', '0', '0')]
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:92 - 执行查询: SELECT * FROM s_xhs_video_traffic_analysis_ocr WHERE 采集日期 >= ? 参数: 20251110
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:100 - 查询结果行数: 1
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:104 - 列名: ['数据ID', '数据来源', '设备IP', '账号ID', '作品标题', '链接', '采集日期', '内容类型', '观看来源-搜索', '观看来源-首页推荐', '观看来源-视频推荐', '观看来源-关注页面', '观看来源-个人主页', '观看来源-其他来源', '观看转化率', '观看互动率', '曝光数', '观看数', '占总曝光', '占总观看', '平均观看时长', '点赞数', '评论数', '收藏数']
+2025-11-13 13:47:47.451 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:116 - 表 s_xhs_video_traffic_analysis_ocr 查询到 1 行数据
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:120 - 表 s_xhs_video_traffic_analysis_ocr 前3行数据示例: [(1, '1894230222988058625', '172.25.1.41', '1944609540455948358', '这个嘎子姐的星星卡点太美萌了', 'http://xhslink.com/o/9lIlKBscMet', '20251112', '视频', '30.9%', '29.2%', '15.8%', '13.9%', '2.8%', '7.4%', '25%', '1%', '1194', '299', '37.3%', '30.9%', '16.7', '2', '1', '0')]
+2025-11-13 13:47:47.451 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:133 - 开始进行 unrelated 类型的数据融合，关联键: 数据ID
+2025-11-13 13:47:47.451 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:134 - 融合后的表结构包含 24 列: ['观看来源-关注页面', '内容类型', '作品标题', '占总观看', '采集日期', '占总曝光', '观看来源-首页推荐', '收藏数', '观看来源-其他来源', '数据来源', '平均观看时长', '评论数', '观看来源-个人主页', '链接', '观看转化率', '点赞数', '曝光数', '观看来源-搜索', '数据ID', '设备IP', '账号ID', '观看互动率', '观看来源-视频推荐', '观看数']
+2025-11-13 13:47:47.451 | INFO     | db.merge_sync:merge_table_data_unrelated:265 - 非关联融合完成，共处理 2 行数据，其中包括所有原始数据行（即使无关联）
+2025-11-13 13:47:47.451 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:141 - 使用非关联融合方式处理数据，融合后共有 2 行数据
+2025-11-13 13:47:47.451 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:145 - 融合后前3行数据示例: [['2%', '图文', '嘎子姐换脚教程来啦', '72.4%', '20251112', '80.3%', '6.6%', '0', '15.7%', '1894230222988058625', '9.3', '0', '', 'http://xhslink.com/o/8sOLOcSMMhF', '14.6%', '2', '752', '3.3%', 1, '172.25.1.41', '1944609540455948358', '1.8%', '', '110'], ['13.9%', '视频', '这个嘎子姐的星星卡点太美萌了', '30.9%', '20251112', '37.3%', '29.2%', '0', '7.4%', '1894230222988058625', '16.7', '1', '2.8%', 'http://xhslink.com/o/9lIlKBscMet', '25%', '2', '1194', '30.9%', 1, '172.25.1.41', '1944609540455948358', '1%', '15.8%', '299']]
+2025-11-13 13:47:47.453 | DEBUG    | db.merge_sync:sync_to_local_sqlite:358 - 连接到SQLite数据库: D:\PycharmProjects\XHS-OCR\db\ocr_data.db
+2025-11-13 13:47:47.453 | DEBUG    | db.merge_sync:sync_to_local_sqlite:368 - 表 s_xhs_traffic_analysis_ocr 是否存在: True
+2025-11-13 13:47:47.453 | INFO     | db.merge_sync:sync_to_local_sqlite:376 - 表 s_xhs_traffic_analysis_ocr 已存在，检查是否需要新增字段...
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_to_local_sqlite:400 - 使用唯一键约束字段: "数据ID"
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_to_local_sqlite:413 - SQLite插入SQL:
+
+                        INSERT OR IGNORE INTO s_xhs_traffic_analysis_ocr ("观看来源-关注页面", "内容类型", "作品标题", "占总观看", "采集日期", "占总曝光", "观看来源-首页推荐", "收藏数", "观看来源-其他来源", "数据来源", "平均观看时长", "评论数", "观看来源-个人主页", "链接", "观看转化率", "点赞数", "曝光数", "观看来源-搜索", "数据ID", "设备IP", "账号ID", "观看互动率", "观看来源-视频推荐", "观看数")
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_to_local_sqlite:420 - 准备插入 2 行数据
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_to_local_sqlite:424 - SQL语句影响的行数: 0
+2025-11-13 13:47:47.454 | INFO     | db.merge_sync:sync_to_local_sqlite:428 - 成功同步 2 条记录到本地SQLite数据库，表名: s_xhs_traffic_analysis_ocr
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_to_local_sqlite:433 - 验证: 表 s_xhs_traffic_analysis_ocr 中现有 1 行数据
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_to_local_sqlite:439 - 表 s_xhs_traffic_analysis_ocr 数据示例: [('110', '', '80.3%', '15.7%', '3.3%', '9.3', 20251112, '0', '14.6%', '752', '1894230222988058625', '2%', '172.25.1.41', 'http://xhslink.com/o/8sOLOcSMMhF', '', '6.6%', '1.8%', '2', '72.4%', '1944609540455948358', '1', '嘎子姐换脚教程来啦', '0', '图文')]
+2025-11-13 13:47:47.454 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:169 - 融合数据已保存到本地SQLite数据库，表名: s_xhs_traffic_analysis_ocr，融合类型: unrelated
+2025-11-13 13:47:47.454 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:52 - 使用数据库文件路径: D:\PycharmProjects\XHS-OCR\db\ocr_data.db
+2025-11-13 13:47:47.455 | DEBUG    | db.merge_sync:sync_explore_data_merge_to_remote:69 - 数据库中已存在的表: ['s_xhs_note_data_overview_ocr', 'sqlite_sequence', 's_xhs_note_traffic_analysis_ocr', 's_xhs_user_info_ocr', 's_xhs_video_data_overview_bottom_ocr', 's_xhs_video_data_overview_top_ocr', 's_xhs_video_traffic_analysis_ocr', 's_xhs_traffic_analysis_ocr']
+2025-11-13 13:47:47.455 | WARNING  | db.merge_sync:sync_explore_data_merge_to_remote:75 - 表 s_xhs_data_overview_ocr 不存在，中止融合同步

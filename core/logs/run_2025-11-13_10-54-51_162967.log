@@ -1,0 +1,50 @@
+2025-11-13 10:54:55.453 | INFO     | __main__:<module>:383 - 程序结束。
+2025-11-13 10:54:56.029 | INFO     | __main__:process_images:118 - Playwright chromium 安装成功
+2025-11-13 10:54:56.029 | INFO     | __main__:process_images:126 - 初始化OCR成功，进程号为3576
+2025-11-13 10:54:56.029 | INFO     | __main__:process_images:138 - 最近2天日期: ['20251113', '20251112']
+2025-11-13 10:54:56.029 | INFO     | __main__:process_images:150 - 扫描目录: D:\PycharmProjects\XHS-OCR\images, 包含最近日期: False
+2025-11-13 10:54:56.029 | INFO     | __main__:process_images:150 - 扫描目录: D:\PycharmProjects\XHS-OCR\images\20251112, 包含最近日期: True
+2025-11-13 10:54:56.037 | INFO     | __main__:process_images:161 - 处理最近2天的目录: D:\PycharmProjects\XHS-OCR\images\20251112
+2025-11-13 10:54:56.037 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\你们最喜欢哪一套.json
+2025-11-13 10:54:56.038 | INFO     | __main__:process_images:239 - 处理图片: note_data_overview#你们最喜欢哪一套.png, 日期: images, 设备: 20251112
+2025-11-13 10:54:56.147 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 50048 bytes
+2025-11-13 10:54:56.147 | INFO     | __main__:process_images:299 - 正在处理: note_data_overview#你们最喜欢哪一套.png
+2025-11-13 10:54:56.375 | WARNING  | __main__:process_images:352 - note_data_overview#你们最喜欢哪一套.png：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-11-13 10:54:56.375 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\嘎子姐换脚教程来啦.json
+2025-11-13 10:54:56.376 | INFO     | __main__:process_images:239 - 处理图片: note_data_overview#嘎子姐换脚教程来啦.png, 日期: images, 设备: 20251112
+2025-11-13 10:54:56.499 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 52269 bytes
+2025-11-13 10:54:56.499 | INFO     | __main__:process_images:299 - 正在处理: note_data_overview#嘎子姐换脚教程来啦.png
+2025-11-13 10:54:56.660 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\嘎子姐的改装脚测评.json
+2025-11-13 10:54:56.660 | INFO     | __main__:process_images:239 - 处理图片: note_data_overview#嘎子姐的改装脚测评.png, 日期: images, 设备: 20251112
+2025-11-13 10:54:56.793 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 52154 bytes
+2025-11-13 10:54:56.793 | INFO     | __main__:process_images:299 - 正在处理: note_data_overview#嘎子姐的改装脚测评.png
+2025-11-13 10:54:56.981 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\你们最喜欢哪一套.json
+2025-11-13 10:54:56.982 | INFO     | __main__:process_images:239 - 处理图片: note_traffic_analysis#你们最喜欢哪一套.png, 日期: images, 设备: 20251112
+2025-11-13 10:54:57.101 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 44007 bytes
+2025-11-13 10:54:57.102 | INFO     | __main__:process_images:299 - 正在处理: note_traffic_analysis#你们最喜欢哪一套.png
+2025-11-13 10:54:57.179 | INFO     | __main__:process_images:304 - 识别结果: {'code': 101, 'data': 'No text found in image. Path: "D:\\\\PycharmProjects\\\\XHS-OCR\\\\tmp\\\\temp_ocr_input.png"'}
+2025-11-13 10:54:57.179 | ERROR    | __main__:process_images:305 - 识别失败: note_traffic_analysis#你们最喜欢哪一套.png
+2025-11-13 10:54:57.179 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\嘎子姐换脚教程来啦.json
+2025-11-13 10:54:57.179 | INFO     | __main__:process_images:239 - 处理图片: note_traffic_analysis#嘎子姐换脚教程来啦.png, 日期: images, 设备: 20251112
+2025-11-13 10:54:57.299 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 61717 bytes
+2025-11-13 10:54:57.300 | INFO     | __main__:process_images:299 - 正在处理: note_traffic_analysis#嘎子姐换脚教程来啦.png
+2025-11-13 10:54:57.498 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\嘎子姐的改装脚测评.json
+2025-11-13 10:54:57.499 | INFO     | __main__:process_images:239 - 处理图片: note_traffic_analysis#嘎子姐的改装脚测评.png, 日期: images, 设备: 20251112
+2025-11-13 10:54:57.614 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 63491 bytes
+2025-11-13 10:54:57.614 | INFO     | __main__:process_images:299 - 正在处理: note_traffic_analysis#嘎子姐的改装脚测评.png
+2025-11-13 10:54:57.770 | WARNING  | __main__:process_images:352 - note_traffic_analysis#嘎子姐的改装脚测评.png：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-11-13 10:55:09.466 | INFO     | __main__:process_images:193 - 保存用户信息成功: {'desc': '一只每天都在\r\n热衷寻宝的潮玩女孩', 'images': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31nerhqh75m6g5q6ors7odup12n9io2o?imageView2/2/w/360/format/webp', 'nickname': '是妍妍呀', 'red_id': '27446970444', 'follows': '0', 'fans': '9', 'interaction': '55'}
+2025-11-13 10:55:09.475 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\这个嘎子姐的星星卡点太美萌了.json
+2025-11-13 10:55:09.475 | INFO     | __main__:process_images:239 - 处理图片: video_data_overview_bottom#这个嘎子姐的星星卡点太美萌了.png, 日期: images, 设备: 20251112
+2025-11-13 10:55:09.574 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 41214 bytes
+2025-11-13 10:55:09.574 | INFO     | __main__:process_images:299 - 正在处理: video_data_overview_bottom#这个嘎子姐的星星卡点太美萌了.png
+2025-11-13 10:55:09.663 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\这个嘎子姐的星星卡点太美萌了.json
+2025-11-13 10:55:09.664 | INFO     | __main__:process_images:239 - 处理图片: video_data_overview_top#这个嘎子姐的星星卡点太美萌了.png, 日期: images, 设备: 20251112
+2025-11-13 10:55:09.787 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 52596 bytes
+2025-11-13 10:55:09.787 | INFO     | __main__:process_images:299 - 正在处理: video_data_overview_top#这个嘎子姐的星星卡点太美萌了.png
+2025-11-13 10:55:09.909 | WARNING  | __main__:process_images:352 - video_data_overview_top#这个嘎子姐的星星卡点太美萌了.png：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版
+2025-11-13 10:55:09.910 | INFO     | __main__:process_images:203 - 处理文件: D:\PycharmProjects\XHS-OCR\images\20251112\这个嘎子姐的星星卡点太美萌了.json
+2025-11-13 10:55:09.910 | INFO     | __main__:process_images:239 - 处理图片: video_traffic_analysis#这个嘎子姐的星星卡点太美萌了.png, 日期: images, 设备: 20251112
+2025-11-13 10:55:10.065 | INFO     | __main__:process_images:286 - 临时文件保存完成，大小: 138762 bytes
+2025-11-13 10:55:10.066 | INFO     | __main__:process_images:299 - 正在处理: video_traffic_analysis#这个嘎子姐的星星卡点太美萌了.png
+2025-11-13 10:55:10.282 | WARNING  | __main__:process_images:352 - video_traffic_analysis#这个嘎子姐的星星卡点太美萌了.png：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版

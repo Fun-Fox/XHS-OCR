@@ -29,17 +29,16 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
     cursor = conn.cursor()
     create_table_sql = f'''
             CREATE TABLE IF NOT EXISTS s_xhs_user_info_ocr (
-                "数据ID" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "数据来源" TEXT,
                 "设备IP" TEXT,
                 "账号ID" TEXT,
                 "账号昵称" TEXT,
-                "采集日期" TEXT,
+                "采集日期" DATE,
                 "关注数" TEXT,
                 "粉丝数" TEXT,
                 "获赞与收藏" TEXT,
                 "链接" TEXT,
-                UNIQUE("账号ID", "采集时间")
+                UNIQUE("账号ID", "采集日期")
             )
         '''
     cursor.execute(create_table_sql)
@@ -82,16 +81,15 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
     # 创建表，使用作品标题和OCR采集时间作为联合主键
     create_table_sql = f'''
         CREATE TABLE IF NOT EXISTS s_xhs_{tag}_ocr (
-            "数据ID" INTEGER PRIMARY KEY AUTOINCREMENT,
             "数据来源" TEXT,
             "设备IP" TEXT,
             "账号ID" TEXT,
             "作品标题" TEXT,
             "链接" TEXT,
-            "采集日期" TEXT,
+            "采集日期" DATE,
             "内容类型" TEXT,
             {(' TEXT, '.join(escaped_fields)) + ' TEXT' if escaped_fields else ''},
-            UNIQUE("作品标题", "采集时间")
+            UNIQUE("作品标题", "采集日期")
         )
     '''
 

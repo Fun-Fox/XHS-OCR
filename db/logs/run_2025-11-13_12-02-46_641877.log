@@ -1,0 +1,26 @@
+2025-11-13 12:02:46.644 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:106 - 表 s_xhs_video_data_overview_top_ocr 查询到 1 行数据
+2025-11-13 12:02:46.644 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:106 - 表 s_xhs_video_data_overview_bottom_ocr 查询到 1 行数据
+2025-11-13 12:02:46.644 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:113 - 开始进行 related 类型的数据融合，关联键: 账号ID, 设备IP, 采集日期, 链接
+2025-11-13 12:02:46.644 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:114 - 融合后的表结构包含 20 列: ['弹幕数', '设备IP', '平均观看时长', '数据ID', '作品标题', '链接', '采集日期', '2秒退出率', '涨粉数', '观看数', '曝光数', '收藏数', '账号ID', '完播率', '封面点击率', '评论数', '内容类型', '点赞数', '数据来源', '分享数']
+2025-11-13 12:02:46.644 | INFO     | db.merge_sync:merge_table_data_related:223 - 关联融合完成，共关联 1 个项目（具有来自多个表的数据）
+2025-11-13 12:02:46.644 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:118 - 使用关联融合方式处理数据，融合后共有 1 行数据
+2025-11-13 12:02:46.645 | INFO     | db.merge_sync:sync_to_local_sqlite:356 - 表 s_xhs_video_data_overview_ocr 不存在，正在创建...
+2025-11-13 12:02:46.645 | DEBUG    | db.merge_sync:create_table_if_not_exists_sqlite:442 - SQLite创建表SQL: 
+    CREATE TABLE s_xhs_video_data_overview_ocr (
+        "弹幕数" TEXT, "设备IP" TEXT, "平均观看时长" TEXT, "数据ID" TEXT PRIMARY KEY, "作品标题" TEXT, "链接" TEXT, "采集日期" DATE, "2秒退出率" TEXT, "涨粉数" TEXT, "观看数" TEXT, "曝光数" TEXT, "收藏数" TEXT, "账号ID" TEXT, "完播率" TEXT, "封面点击率" TEXT, "评论数" TEXT, "内容类型" TEXT, "点赞数" TEXT, "数据来源" TEXT, "分享数" TEXT
+    )
+    
+2025-11-13 12:02:46.702 | DEBUG    | db.merge_sync:sync_to_local_sqlite:373 - SQLite插入SQL:
+
+                INSERT INTO s_xhs_video_data_overview_ocr ("弹幕数", "设备IP", "平均观看时长", "数据ID", "作品标题", "链接", "采集日期", "2秒退出率", "涨粉数", "观看数", "曝光数", "收藏数", "账号ID", "完播率", "封面点击率", "评论数", "内容类型", "点赞数", "数据来源", "分享数")
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            
+2025-11-13 12:02:46.728 | INFO     | db.merge_sync:sync_to_local_sqlite:383 - 成功同步 1 条记录到本地SQLite数据库
+2025-11-13 12:02:46.729 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:145 - 融合数据已保存到本地SQLite数据库，表名: s_xhs_video_data_overview_ocr，融合类型: related
+2025-11-13 12:02:46.729 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:106 - 表 s_xhs_note_data_overview_ocr 查询到 2 行数据
+2025-11-13 12:02:46.730 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:106 - 表 s_xhs_video_data_overview_ocr 查询到 0 行数据
+2025-11-13 12:02:46.730 | ERROR    | db.merge_sync:sync_explore_data_merge_to_remote:151 - 融合同步数据时出错: can only join an iterable
+2025-11-13 12:02:46.730 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:106 - 表 s_xhs_note_traffic_analysis_ocr 查询到 1 行数据
+2025-11-13 12:02:46.730 | INFO     | db.merge_sync:sync_explore_data_merge_to_remote:106 - 表 s_xhs_video_traffic_analysis_ocr 查询到 1 行数据
+2025-11-13 12:02:46.730 | ERROR    | db.merge_sync:sync_explore_data_merge_to_remote:151 - 融合同步数据时出错: can only join an iterable
+2025-11-13 12:02:46.731 | WARNING  | db.merge_sync:sync_explore_data_merge_to_remote:70 - 表 s_xhs_data_overview_ocr 不存在，中止融合同步
