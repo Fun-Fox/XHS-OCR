@@ -55,7 +55,7 @@ def sync_explore_data_to_remote(table_name_list=None, time_filter=None):
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         for table_name in table_name_list:
             # 构建查询语句
             if time_filter and time_filter.get("column") and time_filter.get("days"):
@@ -76,12 +76,17 @@ def sync_explore_data_to_remote(table_name_list=None, time_filter=None):
 
             # 获取列名
             column_names = [description[0] for description in cursor.description]
+            # 替换 '采集日期' 为 '采集时间'
+            for i, col in enumerate(column_names):
+                if col == "采集日期":
+                    column_names[i] = "采集时间"
+
             logger.debug(f"列名: {column_names}")
 
             # 同步到MySQL数据库
             sync_to_mysql(db_config, table_name, column_names, rows)
             logger.info(f"表 {table_name} 数据已同步到远程MySQL数据库")
-            
+
         # 关闭本地数据库连接
         conn.close()
 
@@ -180,6 +185,8 @@ def create_table_if_not_exists(cursor, table_name, column_names):
 
             if col == "采集日期":
                 columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
+            elif col == "采集时间":
+                columns_definitions.append(f"`{eng_col}` DATETIME COMMENT '{col}'")
             else:
                 columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
         else:
@@ -226,4 +233,3 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
                 cursor.execute(alter_sql)
             except Exception as e:
                 logger.error(f"添加字段 {eng_col} 时出错: {str(e)}")
-
