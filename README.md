@@ -37,17 +37,6 @@ xhs-ocr-merge --mode traffic_analysis --days 3
 xhs-ocr-merge --mode remote_merge
 ```
 
-### 作为Python模块使用
-
-```python
-from db.pipeline import run_data_processing_pipeline, run_partial_pipeline
-
-# 运行完整的数据处理流水线
-run_data_processing_pipeline(days=3)
-
-# 运行部分流水线
-run_partial_pipeline(mode='video_overview', days=3)
-```
 
 ## 流水线处理步骤
 
