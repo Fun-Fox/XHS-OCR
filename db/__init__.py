@@ -111,9 +111,3 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
     conn.commit()
     conn.close()
 
-
-# 导入流水线功能
-from .pipeline import run_data_processing_pipeline, run_partial_pipeline
-
-# 为了向后兼容，保留原有的函数名
-sync_pipeline = run_data_processing_pipeline

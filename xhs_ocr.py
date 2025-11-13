@@ -11,14 +11,17 @@ import time
 import argparse
 from datetime import datetime
 from core.logger import logger
+from db.pipeline import run_data_processing_pipeline
+
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
+from dotenv import load_dotenv
 from core.run import process_images
 from db.data_sync import sync_explore_data_to_remote
 
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv()
 
 
 def run_ocr_task():
@@ -39,7 +42,12 @@ def run_sync_task():
     """
     logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行数据同步任务...")
     try:
-        sync_explore_data_to_remote(['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr','s_xhs_user_info_ocr'])
+        # 本地数据加工
+        day = int(os.getenv("OCR_RECENT_DAYS", "2"))
+        run_data_processing_pipeline(days=day)
+        # 数据同步
+        sync_explore_data_to_remote(['s_xhs_user_info_ocr', 's_xhs_data_overview_traffic_analysis'],
+                                    {"column": "采集日期", "days": day})
 
         logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行完成")
     except Exception as e:

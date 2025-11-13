@@ -1,6 +1,8 @@
 import configparser
 import os
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
+from core.logger import logger
 
 load_dotenv()
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -18,9 +20,13 @@ for section in config.sections():
 
 
 # 添加数据库同步功能
-def sync_explore_data_to_remote(table_name_list=None):
+def sync_explore_data_to_remote(table_name_list=None, time_filter=None):
     """
-    将Download文件夹下的ExploreData.db sqlite数据全量同步到远程MySQL数据库中
+    将Download文件夹下的ExploreData.db sqlite数据同步到远程MySQL数据库中
+    
+    参数:
+    table_name_list: 要同步的表名列表
+    time_filter: 时间筛选条件，格式为字典{"column": "采集时间", "days": 3}表示最近3天数据
     """
     try:
         # 从环境变量获取数据库配置
@@ -34,7 +40,7 @@ def sync_explore_data_to_remote(table_name_list=None):
 
         # 如果没有配置数据库，则跳过同步
         if not all([db_config["host"], db_config["user"], db_config["password"], db_config["database"]]):
-            print("未配置远程数据库，跳过数据同步")
+            logger.warning("未配置远程数据库，跳过数据同步")
             return
 
         # 获取ExploreData.db路径
@@ -42,34 +48,51 @@ def sync_explore_data_to_remote(table_name_list=None):
 
         # 检查数据库文件是否存在
         if not os.path.exists(db_path):
-            print("ocr_data.db 文件不存在，跳过数据同步")
+            logger.info("ocr_data.db 文件不存在，跳过数据同步")
             return
 
         # 连接本地SQLite数据库
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
+        
         for table_name in table_name_list:
-            # 读取所有数据
-            cursor.execute(f"SELECT * FROM {table_name}")
+            # 构建查询语句
+            if time_filter and time_filter.get("column") and time_filter.get("days"):
+                # 如果有时间筛选条件，则只查询最近N天的数据
+                time_column = time_filter["column"]
+                days = time_filter["days"]
+                cutoff_date = (datetime.now() - timedelta(days=days)).strftime('%Y%m%d')
+                query = f"SELECT * FROM {table_name} WHERE {time_column} >= ?"
+                cursor.execute(query, (cutoff_date,))
+                logger.info(f"执行查询: {query} 参数: {cutoff_date}")
+            else:
+                # 查询所有数据
+                cursor.execute(f"SELECT * FROM {table_name}")
+                logger.info(f"执行查询: SELECT * FROM {table_name}")
+
             rows = cursor.fetchall()
+            logger.info(f"表 {table_name} 查询到 {len(rows)} 行数据")
 
             # 获取列名
             column_names = [description[0] for description in cursor.description]
+            logger.debug(f"列名: {column_names}")
 
             # 同步到MySQL数据库
             sync_to_mysql(db_config, table_name, column_names, rows)
-            print("数据已同步到远程MySQL数据库")
+            logger.info(f"表 {table_name} 数据已同步到远程MySQL数据库")
+            
         # 关闭本地数据库连接
         conn.close()
 
     except Exception as e:
-        print(f"同步数据到远程数据库时出错: {str(e)}")
+        logger.error(f"同步数据到远程数据库时出错: {str(e)}")
 
 
 def sync_to_mysql(db_config, table_name, column_names, rows):
     """
     同步数据到MySQL数据库
+    支持表不存在时创建表，字段不存在时新增字段
     """
     try:
         import pymysql
@@ -86,38 +109,25 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
 
         try:
             with mysql_conn.cursor() as cursor:
-                # 创建表（如果不存在）
-                # 修改表结构，将TEXT类型的主键改为VARCHAR(255)
-                columns_definitions = []
-                for col in column_names:
-                    if col in FIELD_MAPPING:
-                        eng_col = FIELD_MAPPING[col]
-                        if col == "数据ID":
-                            columns_definitions.append(f"`{eng_col}` VARCHAR(191) PRIMARY KEY COMMENT '{col}'")
-                        elif col == "采集日期":
-                            columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
-                        elif col == "采集时间":
-                            columns_definitions.append(f"`{eng_col}` DATETIME COMMENT '{col}'")
-                        else:
-                            columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
-                    else:
-                        columns_definitions.append(f"`{col}` TEXT")
+                # 检查表是否存在
+                cursor.execute("""
+                    SELECT COUNT(*) 
+                    FROM information_schema.tables 
+                    WHERE table_schema = %s AND table_name = %s
+                """, (db_config.get("database", ""), table_name))
 
-                # 使用单行字符串格式，避免潜在的多行字符串问题
-                create_table_sql = " ".join(f"""
-                CREATE TABLE IF NOT EXISTS {table_name} (
-                    {", ".join(columns_definitions)}
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-                """.split())
+                table_exists = cursor.fetchone()['COUNT(*)'] > 0
 
-                # 添加调试输出
-                print(f"Create table SQL: {create_table_sql}")
-                cursor.execute(create_table_sql)
+                # 如果表不存在，则创建表
+                if not table_exists:
+                    logger.info(f"表 {table_name} 不存在，正在创建...")
+                    create_table_if_not_exists(cursor, table_name, column_names)
+                else:
+                    # 如果表存在，检查是否有新增字段需要添加
+                    logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
+                    add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
 
                 if rows:
-                    # 修复：使用英文字段名而不是中文字段名
-                    placeholders = ", ".join(["%s"] * len(column_names))
-
                     # 映射列名为英文名
                     mapped_column_names = []
                     for col in column_names:
@@ -131,27 +141,89 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                     # 构建ON DUPLICATE KEY UPDATE部分
                     update_fields = []
                     for i, col in enumerate(column_names):
-                        if col not in ("id", "数据ID"):
+                        if col not in ("id",):
                             eng_col = mapped_column_names[i] if col in FIELD_MAPPING else col
                             update_fields.append(f"`{eng_col}` = VALUES(`{eng_col}`)")
 
+                    placeholders = ", ".join(["%s"] * len(column_names))
                     insert_sql = " ".join(f"""
                                     INSERT INTO {table_name} ({columns_str})
                                     VALUES ({placeholders})
                                     ON DUPLICATE KEY UPDATE {", ".join(update_fields)}
                                     """.split())
 
-                    print(f'insert_sql:\n{insert_sql}')
+                    logger.debug(f'insert_sql:\n{insert_sql}')
                     cursor.executemany(insert_sql, rows)
 
             # 提交事务
             mysql_conn.commit()
-            print(f"成功同步 {len(rows)} 条记录到MySQL数据库，ID冲突的不同步")
+            logger.info(f"成功同步 {len(rows)} 条记录到MySQL数据库")
 
         finally:
             mysql_conn.close()
 
     except ImportError:
-        print("缺少 pymysql 库，请安装: pip install pymysql")
+        logger.error("缺少 pymysql 库，请安装: pip install pymysql")
     except Exception as e:
-        print(f"同步到 MySQL 数据库时出错: {str(e)}")
+        logger.error(f"同步到 MySQL 数据库时出错: {str(e)}")
+
+
+def create_table_if_not_exists(cursor, table_name, column_names):
+    """
+    如果表不存在则创建表
+    """
+    columns_definitions = []
+    columns_definitions.append('`id` BIGINT AUTO_INCREMENT PRIMARY KEY')
+    for col in column_names:
+        if col in FIELD_MAPPING:
+            eng_col = FIELD_MAPPING[col]
+
+            if col == "采集日期":
+                columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
+            else:
+                columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
+        else:
+            columns_definitions.append(f"`{col}` TEXT")
+
+    create_table_sql = " ".join(f"""
+    CREATE TABLE {table_name} (
+        {", ".join(columns_definitions)}
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    """.split())
+
+    logger.debug(f"Create table SQL: {create_table_sql}")
+    cursor.execute(create_table_sql)
+
+
+def add_missing_columns(cursor, table_name, column_names, database_name):
+    """
+    为已存在的表添加缺失的字段
+    """
+    # 获取表中已存在的字段
+    cursor.execute("""
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_schema = %s AND table_name = %s
+    """, (database_name, table_name))
+
+    existing_columns = [row['column_name'] for row in cursor.fetchall()]
+
+    # 检查是否有新增字段
+    for col in column_names:
+        # 映射中文字段名为英文名
+        eng_col = FIELD_MAPPING.get(col, col)
+
+        # 检查英文字段名是否已存在
+        if eng_col not in existing_columns:
+            # 添加缺失的字段
+            if col in FIELD_MAPPING:
+                alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{eng_col}` TEXT COMMENT '{col}'"
+            else:
+                alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{col}` TEXT"
+
+            logger.info(f"添加缺失字段: {alter_sql}")
+            try:
+                cursor.execute(alter_sql)
+            except Exception as e:
+                logger.error(f"添加字段 {eng_col} 时出错: {str(e)}")
+
