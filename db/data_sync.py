@@ -115,13 +115,12 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
         try:
             with mysql_conn.cursor() as cursor:
                 # 检查表是否存在
-                cursor.execute("""
-                    SELECT COUNT(*) 
-                    FROM information_schema.tables 
-                    WHERE table_schema = %s AND table_name = %s
-                """, (db_config.get("database", ""), table_name))
-
-                table_exists = cursor.fetchone()['COUNT(*)'] > 0
+                try:
+                    cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+                    table_exists = len(cursor.fetchall()) > 0
+                except Exception as e:
+                    logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
+                    table_exists = False
 
                 # 如果表不存在，则创建表
                 if not table_exists:
@@ -130,7 +129,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                 else:
                     # 如果表存在，检查是否有新增字段需要添加
                     logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
-                    add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
+                    add_missing_columns(cursor, table_name, column_names,)
 
                 if rows:
                     # 映射列名为英文名
@@ -202,18 +201,18 @@ def create_table_if_not_exists(cursor, table_name, column_names):
     cursor.execute(create_table_sql)
 
 
-def add_missing_columns(cursor, table_name, column_names, database_name):
+def add_missing_columns(cursor, table_name, column_names):
     """
     为已存在的表添加缺失的字段
+    使用 SHOW COLUMNS 作为系统表查询的替代方案
     """
-    # 获取表中已存在的字段
-    cursor.execute("""
-        SELECT column_name 
-        FROM information_schema.columns 
-        WHERE table_schema = %s AND table_name = %s
-    """, (database_name, table_name))
-
-    existing_columns = [row['column_name'] for row in cursor.fetchall()]
+    try:
+        # 使用 SHOW COLUMNS 查询表结构
+        cursor.execute(f"SHOW COLUMNS FROM {table_name}")
+        existing_columns = [row[0] for row in cursor.fetchall()]
+    except Exception as e:
+        logger.error(f"无法获取表 {table_name} 的字段信息: {str(e)}")
+        return
 
     # 检查是否有新增字段
     for col in column_names:
@@ -224,7 +223,12 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
         if eng_col not in existing_columns:
             # 添加缺失的字段
             if col in FIELD_MAPPING:
-                alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{eng_col}` TEXT COMMENT '{col}'"
+                if col == "采集日期":
+                    alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{eng_col}` DATE COMMENT '{col}'"
+                elif col == "采集时间":
+                    alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{eng_col}` DATETIME COMMENT '{col}'"
+                else:
+                    alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{eng_col}` TEXT COMMENT '{col}'"
             else:
                 alter_sql = f"ALTER TABLE {table_name} ADD COLUMN `{col}` TEXT"
 
@@ -233,3 +237,4 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
                 cursor.execute(alter_sql)
             except Exception as e:
                 logger.error(f"添加字段 {eng_col} 时出错: {str(e)}")
+
