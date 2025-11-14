@@ -9,7 +9,7 @@ CREATE TABLE `s_xhs_data_overview_traffic_analysis` (
   `completion_rate` text COLLATE utf8mb4_unicode_ci COMMENT '完播率',
   `exposure_count` text COLLATE utf8mb4_unicode_ci COMMENT '曝光数',
   `title` text COLLATE utf8mb4_unicode_ci COMMENT '作品标题',
-  `collection_date` date DEFAULT NULL COMMENT '采集日期',
+  `collection_time` date DEFAULT NULL COMMENT '采集时间',
   `followers_gained` text COLLATE utf8mb4_unicode_ci COMMENT '涨粉数',
   `avg_watch_duration` text COLLATE utf8mb4_unicode_ci COMMENT '平均观看时长',
   `url` text COLLATE utf8mb4_unicode_ci COMMENT '链接',

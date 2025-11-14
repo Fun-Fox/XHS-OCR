@@ -66,9 +66,4 @@ def run_data_processing_pipeline(days=3):
     print("数据处理流水线执行完成！")
 
 
-if __name__ == "__main__":
-    # 默认运行完整流水线
-    run_data_processing_pipeline(days=1)
 
-    sync_explore_data_to_remote(['s_xhs_user_info_ocr','s_xhs_data_overview_traffic_analysis']
-                                ,{"column": "采集日期", "days": 1})
