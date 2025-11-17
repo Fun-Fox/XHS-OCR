@@ -184,44 +184,54 @@ def create_table_if_not_exists(cursor, table_name, column_names, unique_constrai
     columns_definitions = []
     columns_definitions.append('`id` BIGINT AUTO_INCREMENT PRIMARY KEY')
     unique_keys = []
-    
-    # 如果传入了唯一约束参数，则使用传入的约束，否则使用默认逻辑
+
+    # 首先处理所有字段定义（不区分唯一与否）
+    field_definitions = {}
+    for col in column_names:
+        if col in FIELD_MAPPING:
+            eng_col = FIELD_MAPPING[col]
+            if col == "采集日期":
+                field_definitions[eng_col] = f"`{eng_col}` DATE COMMENT '{col}'"
+            elif col == "采集时间":
+                field_definitions[eng_col] = f"`{eng_col}` DATETIME COMMENT '{col}'"
+            else:
+                field_definitions[eng_col] = f"`{eng_col}` TEXT COMMENT '{col}'"
+        else:
+            field_definitions[col] = f"`{col}` TEXT"
+
+    # 处理唯一约束
     if unique_constraints:
         # 使用传入的唯一约束
         for constraint in unique_constraints:
             if isinstance(constraint, str):  # 单字段唯一约束
                 eng_col = FIELD_MAPPING.get(constraint, constraint)
-                unique_keys.append(f"`{eng_col}`")
+                if eng_col in field_definitions:
+                    unique_keys.append(f"`{eng_col}`")
             elif isinstance(constraint, list):  # 多字段组合唯一约束
-                composite_keys = [f"`{FIELD_MAPPING.get(col, col)}`" for col in constraint]
-                columns_definitions.append(f"UNIQUE KEY `unique_constraint_{'_'.join(composite_keys)}` ({", ".join(composite_keys)})")
-    else:
-        # 默认逻辑：将日期和时间字段作为唯一约束
-        for col in column_names:
-            if col in FIELD_MAPPING:
-                eng_col = FIELD_MAPPING[col]
+                composite_keys = []
+                for col in constraint:
+                    eng_col = FIELD_MAPPING.get(col, col)
+                    if eng_col in field_definitions:
+                        composite_keys.append(f"`{eng_col}`")
+                if composite_keys:
+                    constraint_name = f"unique_constraint_{'_'.join([c.strip('`') for c in composite_keys])}"
+                    columns_definitions.append(f"UNIQUE KEY `{constraint_name}` ({', '.join(composite_keys)})")
 
-                if col == "采集日期":
-                    columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
-                    unique_keys.append(f"`{eng_col}`")
-                elif col == "采集时间":
-                    columns_definitions.append(f"`{eng_col}` DATETIME COMMENT '{col}'")
-                    unique_keys.append(f"`{eng_col}`")
-                else:
-                    columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
-            else:
-                columns_definitions.append(f"`{col}` TEXT")
 
-    # 添加唯一索引以支持ON DUPLICATE KEY UPDATE
-    if len(unique_keys) > 1:  # 只有当有多个字段时才创建组合唯一索引
-        columns_definitions.append(f"UNIQUE KEY `unique_constraint` ({", ".join(unique_keys)})")
-    elif len(unique_keys) == 1:  # 单个字段设置为唯一
-        # 找到对应字段的索引并修改定义
+    # 将字段定义添加到列定义中
+    for field_def in field_definitions.values():
+        columns_definitions.append(field_def)
+
+    # 添加单字段唯一索引
+    for unique_key in unique_keys:
+        # 查找对应的字段定义并添加UNIQUE约束
         for i, definition in enumerate(columns_definitions):
-            if unique_keys[0] in definition and not definition.startswith('`id'):
-                columns_definitions[i] = definition + " UNIQUE"
+            if unique_key in definition and not definition.startswith('`id'):
+                # 如果字段定义中还没有UNIQUE关键字，则添加
+                if "UNIQUE" not in definition.upper():
+                    columns_definitions[i] = definition + " UNIQUE"
                 break
-    
+
     create_table_sql = " ".join(f"""
     CREATE TABLE {table_name} (
         {", ".join(columns_definitions)}

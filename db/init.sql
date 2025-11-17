@@ -49,3 +49,10 @@ CREATE TABLE `s_xhs_user_info_ocr` (
   `url` text COLLATE utf8mb4_unicode_ci COMMENT '链接',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ Create table SQL: CREATE TABLE s_xhs_user_info_ocr
+ ( `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+ UNIQUE KEY `unique_constraint` (`account_id`, `collection_time`) )
+ ENGINE=InnoDB
+ DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
