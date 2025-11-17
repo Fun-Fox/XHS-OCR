@@ -126,7 +126,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
                 except Exception as e:
                     logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
                     table_exists = False
-
+                logger.info(f"表 {table_name} 约束字段: {unique_constraints}")
                 # 如果表不存在，则创建表
                 if not table_exists:
                     logger.info(f"表 {table_name} 不存在，正在创建...")
