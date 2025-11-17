@@ -197,7 +197,7 @@ def create_table_if_not_exists(cursor, table_name, column_names, unique_constrai
             elif col == "链接":  # 特殊处理 url 字段
                 field_definitions[eng_col] = f"`{eng_col}` VARCHAR(512) COMMENT '{col}'"
             elif col == "账号ID":  # 特殊处理 url 字段
-                field_definitions[eng_col] = f"`{eng_col}` VARCHAR(255) COMMENT '{col}'"
+                field_definitions[eng_col] = f"`{eng_col}` VARCHAR(128) COMMENT '{col}'"
             else:
                 field_definitions[eng_col] = f"`{eng_col}` TEXT COMMENT '{col}'"
         else:
