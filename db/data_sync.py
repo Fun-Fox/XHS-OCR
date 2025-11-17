@@ -102,7 +102,6 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
     同步数据到MySQL数据库
     支持表不存在时创建表，字段不存在时新增字段
     """
-    create_table_if_not_exists(None, table_name, column_names, unique_constraints)
     try:
         import pymysql
         # 创建MySQL连接
