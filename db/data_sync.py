@@ -194,6 +194,8 @@ def create_table_if_not_exists(cursor, table_name, column_names, unique_constrai
                 field_definitions[eng_col] = f"`{eng_col}` DATE COMMENT '{col}'"
             elif col == "采集时间":
                 field_definitions[eng_col] = f"`{eng_col}` DATETIME COMMENT '{col}'"
+            elif col == "链接":  # 特殊处理 url 字段
+                field_definitions[eng_col] = f"`{eng_col}` VARCHAR(255) COMMENT '{col}'"
             else:
                 field_definitions[eng_col] = f"`{eng_col}` TEXT COMMENT '{col}'"
         else:
@@ -216,7 +218,6 @@ def create_table_if_not_exists(cursor, table_name, column_names, unique_constrai
                 if composite_keys:
                     constraint_name = f"unique_constraint_{'_'.join([c.strip('`') for c in composite_keys])}"
                     columns_definitions.append(f"UNIQUE KEY `{constraint_name}` ({', '.join(composite_keys)})")
-
 
     # 将字段定义添加到列定义中
     for field_def in field_definitions.values():
@@ -279,4 +280,3 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
                 cursor.execute(alter_sql)
             except Exception as e:
                 logger.error(f"添加字段 {eng_col} 时出错: {str(e)} (SQL: {alter_sql})")
-
