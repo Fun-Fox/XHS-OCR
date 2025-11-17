@@ -110,7 +110,8 @@ python xhs_ocr.py --mode schedule --at-time "18:00"
 # 每小时执行OCR识别但不进行数据同步
 python xhs_ocr.py --mode schedule --no-sync
 
-nohup python xhs_ocr.py --mode schedule --at-time "18:00" >> run.log 2>&1 &
+TZ='Asia/Shanghai' nohup python xhs_ocr.py --mode schedule --at-time "18:00" >> run.log 2>&1 &
+
 ```
 
 在定时任务模式下，系统会按照指定的时间间隔或时间点自动执行OCR识别和数据同步任务。

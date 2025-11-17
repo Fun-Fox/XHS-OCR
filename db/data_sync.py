@@ -20,13 +20,15 @@ for section in config.sections():
 
 
 # 添加数据库同步功能
-def sync_explore_data_to_remote(table_name_list=None, time_filter=None):
+def sync_explore_data_to_remote(table_name_list=None, time_filter=None, unique_constraints=None):
     """
     将Download文件夹下的ExploreData.db sqlite数据同步到远程MySQL数据库中
     
     参数:
     table_name_list: 要同步的表名列表
     time_filter: 时间筛选条件，格式为字典{"column": "采集时间", "days": 3}表示最近3天数据
+    unique_constraints: 唯一约束定义，格式为字典{表名: [约束字段列表]}
+                        例如: {"table1": ["采集时间"], "table2": [["字段1", "字段2"]]}
     """
     try:
         # 从环境变量获取数据库配置
@@ -84,7 +86,8 @@ def sync_explore_data_to_remote(table_name_list=None, time_filter=None):
             logger.debug(f"列名: {column_names}")
 
             # 同步到MySQL数据库
-            sync_to_mysql(db_config, table_name, column_names, rows)
+            table_unique_constraints = unique_constraints.get(table_name, []) if unique_constraints else []
+            sync_to_mysql(db_config, table_name, column_names, rows, table_unique_constraints)
             logger.info(f"表 {table_name} 数据已同步到远程MySQL数据库")
 
         # 关闭本地数据库连接
@@ -94,7 +97,7 @@ def sync_explore_data_to_remote(table_name_list=None, time_filter=None):
         logger.error(f"同步数据到远程数据库时出错: {str(e)}")
 
 
-def sync_to_mysql(db_config, table_name, column_names, rows):
+def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=None):
     """
     同步数据到MySQL数据库
     支持表不存在时创建表，字段不存在时新增字段
@@ -117,7 +120,9 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                 # 检查表是否存在
                 try:
                     cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
-                    table_exists = len(cursor.fetchall()) > 0
+                    table_result = cursor.fetchall()
+                    table_exists = len(table_result) > 0
+                    logger.debug(f"检查表 {table_name} 是否存在: {table_exists}, 查询结果: {table_result}")
                 except Exception as e:
                     logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
                     table_exists = False
@@ -125,11 +130,11 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
                 # 如果表不存在，则创建表
                 if not table_exists:
                     logger.info(f"表 {table_name} 不存在，正在创建...")
-                    create_table_if_not_exists(cursor, table_name, column_names)
+                    create_table_if_not_exists(cursor, table_name, column_names, unique_constraints)
                 else:
                     # 如果表存在，检查是否有新增字段需要添加
                     logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
-                    add_missing_columns(cursor, table_name, column_names,)
+                    add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
 
                 if rows:
                     # 映射列名为英文名
@@ -172,25 +177,51 @@ def sync_to_mysql(db_config, table_name, column_names, rows):
         logger.error(f"同步到 MySQL 数据库时出错: {str(e)}")
 
 
-def create_table_if_not_exists(cursor, table_name, column_names):
+def create_table_if_not_exists(cursor, table_name, column_names, unique_constraints=None):
     """
     如果表不存在则创建表
     """
     columns_definitions = []
     columns_definitions.append('`id` BIGINT AUTO_INCREMENT PRIMARY KEY')
-    for col in column_names:
-        if col in FIELD_MAPPING:
-            eng_col = FIELD_MAPPING[col]
+    unique_keys = []
+    
+    # 如果传入了唯一约束参数，则使用传入的约束，否则使用默认逻辑
+    if unique_constraints:
+        # 使用传入的唯一约束
+        for constraint in unique_constraints:
+            if isinstance(constraint, str):  # 单字段唯一约束
+                eng_col = FIELD_MAPPING.get(constraint, constraint)
+                unique_keys.append(f"`{eng_col}`")
+            elif isinstance(constraint, list):  # 多字段组合唯一约束
+                composite_keys = [f"`{FIELD_MAPPING.get(col, col)}`" for col in constraint]
+                columns_definitions.append(f"UNIQUE KEY `unique_constraint_{'_'.join(composite_keys)}` ({", ".join(composite_keys)})")
+    else:
+        # 默认逻辑：将日期和时间字段作为唯一约束
+        for col in column_names:
+            if col in FIELD_MAPPING:
+                eng_col = FIELD_MAPPING[col]
 
-            if col == "采集日期":
-                columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
-            elif col == "采集时间":
-                columns_definitions.append(f"`{eng_col}` DATETIME COMMENT '{col}'")
+                if col == "采集日期":
+                    columns_definitions.append(f"`{eng_col}` DATE COMMENT '{col}'")
+                    unique_keys.append(f"`{eng_col}`")
+                elif col == "采集时间":
+                    columns_definitions.append(f"`{eng_col}` DATETIME COMMENT '{col}'")
+                    unique_keys.append(f"`{eng_col}`")
+                else:
+                    columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
             else:
-                columns_definitions.append(f"`{eng_col}` TEXT COMMENT '{col}'")
-        else:
-            columns_definitions.append(f"`{col}` TEXT")
+                columns_definitions.append(f"`{col}` TEXT")
 
+    # 添加唯一索引以支持ON DUPLICATE KEY UPDATE
+    if len(unique_keys) > 1:  # 只有当有多个字段时才创建组合唯一索引
+        columns_definitions.append(f"UNIQUE KEY `unique_constraint` ({", ".join(unique_keys)})")
+    elif len(unique_keys) == 1:  # 单个字段设置为唯一
+        # 找到对应字段的索引并修改定义
+        for i, definition in enumerate(columns_definitions):
+            if unique_keys[0] in definition and not definition.startswith('`id'):
+                columns_definitions[i] = definition + " UNIQUE"
+                break
+    
     create_table_sql = " ".join(f"""
     CREATE TABLE {table_name} (
         {", ".join(columns_definitions)}
@@ -201,7 +232,7 @@ def create_table_if_not_exists(cursor, table_name, column_names):
     cursor.execute(create_table_sql)
 
 
-def add_missing_columns(cursor, table_name, column_names):
+def add_missing_columns(cursor, table_name, column_names, database_name):
     """
     为已存在的表添加缺失的字段
     使用 SHOW COLUMNS 作为系统表查询的替代方案
@@ -210,8 +241,9 @@ def add_missing_columns(cursor, table_name, column_names):
         # 使用 SHOW COLUMNS 查询表结构
         cursor.execute(f"SHOW COLUMNS FROM {table_name}")
         existing_columns = [row[0] for row in cursor.fetchall()]
+        logger.debug(f"表 {table_name} 的现有字段: {existing_columns}")
     except Exception as e:
-        logger.error(f"无法获取表 {table_name} 的字段信息: {str(e)}")
+        logger.error(f"无法获取表 {table_name} 的字段信息: {str(e)} (数据库: {database_name})")
         return
 
     # 检查是否有新增字段
@@ -236,5 +268,5 @@ def add_missing_columns(cursor, table_name, column_names):
             try:
                 cursor.execute(alter_sql)
             except Exception as e:
-                logger.error(f"添加字段 {eng_col} 时出错: {str(e)}")
+                logger.error(f"添加字段 {eng_col} 时出错: {str(e)} (SQL: {alter_sql})")
 

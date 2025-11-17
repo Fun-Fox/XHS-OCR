@@ -2,7 +2,6 @@
 数据处理流水线模块
 提供完整的数据处理流水线，按顺序执行各种数据融合操作
 """
-from db.data_sync import sync_explore_data_to_remote
 from db.data_dms import sync_explore_data_merge_to_remote
 
 
