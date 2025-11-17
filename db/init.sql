@@ -51,8 +51,4 @@ CREATE TABLE `s_xhs_user_info_ocr` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
- Create table SQL: CREATE TABLE s_xhs_user_info_ocr
- ( `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
- UNIQUE KEY `unique_constraint` (`account_id`, `collection_time`) )
- ENGINE=InnoDB
- DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+ CREATE TABLE s_xhs_user_info_ocr ( `id` BIGINT AUTO_INCREMENT PRIMARY KEY, UNIQUE KEY `unique_constraint_account_id_collection_time` (`account_id`, `collection_time`), `source_type` TEXT COMMENT '数据来源', `device_ip` TEXT COMMENT '设备IP', `account_id` VARCHAR(255) COMMENT '账号ID', `nickname` TEXT COMMENT '账号昵称', `collection_time` DATETIME COMMENT '采集时间', `follows` TEXT COMMENT '关注数', `fans` TEXT COMMENT '粉丝数', `interaction` TEXT COMMENT '获赞与收藏', `url` VARCHAR(512) COMMENT '链接' ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci

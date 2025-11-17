@@ -102,6 +102,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
     同步数据到MySQL数据库
     支持表不存在时创建表，字段不存在时新增字段
     """
+    create_table_if_not_exists(None, table_name, column_names, unique_constraints)
     try:
         import pymysql
         # 创建MySQL连接
@@ -206,14 +207,13 @@ def create_table_if_not_exists(cursor, table_name, column_names, unique_constrai
     # 处理唯一约束
     if unique_constraints:
         # 使用传入的唯一约束
-        for constraint in unique_constraints:
-            if isinstance(constraint, str):  # 单字段唯一约束
-                eng_col = FIELD_MAPPING.get(constraint, constraint)
+            if isinstance(unique_constraints, str):  # 单字段唯一约束
+                eng_col = FIELD_MAPPING.get(unique_constraints, unique_constraints)
                 if eng_col in field_definitions:
                     unique_keys.append(f"`{eng_col}`")
-            elif isinstance(constraint, list):  # 多字段组合唯一约束
+            elif isinstance(unique_constraints, list):  # 多字段组合唯一约束
                 composite_keys = []
-                for col in constraint:
+                for col in unique_constraints:
                     eng_col = FIELD_MAPPING.get(col, col)
                     if eng_col in field_definitions:
                         composite_keys.append(f"`{eng_col}`")
