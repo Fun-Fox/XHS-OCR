@@ -8,7 +8,7 @@ from PIL import Image
 from core.logger import logger
 from core.ocr import sort_text_lines_by_position, ocr
 
-from core.user_profile import get_user_profile_data
+# from core.user_profile import get_user_profile_data
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
 import time
@@ -166,23 +166,21 @@ def process_images():
             date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
             collect_date = date_dir
 
-            if filename == "profile_url.txt":
-                # 如果文件名是profile_url.txt 则读取文件，并且使用当前时间戳
+            if filename == "profile_url.json":
+                user_info = {}
+                # 如果文件名是profile_url.json 则读取文件
                 with open(file_path, 'r', encoding='utf-8') as f:
-                    author_profile_url = f.read().strip()
-                    # # 获取文件最后修改时间
-                    # modified_time = os.path.getmtime(file_path)
-                    # # 使用北京时间
-                    # import pytz
-                    #
-                    # utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
-                    # beijing_tz = pytz.timezone('Asia/Shanghai')
-                    # beijing_time = utc_dt.astimezone(beijing_tz)
-                    # collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
+                    profile_data = json.load(f)
+                    if isinstance(profile_data, dict):
+                        author_profile_url = profile_data.get("user_profile_url", "")
+                        user_info['nickname'] = profile_data.get('nickname', '')
+                        user_info['follows'] = profile_data.get('following_count', '')
+                        user_info['fans'] = profile_data.get('fans', '')
+                        user_info['interaction'] = profile_data.get('likes_collect_count', '')
 
                 parent_dir = os.path.dirname(file_path)
                 try:
-                    user_info = asyncio.run(get_user_profile_data(author_profile_url))
+                    # user_info = asyncio.run(get_user_profile_data(author_profile_url))
                     # 检查目录名是否包含 # 字符
                     if '#' in os.path.basename(parent_dir):
                         ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
