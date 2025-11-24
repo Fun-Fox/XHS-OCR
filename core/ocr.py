@@ -56,7 +56,59 @@ import os
 from PIL import Image, ImageDraw
 
 
-def sort_text_lines_by_position(text_lines):
+def sort_text_lines_by_paddle_position(text_lines):
+    """
+    对文本行按位置进行排序：从上到下，从左到右
+
+    Args:
+        text_lines: OCR识别结果中的文本行列表
+
+    Returns:
+        排序后的文本行列表
+    """
+
+    # 按照y坐标（顶部）排序，如果y坐标相近则按x坐标排序
+    def get_line_position(line):
+        box = line['box']
+        # 计算包围盒的中心点y坐标和x坐标作为排序依据
+        y_center = sum(point[1] for point in box) / 4
+        x_center = sum(point[0] for point in box) / 4
+        return (y_center, x_center)
+
+    # 先大致按y坐标排序
+    sorted_lines = sorted(text_lines, key=get_line_position)
+
+    # 更精细地处理同一行的内容（y坐标相近的视为一行）
+    # 这里我们假设同一行的高度差不超过平均高度的一半
+    result = []
+    current_line = []
+    last_y = None
+
+    for line in sorted_lines:
+        box = line['box']
+        y_center = sum(point[1] for point in box) / 4
+        x_center = sum(point[0] for point in box) / 4
+
+        if last_y is None or abs(y_center - last_y) < 20:  # 同一行的阈值设为20像素
+            current_line.append((x_center, line))
+        else:
+            # 将前一行按x坐标排序后加入结果
+            current_line.sort(key=lambda x: x[0])
+            result.extend([item[1] for item in current_line])
+
+            # 开始新的一行
+            current_line = [(x_center, line)]
+
+        last_y = y_center
+
+    # 处理最后一行
+    if current_line:
+        current_line.sort(key=lambda x: x[0])
+        result.extend([item[1] for item in current_line])
+
+    return result
+
+def sort_text_lines_by_surya_position(text_lines):
     """
     按照从上到下、从左到右的顺序对文本行进行排序
 

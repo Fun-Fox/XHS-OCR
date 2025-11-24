@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from core.logger import logger
-from core.ocr import sort_text_lines_by_position, ocr
+from core.ocr import sort_text_lines_by_surya_position, ocr, sort_text_lines_by_paddle_position
 
 # from core.user_profile import get_user_profile_data
 # 引入数据库模块
@@ -298,16 +298,19 @@ def process_images():
 
                 if ocr_engine == "PaddleOCR":
                     getObj = ocr.run(temp_output_path)
+                    # print(getObj)
                     if not getObj["code"] == 100:
                         logger.info(f"识别结果: {getObj}")
                         logger.error(f"识别失败: {filename}")
                         continue
-                    sorted_lines = getObj["data"]
+                    # sorted_lines = getObj["data"]
+                    # 这里也增加从左到右 从上到下的排序功能
+                    sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
                 else:
                     # 执行OCR
                     img = Image.open(temp_output_path)
                     img_pred = ocr(img, with_bboxes=True)
-                    sorted_lines = sort_text_lines_by_position(img_pred.text_lines)
+                    sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
                 #
                 # # 提取OCR文本数据
                 # ocr_texts = []
