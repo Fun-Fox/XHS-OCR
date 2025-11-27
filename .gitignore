@@ -20,5 +20,4 @@ __pycache__
 *.webm
 *.html
 /models
-/db/*.db
 *.env
