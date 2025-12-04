@@ -305,7 +305,7 @@ def process_images():
                         continue
                     # sorted_lines = getObj["data"]
                     # 这里也增加从左到右 从上到下的排序功能
-                    print("排序前:", getObj["data"])
+                    # print("排序前:", getObj["data"])
                     sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
                 else:
                     # 执行OCR
