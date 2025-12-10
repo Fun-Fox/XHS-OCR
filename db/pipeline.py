@@ -26,6 +26,15 @@ def run_data_processing_pipeline(days=3):
         related_key=["账号ID", "设备IP", "采集日期", "链接"]
     )
 
+    sync_explore_data_merge_to_remote(
+        table_name_list=['s_xhs_note_data_overview_top_ocr', 's_xhs_note_data_overview_bottom_ocr'],
+        merged_table_name="s_xhs_note_data_overview_ocr",
+        merge_type="related",
+        business_time_filter={"column": "采集日期", "days": days},
+        target_db="local",
+        related_key=["账号ID", "设备IP", "采集日期", "链接"]
+    )
+
     # 步骤2: 总览数据处理
     # 将视频数据与图文数据进行非关联合并，生成总览数据
     print("步骤2: 处理总览数据...")

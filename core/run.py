@@ -235,124 +235,151 @@ def process_images():
                     ip_port_dir, account_id = os.path.basename(parent_dir), '无'
 
                 logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
-                # 读取原图和遮罩图
-                original_img = imread_with_pil(file_path)
-                mask_path = os.path.join(root_dir, "mask", f"{tag}.png")
-                mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
 
-                # 检查原图是否有效
-                if original_img is None:
-                    logger.error(f"原图加载失败: {file_path}")
-                    continue
+                # 查找tag文件夹中的所有遮罩文件
+                mask_folder = os.path.join(root_dir, "mask", tag)
+                mask_files = []
 
-                # 检查遮罩图是否有效
-                if mask_img is None:
-                    logger.error(f"遮罩图加载失败: {mask_path}")
-                    continue
+                if os.path.exists(mask_folder) and os.path.isdir(mask_folder):
+                    # 获取文件夹内所有png文件
+                    for file in os.listdir(mask_folder):
+                        if file.lower().endswith('.png'):
+                            mask_files.append(file)
+                    mask_files.sort()  # 排序确保处理顺序一致性
 
-                # 确保遮罩图与原图尺寸一致
-                if original_img.shape[:2] != mask_img.shape[:2]:
-                    logger.warning(f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
-                    continue
+                # 依次尝试每个遮罩文件
+                ocr_success = False
+                for mask_file in mask_files:
+                    try:
+                        mask_path = os.path.join(mask_folder, mask_file)
+                        # 读取原图和遮罩图
+                        original_img = imread_with_pil(file_path)
+                        mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
 
-                # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
-                alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
-                result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
-                result_img = result_img.astype(np.uint8)
+                        # 检查原图是否有效
+                        if original_img is None:
+                            logger.error(f"原图加载失败: {file_path}")
+                            continue
 
-                # 将结果保存为临时文件
-                temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
-                # temp_output_path = os.path.join(root_dir, r"tmp", f"{time.time()}.png")
-                # 放大
-                # result_img = upscale_image(result_img, scale_factor=2)
-                # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
-                cv2.imwrite(temp_output_path, result_img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
+                        # 检查遮罩图是否有效
+                        if mask_img is None:
+                            logger.error(f"遮罩图加载失败: {mask_path}")
+                            continue
 
-                # 等待文件写入完成并验证
-                timeout = 5  # 超时时间（秒）
-                start_time = time.time()
-                while not os.path.exists(temp_output_path):
-                    if time.time() - start_time > timeout:
-                        logger.error(f"文件写入超时: {temp_output_path}")
+                        # 确保遮罩图与原图尺寸一致
+                        if original_img.shape[:2] != mask_img.shape[:2]:
+                            logger.warning(f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
+                            continue
+
+                        # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
+                        alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
+                        result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
+                        result_img = result_img.astype(np.uint8)
+
+                        # 将结果保存为临时文件
+                        temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
+                        # temp_output_path = os.path.join(root_dir, r"tmp", f"{time.time()}.png")
+                        # 放大
+                        # result_img = upscale_image(result_img, scale_factor=2)
+                        # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                        cv2.imwrite(temp_output_path, result_img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
+
+                        # 等待文件写入完成并验证
+                        timeout = 5  # 超时时间（秒）
+                        start_time = time.time()
+                        while not os.path.exists(temp_output_path):
+                            if time.time() - start_time > timeout:
+                                logger.error(f"文件写入超时: {temp_output_path}")
+                                break
+                            time.sleep(0.1)
+
+                        # 验证文件是否写入成功
+                        if os.path.exists(temp_output_path):
+                            file_size = os.path.getsize(temp_output_path)
+                            if file_size > 0:
+                                logger.info(f"临时文件保存完成，大小: {file_size} bytes")
+                            else:
+                                logger.warning(f"临时文件写入完成但大小为0: {temp_output_path}")
+                        else:
+                            logger.error(f"临时文件保存失败: {temp_output_path}")
+
+                        # 从配置文件中获取index_mapping_data
+                        index_mapping_data = []
+                        if config.has_section('tags') and config.has_option('tags', tag):
+                            index_mapping_data_str = config.get('tags', tag)
+                            index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
+                        # 执行 OCR 识别
+                        # 使用快速的蒙版识别方式，使用VLM OCR方式
+                        logger.info(f"正在处理: {filename}")
+
+                        if ocr_engine == "PaddleOCR":
+                            getObj = ocr.run(temp_output_path)
+                            # print(getObj)
+                            if not getObj["code"] == 100:
+                                logger.info(f"识别结果: {getObj}")
+                                logger.error(f"识别失败: {filename}")
+                                continue
+                            # sorted_lines = getObj["data"]
+                            # 这里也增加从左到右 从上到下的排序功能
+                            # print("排序前:", getObj["data"])
+                            sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
+                        else:
+                            # 执行OCR
+                            img = Image.open(temp_output_path)
+                            img_pred = ocr(img, with_bboxes=True)
+                            sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
+                        #
+                        # # 提取OCR文本数据
+                        # ocr_texts = []
+                        # for index, line in enumerate(getObj["data"]):
+                        #     text = str(line['text'])
+                        #     if '秒' in text:
+                        #         text = text.replace('秒', '')
+                        #     elif 'o' in text:
+                        #         text = text.replace('o', '0')
+                        #
+                        #     # logger.info(f"{index}:{text}")
+                        #     # 判断text为数字或%的时候，才打印
+                        #     # 判断text为数字或%的时候，才打印
+                        #     if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
+                        #         ocr_texts.append(text)
+                        #         logger.info(f"{index_mapping_data[index]}:{text}")
+                        #     # logger.info(f"{index_mapping_data[index]}:{text}")
+
+                        # if len(getObj["data"]) != len(index_mapping_data):
+                        #     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                        #     continue
+
+                        ocr_texts = []
+                        for line in sorted_lines:
+                            if ocr_engine == "PaddleOCR":
+                                text = str(line['text'])
+                            else:
+                                text = line.text
+                            text = re.sub(r'[\u4e00-\u9fff]+', '', text)
+                            text = (text.replace('秒', '')
+                                    .replace(' ', '')
+                                    .replace('o', '0')
+                                    .replace('<b>', '')
+                                    .replace('</b>', ''))
+                            if text:
+                                ocr_texts.append(text)
+                        print(ocr_texts)
+
+                        if len(ocr_texts) != len(index_mapping_data):
+                            logger.warning(
+                                f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                            continue
+                        ocr_success = True
+                        logger.info(f"使用遮罩文件 {mask_file} 处理成功")
                         break
-                    time.sleep(0.1)
 
-                # 验证文件是否写入成功
-                if os.path.exists(temp_output_path):
-                    file_size = os.path.getsize(temp_output_path)
-                    if file_size > 0:
-                        logger.info(f"临时文件保存完成，大小: {file_size} bytes")
-                    else:
-                        logger.warning(f"临时文件写入完成但大小为0: {temp_output_path}")
-                else:
-                    logger.error(f"临时文件保存失败: {temp_output_path}")
-
-                # 从配置文件中获取index_mapping_data
-                index_mapping_data = []
-                if config.has_section('tags') and config.has_option('tags', tag):
-                    index_mapping_data_str = config.get('tags', tag)
-                    index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
-                # 执行 OCR 识别
-                # 使用快速的蒙版识别方式，使用VLM OCR方式
-                logger.info(f"正在处理: {filename}")
-
-                if ocr_engine == "PaddleOCR":
-                    getObj = ocr.run(temp_output_path)
-                    # print(getObj)
-                    if not getObj["code"] == 100:
-                        logger.info(f"识别结果: {getObj}")
-                        logger.error(f"识别失败: {filename}")
+                    except Exception as e:
+                        logger.warning(f"使用遮罩文件 {mask_file} 处理失败: {e}")
                         continue
-                    # sorted_lines = getObj["data"]
-                    # 这里也增加从左到右 从上到下的排序功能
-                    # print("排序前:", getObj["data"])
-                    sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
-                else:
-                    # 执行OCR
-                    img = Image.open(temp_output_path)
-                    img_pred = ocr(img, with_bboxes=True)
-                    sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
-                #
-                # # 提取OCR文本数据
-                # ocr_texts = []
-                # for index, line in enumerate(getObj["data"]):
-                #     text = str(line['text'])
-                #     if '秒' in text:
-                #         text = text.replace('秒', '')
-                #     elif 'o' in text:
-                #         text = text.replace('o', '0')
-                #
-                #     # logger.info(f"{index}:{text}")
-                #     # 判断text为数字或%的时候，才打印
-                #     # 判断text为数字或%的时候，才打印
-                #     if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
-                #         ocr_texts.append(text)
-                #         logger.info(f"{index_mapping_data[index]}:{text}")
-                #     # logger.info(f"{index_mapping_data[index]}:{text}")
 
-                # if len(getObj["data"]) != len(index_mapping_data):
-                #     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                #     continue
-
-                ocr_texts = []
-                for line in sorted_lines:
-                    if ocr_engine == "PaddleOCR":
-                        text = str(line['text'])
-                    else:
-                        text = line.text
-                    text = re.sub(r'[\u4e00-\u9fff]+', '', text)
-                    text = (text.replace('秒', '')
-                            .replace(' ', '')
-                            .replace('o', '0')
-                            .replace('<b>', '')
-                            .replace('</b>', ''))
-                    if text:
-                        ocr_texts.append(text)
-                print(ocr_texts)
-
-                if len(ocr_texts) != len(index_mapping_data):
-                    logger.warning(
-                        f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                if not ocr_success:
+                    logger.error(f"使用所有遮罩文件处理失败: {filename}")
                     continue
 
                 # 保存数据到数据库
