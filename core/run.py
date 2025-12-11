@@ -143,256 +143,265 @@ def process_images():
         logger.error(f"OCR目录不存在: {ocr_dir}")
         return
 
-    for root, dirs, files in os.walk(ocr_dir):
-        # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
-        dir_contains_recent_date = any(date in root for date in recent_dates)
+    # 第一步：只扫描一级目录
+    level_one_dirs = []
+    for item in os.listdir(ocr_dir):
+        item_path = os.path.join(ocr_dir, item)
+        if os.path.isdir(item_path):
+            logger.info(f"一级目录: {item}")
+            level_one_dirs.append(item)
 
-        logger.info(f"扫描目录: {root}, 包含最近日期: {dir_contains_recent_date}")
+    # 第二步：扫描二级目录
+    for level_one_dir in level_one_dirs:
 
-        # 如果是根目录，继续遍历子目录
-        if root == ocr_dir:
-            continue
+        level_one_path = os.path.join(ocr_dir, level_one_dir)
+        app_name = level_one_dir
+        logger.info(f" APP名称： {app_name}")
+        for item in os.listdir(level_one_path):
+            item_path = os.path.join(level_one_path, item)
+            if os.path.isdir(item_path):
+                logger.info(f"  二级目录: {level_one_dir}/{item}")
+                hard_ware = item
+                logger.info(f"  硬件名称： {hard_ware}")
 
-        # 如果当前路径不包含最近3天的日期，则跳过
-        if not dir_contains_recent_date:
-            logger.info(f"跳过目录(非最近{day}天): {root}")
-            continue
+                for root, dirs, files in os.walk(ocr_dir):
+                    # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
+                    dir_contains_recent_date = any(date in root for date in recent_dates)
 
-        logger.info(f"处理最近{day}天的目录: {root}")
-        for filename in files:
-            # 构建图片路径
-            file_path = os.path.join(root, filename)
-            parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
-            date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
-            collect_date = date_dir
+                    logger.info(f"扫描目录: {root}, 包含最近日期: {dir_contains_recent_date}")
 
-            if filename == "profile_url.json":
-                user_info = {}
-                # 如果文件名是profile_url.json 则读取文件
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    profile_data = json.load(f)
-                    if isinstance(profile_data, dict):
-                        author_profile_url = profile_data.get("user_profile_url", "")
-                        user_info['nickname'] = profile_data.get('nickname', '')
-                        user_info['follows'] = profile_data.get('following_count', '')
-                        user_info['fans'] = profile_data.get('fans', '')
-                        user_info['interaction'] = profile_data.get('likes_collect_count', '')
-
-                parent_dir = os.path.dirname(file_path)
-                try:
-                    # user_info = asyncio.run(get_user_profile_data(author_profile_url))
-                    # 检查目录名是否包含 # 字符
-                    if '#' in os.path.basename(parent_dir):
-                        ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
-                    else:
-                        ip_port_dir, account_id = os.path.basename(parent_dir), '无'
-                    # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
-                    if isinstance(user_info, dict):
-                        logger.info(f"保存用户信息成功: {user_info}")
-                        save_userinfo_data(user_info, ip_port_dir, account_id, collect_date, author_profile_url)
-                    else:
-                        logger.error(f"获取用户信息失败: {author_profile_url}")
-                except Exception as e:
-                    logger.error(f"获取用户信息失败: {author_profile_url}")
-            elif ".png" in filename:
-                tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
-                json_filename = f"{post_title}.json"
-                json_file_path = os.path.join(root, json_filename)
-                logger.info(f"处理文件: {json_file_path}")
-                note_link = ""
-                if os.path.exists(json_file_path):
-                    try:
-                        with open(json_file_path, 'r', encoding='utf-8') as f:
-                            json_data = json.load(f)
-                            note_link = json_data.get("note_link", "")
-                            post_content = json_data.get("post_content", "")
-                            clean_title = json_data.get("clean_title", "")
-                    except Exception as e:
-                        logger.error(f"读取JSON文件失败: {json_file_path}, 错误: {e}")
-                else:
-                    logger.warning(f"JSON文件不存在: {json_file_path}")
-                # 获取post_title查找当前目录下的同名json文件，读取数据 note_link,post_content,clean_title
-                # {
-                #     "note_link": "http://xhslink.com/o/1wQYKbI86o4",
-                #     "post_content": "",
-                #     "title": "笔记,小香风女孩报道,来自吃土潮玩收藏家,4赞，141阅读",
-                #     "clean_title": "小香风女孩报道",
-                #     "timestamp": "2025-11-07 04:08:28"
-                # }
-
-                # modified_time = os.path.getmtime(file_path)
-                # 使用北京时间
-                # import pytz
-                # utc_dt = datetime.fromtimestamp(modified_time, tz=pytz.UTC)
-                # beijing_tz = pytz.timezone('Asia/Shanghai')
-                # beijing_time = utc_dt.astimezone(beijing_tz)
-                # collect_time = beijing_time.strftime('%Y-%m-%d %H:%M:%S')
-
-                if '#' in os.path.basename(parent_dir):
-                    ip_and_account = os.path.basename(parent_dir).split('#')
-                    ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
-                else:
-                    ip_port_dir, account_id = os.path.basename(parent_dir), '无'
-
-                logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
-
-                # 查找tag文件夹中的所有遮罩文件
-                mask_folder = os.path.join(root_dir, "mask", tag)
-                mask_files = []
-
-                if os.path.exists(mask_folder) and os.path.isdir(mask_folder):
-                    # 获取文件夹内所有png文件
-                    for file in os.listdir(mask_folder):
-                        if file.lower().endswith('.png'):
-                            mask_files.append(file)
-                    mask_files.sort()  # 排序确保处理顺序一致性
-
-                # 依次尝试每个遮罩文件
-                ocr_success = False
-                for mask_file in mask_files:
-                    try:
-                        mask_path = os.path.join(mask_folder, mask_file)
-                        # 读取原图和遮罩图
-                        original_img = imread_with_pil(file_path)
-                        mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
-
-                        # 检查原图是否有效
-                        if original_img is None:
-                            logger.error(f"原图加载失败: {file_path}")
-                            continue
-
-                        # 检查遮罩图是否有效
-                        if mask_img is None:
-                            logger.error(f"遮罩图加载失败: {mask_path}")
-                            continue
-
-                        # 确保遮罩图与原图尺寸一致
-                        if original_img.shape[:2] != mask_img.shape[:2]:
-                            logger.warning(f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
-                            continue
-
-                        # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
-                        alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
-                        result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
-                        result_img = result_img.astype(np.uint8)
-
-                        # 将结果保存为临时文件
-                        temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
-                        # temp_output_path = os.path.join(root_dir, r"tmp", f"{time.time()}.png")
-                        # 放大
-                        # result_img = upscale_image(result_img, scale_factor=2)
-                        # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
-                        cv2.imwrite(temp_output_path, result_img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
-
-                        # 等待文件写入完成并验证
-                        timeout = 5  # 超时时间（秒）
-                        start_time = time.time()
-                        while not os.path.exists(temp_output_path):
-                            if time.time() - start_time > timeout:
-                                logger.error(f"文件写入超时: {temp_output_path}")
-                                break
-                            time.sleep(0.1)
-
-                        # 验证文件是否写入成功
-                        if os.path.exists(temp_output_path):
-                            file_size = os.path.getsize(temp_output_path)
-                            if file_size > 0:
-                                logger.info(f"临时文件保存完成，大小: {file_size} bytes")
-                            else:
-                                logger.warning(f"临时文件写入完成但大小为0: {temp_output_path}")
-                        else:
-                            logger.error(f"临时文件保存失败: {temp_output_path}")
-
-                        # 从配置文件中获取index_mapping_data
-                        index_mapping_data = []
-                        if config.has_section('tags') and config.has_option('tags', tag):
-                            index_mapping_data_str = config.get('tags', tag)
-                            index_mapping_data = [item.strip() for item in index_mapping_data_str.split(',')]
-                        # 执行 OCR 识别
-                        # 使用快速的蒙版识别方式，使用VLM OCR方式
-                        logger.info(f"正在处理: {filename}")
-
-                        if ocr_engine == "PaddleOCR":
-                            getObj = ocr.run(temp_output_path)
-                            # print(getObj)
-                            if not getObj["code"] == 100:
-                                logger.info(f"识别结果: {getObj}")
-                                logger.error(f"识别失败: {filename}")
-                                continue
-                            # sorted_lines = getObj["data"]
-                            # 这里也增加从左到右 从上到下的排序功能
-                            # print("排序前:", getObj["data"])
-                            sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
-                        else:
-                            # 执行OCR
-                            img = Image.open(temp_output_path)
-                            img_pred = ocr(img, with_bboxes=True)
-                            sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
-                        #
-                        # # 提取OCR文本数据
-                        # ocr_texts = []
-                        # for index, line in enumerate(getObj["data"]):
-                        #     text = str(line['text'])
-                        #     if '秒' in text:
-                        #         text = text.replace('秒', '')
-                        #     elif 'o' in text:
-                        #         text = text.replace('o', '0')
-                        #
-                        #     # logger.info(f"{index}:{text}")
-                        #     # 判断text为数字或%的时候，才打印
-                        #     # 判断text为数字或%的时候，才打印
-                        #     if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
-                        #         ocr_texts.append(text)
-                        #         logger.info(f"{index_mapping_data[index]}:{text}")
-                        #     # logger.info(f"{index_mapping_data[index]}:{text}")
-
-                        # if len(getObj["data"]) != len(index_mapping_data):
-                        #     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                        #     continue
-
-                        ocr_texts = []
-                        for line in sorted_lines:
-                            if ocr_engine == "PaddleOCR":
-                                text = str(line['text'])
-                            else:
-                                text = line.text
-                            text = re.sub(r'[\u4e00-\u9fff]+', '', text)
-                            text = (text.replace('秒', '')
-                                    .replace(' ', '')
-                                    .replace('o', '0')
-                                    .replace('<b>', '')
-                                    .replace('</b>', ''))
-                            if text:
-                                ocr_texts.append(text)
-                        print(ocr_texts)
-
-                        if len(ocr_texts) != len(index_mapping_data):
-                            logger.warning(
-                                f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                            continue
-                        ocr_success = True
-                        logger.info(f"使用遮罩文件 {mask_file} 处理成功")
-                        break
-
-                    except Exception as e:
-                        logger.warning(f"使用遮罩文件 {mask_file} 处理失败: {e}")
+                    # 如果是根目录，继续遍历子目录
+                    if root == ocr_dir:
                         continue
 
-                if not ocr_success:
-                    logger.error(f"使用所有遮罩文件处理失败: {filename}")
-                    continue
+                    # 如果当前路径不包含最近3天的日期，则跳过
+                    if not dir_contains_recent_date:
+                        logger.info(f"跳过目录(非最近{day}天): {root}")
+                        continue
 
-                # 保存数据到数据库
-                tag = re.sub(r'\d+', '', tag)
-                # if note_link:
-                if 'video' in tag:
-                    content_type = "视频"
-                else:
-                    content_type = "图文"
+                    logger.info(f"处理最近{day}天的目录: {root}")
+                    for filename in files:
+                        # 构建图片路径
+                        file_path = os.path.join(root, filename)
+                        parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
+                        date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
+                        collect_date = date_dir
 
-                save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data, collect_date,
-                              ip_port_dir,
-                              account_id)
+                        if filename == "profile_url.json":
+                            user_info = {}
+                            # 如果文件名是profile_url.json 则读取文件
+                            with open(file_path, 'r', encoding='utf-8') as f:
+                                profile_data = json.load(f)
+                                if isinstance(profile_data, dict):
+                                    author_profile_url = profile_data.get("user_profile_url", "")
+                                    user_info['nickname'] = profile_data.get('nickname', '')
+                                    user_info['follows'] = profile_data.get('following_count', '')
+                                    user_info['fans'] = profile_data.get('fans', '')
+                                    user_info['interaction'] = profile_data.get('likes_collect_count', '')
+
+                            parent_dir = os.path.dirname(file_path)
+                            try:
+                                # user_info = asyncio.run(get_user_profile_data(author_profile_url))
+                                # 检查目录名是否包含 # 字符
+                                if '#' in os.path.basename(parent_dir):
+                                    ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
+                                else:
+                                    ip_port_dir, account_id = os.path.basename(parent_dir), '无'
+                                # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
+                                if isinstance(user_info, dict):
+                                    logger.info(f"保存用户信息成功: {user_info}")
+                                    save_userinfo_data(user_info, ip_port_dir, account_id, collect_date,
+                                                       author_profile_url)
+                                else:
+                                    logger.error(f"获取用户信息失败: {author_profile_url}")
+                            except Exception as e:
+                                logger.error(f"获取用户信息失败: {author_profile_url}")
+                        elif ".png" in filename:
+                            tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
+                            json_filename = f"{post_title}.json"
+                            json_file_path = os.path.join(root, json_filename)
+                            logger.info(f"处理文件: {json_file_path}")
+                            note_link = ""
+                            if os.path.exists(json_file_path):
+                                try:
+                                    with open(json_file_path, 'r', encoding='utf-8') as f:
+                                        json_data = json.load(f)
+                                        note_link = json_data.get("note_link", "")
+                                        post_content = json_data.get("post_content", "")
+                                        clean_title = json_data.get("clean_title", "")
+                                except Exception as e:
+                                    logger.error(f"读取JSON文件失败: {json_file_path}, 错误: {e}")
+                            else:
+                                logger.warning(f"JSON文件不存在: {json_file_path}")
+
+                            if '#' in os.path.basename(parent_dir):
+                                ip_and_account = os.path.basename(parent_dir).split('#')
+                                ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
+                            else:
+                                ip_port_dir, account_id = os.path.basename(parent_dir), '无'
+
+                            logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
+
+                            # 查找tag文件夹中的所有遮罩文件
+                            mask_folder = os.path.join(root_dir, "mask", app_name, hard_ware, tag)
+                            mask_files = []
+
+                            if os.path.exists(mask_folder) and os.path.isdir(mask_folder):
+                                # 获取文件夹内所有png文件
+                                for file in os.listdir(mask_folder):
+                                    if file.lower().endswith('.png'):
+                                        mask_files.append(file)
+                                mask_files.sort()  # 排序确保处理顺序一致性
+
+                            # 依次尝试每个遮罩文件
+                            ocr_success = False
+                            for mask_file in mask_files:
+                                try:
+                                    mask_path = os.path.join(mask_folder, mask_file)
+                                    # 读取原图和遮罩图
+                                    original_img = imread_with_pil(file_path)
+                                    mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
+
+                                    # 检查原图是否有效
+                                    if original_img is None:
+                                        logger.error(f"原图加载失败: {file_path}")
+                                        continue
+
+                                    # 检查遮罩图是否有效
+                                    if mask_img is None:
+                                        logger.error(f"遮罩图加载失败: {mask_path}")
+                                        continue
+
+                                    # 确保遮罩图与原图尺寸一致
+                                    if original_img.shape[:2] != mask_img.shape[:2]:
+                                        logger.warning(
+                                            f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
+                                        continue
+
+                                    # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
+                                    alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
+                                    result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
+                                    result_img = result_img.astype(np.uint8)
+
+                                    # 将结果保存为临时文件
+                                    temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
+                                    # temp_output_path = os.path.join(root_dir, r"tmp", f"{time.time()}.png")
+                                    # 放大
+                                    # result_img = upscale_image(result_img, scale_factor=2)
+                                    # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                                    cv2.imwrite(temp_output_path, result_img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
+
+                                    # 等待文件写入完成并验证
+                                    timeout = 5  # 超时时间（秒）
+                                    start_time = time.time()
+                                    while not os.path.exists(temp_output_path):
+                                        if time.time() - start_time > timeout:
+                                            logger.error(f"文件写入超时: {temp_output_path}")
+                                            break
+                                        time.sleep(0.1)
+
+                                    # 验证文件是否写入成功
+                                    if os.path.exists(temp_output_path):
+                                        file_size = os.path.getsize(temp_output_path)
+                                        if file_size > 0:
+                                            logger.info(f"临时文件保存完成，大小: {file_size} bytes")
+                                        else:
+                                            logger.warning(f"临时文件写入完成但大小为0: {temp_output_path}")
+                                    else:
+                                        logger.error(f"临时文件保存失败: {temp_output_path}")
+
+                                    # 从配置文件中获取index_mapping_data
+                                    index_mapping_data = []
+                                    if config.has_section('tags') and config.has_option('tags', tag):
+                                        index_mapping_data_str = config.get('tags', tag)
+                                        index_mapping_data = [item.strip() for item in
+                                                              index_mapping_data_str.split(',')]
+                                    # 执行 OCR 识别
+                                    # 使用快速的蒙版识别方式，使用VLM OCR方式
+                                    logger.info(f"正在处理: {filename}")
+
+                                    if ocr_engine == "PaddleOCR":
+                                        getObj = ocr.run(temp_output_path)
+                                        # print(getObj)
+                                        if not getObj["code"] == 100:
+                                            logger.info(f"识别结果: {getObj}")
+                                            logger.error(f"识别失败: {filename}")
+                                            continue
+                                        # sorted_lines = getObj["data"]
+                                        # 这里也增加从左到右 从上到下的排序功能
+                                        # print("排序前:", getObj["data"])
+                                        sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
+                                    else:
+                                        # 执行OCR
+                                        img = Image.open(temp_output_path)
+                                        img_pred = ocr(img, with_bboxes=True)
+                                        sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
+                                    #
+                                    # # 提取OCR文本数据
+                                    # ocr_texts = []
+                                    # for index, line in enumerate(getObj["data"]):
+                                    #     text = str(line['text'])
+                                    #     if '秒' in text:
+                                    #         text = text.replace('秒', '')
+                                    #     elif 'o' in text:
+                                    #         text = text.replace('o', '0')
+                                    #
+                                    #     # logger.info(f"{index}:{text}")
+                                    #     # 判断text为数字或%的时候，才打印
+                                    #     # 判断text为数字或%的时候，才打印
+                                    #     if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
+                                    #         ocr_texts.append(text)
+                                    #         logger.info(f"{index_mapping_data[index]}:{text}")
+                                    #     # logger.info(f"{index_mapping_data[index]}:{text}")
+
+                                    # if len(getObj["data"]) != len(index_mapping_data):
+                                    #     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                                    #     continue
+
+                                    ocr_texts = []
+                                    for line in sorted_lines:
+                                        if ocr_engine == "PaddleOCR":
+                                            text = str(line['text'])
+                                        else:
+                                            text = line.text
+                                        text = re.sub(r'[\u4e00-\u9fff]+', '', text)
+                                        text = (text.replace('秒', '')
+                                                .replace(' ', '')
+                                                .replace('o', '0')
+                                                .replace('<b>', '')
+                                                .replace('</b>', ''))
+                                        if text:
+                                            ocr_texts.append(text)
+                                    print(ocr_texts)
+
+                                    if len(ocr_texts) != len(index_mapping_data):
+                                        logger.warning(
+                                            f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                                        continue
+                                    ocr_success = True
+                                    logger.info(f"使用遮罩文件 {mask_file} 处理成功")
+                                    break
+
+                                except Exception as e:
+                                    logger.warning(f"使用遮罩文件 {mask_file} 处理失败: {e}")
+                                    continue
+
+                            if not ocr_success:
+                                logger.error(f"使用所有遮罩文件处理失败: {filename}")
+                                continue
+
+                            # 保存数据到数据库
+                            tag = re.sub(r'\d+', '', tag)
+                            # if note_link:
+                            if 'video' in tag:
+                                content_type = "视频"
+                            else:
+                                content_type = "图文"
+
+                            save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data,
+                                          collect_date,
+                                          ip_port_dir,
+                                          account_id)
 
         # textBlocks = getObj["data"]
 

@@ -6,10 +6,14 @@ XHS-OCR 主入口文件
 """
 
 import os
+import shutil
 import sys
 import time
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
+
+import pytz
+
 from core.logger import logger
 from db.pipeline import run_data_processing_pipeline
 
@@ -24,10 +28,36 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 
 
+def cleanup_old_directories(days_ago=2):
+    """
+    清理指定天数前的本地目录数据
+
+    :param days_ago: 要清理多少天前的数据，默认为2天前
+    """
+    shanghai_tz = pytz.timezone('Asia/Shanghai')
+    home_dir = os.path.expanduser("~")
+
+    # 需要清理的硬件目录列表
+    hardware_list = ['aibox', 'futurecloud']
+
+    # 计算指定天数前的日期
+    target_date = (datetime.now(shanghai_tz) - timedelta(days=days_ago)).strftime('%Y%m%d')
+
+    for hardware in hardware_list:
+        target_dir = os.path.join(home_dir, "ocr", "xhs", hardware, target_date)
+        if os.path.exists(target_dir):
+            try:
+                shutil.rmtree(target_dir)
+                logger.info(f"已清空 {days_ago} 天前的本地目录: {target_dir}")
+            except Exception as e:
+                logger.error(f"清空 {days_ago} 天前目录失败 {target_dir}: {e}")
+
 def run_ocr_task():
     """
     执行OCR识别任务
     """
+    cleanup_old_directories(2)  # 清理2天前的数据
+
     logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行OCR识别任务...")
     try:
         process_images()
