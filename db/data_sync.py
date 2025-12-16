@@ -479,7 +479,7 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                     ON DUPLICATE KEY UPDATE
                     nickname = VALUES(nickname),
                     follows = VALUES(follows),
-                    fans = VALUES(fans)
+                    fans = VALUES(fans),
                     interaction = VALUES(interaction)
                     """
 
