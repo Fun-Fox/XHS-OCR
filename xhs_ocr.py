@@ -76,7 +76,7 @@ def run_sync_task():
         day = int(os.getenv("OCR_RECENT_DAYS", "2"))
         run_data_processing_pipeline(days=day)
         # 数据同步
-        sync_explore_data_to_remote(['s_xhs_user_info_ocr', 's_xhs_data_overview_traffic_analysis'],
+        sync_explore_data_to_remote(['s_xhs_data_overview_traffic_analysis'],
                                     {"column": "采集日期", "days": day})
 
         logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步任务执行完成")

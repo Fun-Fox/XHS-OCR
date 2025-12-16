@@ -206,19 +206,19 @@ def create_table_if_not_exists(cursor, table_name, column_names, unique_constrai
     # 处理唯一约束
     if unique_constraints:
         # 使用传入的唯一约束
-            if isinstance(unique_constraints, str):  # 单字段唯一约束
-                eng_col = FIELD_MAPPING.get(unique_constraints, unique_constraints)
+        if isinstance(unique_constraints, str):  # 单字段唯一约束
+            eng_col = FIELD_MAPPING.get(unique_constraints, unique_constraints)
+            if eng_col in field_definitions:
+                unique_keys.append(f"`{eng_col}`")
+        elif isinstance(unique_constraints, list):  # 多字段组合唯一约束
+            composite_keys = []
+            for col in unique_constraints:
+                eng_col = FIELD_MAPPING.get(col, col)
                 if eng_col in field_definitions:
-                    unique_keys.append(f"`{eng_col}`")
-            elif isinstance(unique_constraints, list):  # 多字段组合唯一约束
-                composite_keys = []
-                for col in unique_constraints:
-                    eng_col = FIELD_MAPPING.get(col, col)
-                    if eng_col in field_definitions:
-                        composite_keys.append(f"`{eng_col}`")
-                if composite_keys:
-                    constraint_name = f"unique_constraint_{'_'.join([c.strip('`') for c in composite_keys])}"
-                    columns_definitions.append(f"UNIQUE KEY `{constraint_name}` ({', '.join(composite_keys)})")
+                    composite_keys.append(f"`{eng_col}`")
+            if composite_keys:
+                constraint_name = f"unique_constraint_{'_'.join([c.strip('`') for c in composite_keys])}"
+                columns_definitions.append(f"UNIQUE KEY `{constraint_name}` ({', '.join(composite_keys)})")
 
     # 将字段定义添加到列定义中
     for field_def in field_definitions.values():
@@ -308,7 +308,7 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
 
         # 导入pymysql
         import pymysql
-        
+
         # 创建MySQL连接
         mysql_conn = pymysql.connect(
             host=db_config.get("host", "localhost"),
@@ -324,7 +324,7 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
             with mysql_conn.cursor() as cursor:
                 # 确保表存在
                 table_name = 's_xhs_data_overview_traffic_analysis'
-                
+
                 # 检查表是否存在
                 try:
                     cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
@@ -334,7 +334,7 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                 except Exception as e:
                     logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
                     table_exists = False
-                
+
                 # 如果表不存在，则创建表
                 if not table_exists:
                     logger.info(f"表 {table_name} 不存在，请手动初始化")
@@ -350,11 +350,11 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                     shares = str(weibo_data.get("forward_count", ""))
                     comments = str(weibo_data.get("comment_count", ""))
                     likes = str(weibo_data.get("like_count", ""))
-                    
+
                     # 获取设备IP和来源类型（如果有提供）
                     device_ip = weibo_data.get("device_ip", "")  # 如果数据中有设备IP可以传入
                     source_type = "1948663593734004737"  # 默认设为weibo
-                    
+
                     # 构建INSERT语句
                     insert_sql = """
                     INSERT INTO s_xhs_data_overview_traffic_analysis 
@@ -367,7 +367,7 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                     comments = VALUES(comments),
                     likes = VALUES(likes)
                     """
-                    
+
                     cursor.execute(insert_sql, (
                         device_ip,
                         account_id,
@@ -381,7 +381,7 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                         likes,
                         "微博"
                     ))
-                
+
                 # 提交事务
                 mysql_conn.commit()
                 logger.info(f"成功同步 {len(weibo_data_list)} 条微博数据到MySQL数据库")
@@ -422,7 +422,7 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
 
         # 导入pymysql
         import pymysql
-        
+
         # 创建MySQL连接
         mysql_conn = pymysql.connect(
             host=db_config.get("host", "localhost"),
@@ -438,7 +438,7 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
             with mysql_conn.cursor() as cursor:
                 # 确保表存在
                 table_name = 's_xhs_user_info_ocr'
-                
+
                 # 检查表是否存在
                 try:
                     cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
@@ -448,7 +448,7 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                 except Exception as e:
                     logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
                     table_exists = False
-                
+
                 # 如果表不存在，则创建表
                 if not table_exists:
                     logger.info(f"表 {table_name} 不存在，请手动初始化")
@@ -461,34 +461,40 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                     url = user_info.get("profile_url", "")
                     follows = str(user_info.get("follows", "0"))
                     fans = str(user_info.get("fans", "0"))
+                    interaction = user_info.get("interaction", "")
                     collection_time = user_info.get("collect_time", "")
-                    
+
                     # 设备IP和来源类型
                     device_ip = ip_port  # 使用ip_port作为设备IP
-                    source_type = "1948663593734004737"  # 默认设为weibo
-                    
+                    if app_name == "xhs":
+                        source_type = "1894230222988058625"
+                    elif app_name == "weibo":
+                        source_type = "1948663593734004737"
+
                     # 构建INSERT语句
                     insert_sql = """
                     INSERT INTO s_xhs_user_info_ocr 
-                    (device_ip, account_id, source_type, url, nickname, follows, fans, collection_time)
-                    VALUES (%s, %s, %s,  %s, %s, %s, %s, %s)
+                    (device_ip, account_id, source_type, url, nickname,interaction, follows, fans, collection_time)
+                    VALUES (%s, %s, %s,  %s, %s, %s, %s, %s,%s)
                     ON DUPLICATE KEY UPDATE
                     nickname = VALUES(nickname),
                     follows = VALUES(follows),
                     fans = VALUES(fans)
+                    interaction = VALUES(interaction)
                     """
-                    
+
                     cursor.execute(insert_sql, (
                         device_ip,
                         account_id,
                         source_type,
                         url,
                         nickname,
+                        interaction,
                         follows,
                         fans,
                         collection_time
                     ))
-                
+
                 # 提交事务
                 mysql_conn.commit()
                 logger.info(f"成功同步 {len(user_info_list)} 条用户信息数据到MySQL数据库")
