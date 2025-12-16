@@ -24,7 +24,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, 'ocr_data.db')
 
 
-def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_profile_url):
+def save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_time, author_profile_url):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     create_table_sql = f'''
@@ -43,6 +43,11 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
         '''
     cursor.execute(create_table_sql)
     conn.commit()
+    source_type =  ""
+    if app_name == "xhs":
+        source_type = "1894230222988058625"
+    elif app_name == "weibo":
+        source_type = "1948663593734004737"
 
     sql_str = f"""
             INSERT OR IGNORE INTO s_xhs_user_info_ocr (
@@ -50,7 +55,7 @@ def save_userinfo_data(user_info, ip_port_dir, account_id, collect_time, author_
             ) VALUES (?,?,?,?,?,?,?,?,?)
         """
     cursor.execute(sql_str, (
-        ip_port_dir, "1894230222988058625", account_id, user_info['nickname'], collect_time, user_info['follows'],
+        ip_port_dir, source_type, account_id, user_info['nickname'], collect_time, user_info['follows'],
         user_info['fans'],
         user_info['interaction'], author_profile_url
     ))
@@ -110,4 +115,3 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
 
     conn.commit()
     conn.close()
-

@@ -184,10 +184,54 @@ def process_images():
                         # 构建图片路径
                         file_path = os.path.join(root, filename)
                         parent_dir = os.path.dirname(file_path)  # 获取图片所在目录
+                        if '#' in os.path.basename(parent_dir):
+                            ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
+                        else:
+                            ip_port_dir, account_id = os.path.basename(parent_dir), '无'
                         date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
                         collect_date = date_dir
 
-                        if filename == "profile_url.json":
+                        if filename == "weibo_data.json" and app_name == "weibo":
+                            # 读取weibo_data.json文件
+                            # 直接同步到远程数据库s_xhs_data_overview_traffic_analysis
+                            try:
+                                with open(file_path, 'r', encoding='utf-8') as f:
+                                    weibo_data_list = json.load(f)
+                                
+                                # 为每条微博数据添加设备IP和账号ID
+                                for weibo_data in weibo_data_list:
+                                    weibo_data["device_ip"] = ip_port_dir
+
+                                # 调用同步函数将数据同步到远程数据库
+                                from db.data_sync import sync_weibo_data_to_remote
+                                sync_weibo_data_to_remote(weibo_data_list, account_id)
+                            except Exception as e:
+                                logger.error(f"处理weibo_data.json文件时出错: {e}")
+
+                        if filename == "user_info.json" and app_name == "weibo":
+                            user_info = {}
+                            # 如果文件名是user_info.json 则读取文件
+                            with open(file_path, 'r', encoding='utf-8') as f:
+                                profile_data = json.load(f)
+                                if isinstance(profile_data, dict):
+                                    author_profile_url = profile_data.get("share_link", "")
+                                    user_info['nickname'] = profile_data.get('nickname', '')
+                                    user_info['follows'] = profile_data.get('follow_count', '')
+                                    user_info['fans'] = profile_data.get('follower_count', '')
+                                    user_info['interaction'] = ""
+
+                            try:
+                                # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
+                                if isinstance(user_info, dict):
+                                    logger.info(f"保存用户信息成功: {user_info}")
+                                    save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
+                                                       author_profile_url)
+                                else:
+                                    logger.error(f"获取用户信息失败: {author_profile_url}")
+                            except Exception as e:
+                                logger.error(f"获取用户信息失败: {author_profile_url}")
+
+                        if filename == "profile_url.json" and app_name == "xhs":
                             user_info = {}
                             # 如果文件名是profile_url.json 则读取文件
                             with open(file_path, 'r', encoding='utf-8') as f:
@@ -203,20 +247,17 @@ def process_images():
                             try:
                                 # user_info = asyncio.run(get_user_profile_data(author_profile_url))
                                 # 检查目录名是否包含 # 字符
-                                if '#' in os.path.basename(parent_dir):
-                                    ip_port_dir, account_id = os.path.basename(parent_dir).split('#')
-                                else:
-                                    ip_port_dir, account_id = os.path.basename(parent_dir), '无'
+
                                 # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
                                 if isinstance(user_info, dict):
                                     logger.info(f"保存用户信息成功: {user_info}")
-                                    save_userinfo_data(user_info, ip_port_dir, account_id, collect_date,
+                                    save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
                                                        author_profile_url)
                                 else:
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
                                 logger.error(f"获取用户信息失败: {author_profile_url}")
-                        elif ".png" in filename:
+                        elif ".png" in filename and app_name == "xhs":
                             tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                             json_filename = f"{post_title}.json"
                             json_file_path = os.path.join(root, json_filename)
@@ -234,11 +275,6 @@ def process_images():
                             else:
                                 logger.warning(f"JSON文件不存在: {json_file_path}")
 
-                            if '#' in os.path.basename(parent_dir):
-                                ip_and_account = os.path.basename(parent_dir).split('#')
-                                ip_port_dir, account_id = ip_and_account[0], ip_and_account[1]  # 获取 IP:端口 名称
-                            else:
-                                ip_port_dir, account_id = os.path.basename(parent_dir), '无'
 
                             logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
 
@@ -336,27 +372,6 @@ def process_images():
                                         img = Image.open(temp_output_path)
                                         img_pred = ocr(img, with_bboxes=True)
                                         sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
-                                    #
-                                    # # 提取OCR文本数据
-                                    # ocr_texts = []
-                                    # for index, line in enumerate(getObj["data"]):
-                                    #     text = str(line['text'])
-                                    #     if '秒' in text:
-                                    #         text = text.replace('秒', '')
-                                    #     elif 'o' in text:
-                                    #         text = text.replace('o', '0')
-                                    #
-                                    #     # logger.info(f"{index}:{text}")
-                                    #     # 判断text为数字或%的时候，才打印
-                                    #     # 判断text为数字或%的时候，才打印
-                                    #     if re.match(r'^\d+(\.\d+)?%?$', text.strip()):
-                                    #         ocr_texts.append(text)
-                                    #         logger.info(f"{index_mapping_data[index]}:{text}")
-                                    #     # logger.info(f"{index_mapping_data[index]}:{text}")
-
-                                    # if len(getObj["data"]) != len(index_mapping_data):
-                                    #     logger.warning("识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
-                                    #     continue
 
                                     ocr_texts = []
                                     for line in sorted_lines:
@@ -402,18 +417,6 @@ def process_images():
                                           collect_date,
                                           ip_port_dir,
                                           account_id)
-
-        # textBlocks = getObj["data"]
-
-        # 可视化结果
-        # vis = visualize(textBlocks, temp_output_path)
-        # # vis.show()
-        #
-        # # 保存可视化结果
-        # output_result_path = os.path.join(root_dir, 'ocr_result', f"{filename}")
-        # vis.save(output_result_path, isText=True)
-        #
-        # logger.info(f"OCR 结果已保存到: {output_result_path}")
 
 
 # 结束 OCR 引擎

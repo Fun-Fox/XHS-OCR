@@ -281,3 +281,115 @@ def add_missing_columns(cursor, table_name, column_names, database_name):
                 cursor.execute(alter_sql)
             except Exception as e:
                 logger.error(f"添加字段 {eng_col} 时出错: {str(e)} (SQL: {alter_sql})")
+
+
+def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
+    """
+    将微博数据同步到远程MySQL数据库中的s_xhs_data_overview_traffic_analysis表
+    
+    参数:
+    weibo_data_list: 微博数据列表，每个元素为包含微博信息的字典
+    account_id: 账号ID，可选
+    """
+    try:
+        # 从环境变量获取数据库配置
+        db_config = {
+            "host": os.getenv("MYSQL_HOST", "localhost"),
+            "port": int(os.getenv("MYSQL_PORT", 3306)),
+            "user": os.getenv("MYSQL_USER", ""),
+            "password": os.getenv("MYSQL_PASSWORD", ""),
+            "database": os.getenv("MYSQL_DATABASE", "")
+        }
+
+        # 如果没有配置数据库，则跳过同步
+        if not all([db_config["host"], db_config["user"], db_config["password"], db_config["database"]]):
+            logger.warning("未配置远程数据库，跳过微博数据同步")
+            return
+
+        # 导入pymysql
+        import pymysql
+        
+        # 创建MySQL连接
+        mysql_conn = pymysql.connect(
+            host=db_config.get("host", "localhost"),
+            port=db_config.get("port", 3306),
+            user=db_config.get("user", ""),
+            password=db_config.get("password", ""),
+            database=db_config.get("database", ""),
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+
+        try:
+            with mysql_conn.cursor() as cursor:
+                # 确保表存在
+                table_name = 's_xhs_data_overview_traffic_analysis'
+                
+                # 检查表是否存在
+                try:
+                    cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+                    table_result = cursor.fetchall()
+                    table_exists = len(table_result) > 0
+                    logger.debug(f"检查表 {table_name} 是否存在: {table_exists}, 查询结果: {table_result}")
+                except Exception as e:
+                    logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
+                    table_exists = False
+                
+                # 如果表不存在，则创建表
+                if not table_exists:
+                    logger.info(f"表 {table_name} 不存在，请手动初始化")
+                    # 使用与现有表结构一致的定义创建表
+
+                # 准备插入数据
+                for weibo_data in weibo_data_list:
+                    # 映射微博数据到表字段
+                    url = weibo_data.get("blog_link", "")
+                    title = weibo_data.get("content", "")
+                    collection_time = weibo_data.get("timestamp", "")
+                    view_count = str(weibo_data.get("read_count", ""))
+                    shares = str(weibo_data.get("forward_count", ""))
+                    comments = str(weibo_data.get("comment_count", ""))
+                    likes = str(weibo_data.get("like_count", ""))
+                    
+                    # 获取设备IP和来源类型（如果有提供）
+                    device_ip = weibo_data.get("device_ip", "")  # 如果数据中有设备IP可以传入
+                    source_type = "1948663593734004737"  # 默认设为weibo
+                    
+                    # 构建INSERT语句
+                    insert_sql = """
+                    INSERT INTO s_xhs_data_overview_traffic_analysis 
+                    (device_ip, account_id, source_type, url, title, collection_time, view_count, shares, comments, likes, type)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE
+                    title = VALUES(title),
+                    view_count = VALUES(view_count),
+                    shares = VALUES(shares),
+                    comments = VALUES(comments),
+                    likes = VALUES(likes)
+                    """
+                    
+                    cursor.execute(insert_sql, (
+                        device_ip,
+                        account_id,
+                        source_type,
+                        url,
+                        title,
+                        collection_time,
+                        view_count,
+                        shares,
+                        comments,
+                        likes,
+                        "微博"
+                    ))
+                
+                # 提交事务
+                mysql_conn.commit()
+                logger.info(f"成功同步 {len(weibo_data_list)} 条微博数据到MySQL数据库")
+
+        finally:
+            mysql_conn.close()
+
+    except ImportError:
+        logger.error("缺少 pymysql 库，请安装: pip install pymysql")
+    except Exception as e:
+        logger.error(f"同步微博数据到 MySQL 数据库时出错: {str(e)}")
