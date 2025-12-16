@@ -217,7 +217,7 @@ def process_images():
                                     user_info['nickname'] = profile_data.get('nickname', '')
                                     user_info['follows'] = profile_data.get('follow_count', '')
                                     user_info['fans'] = profile_data.get('follower_count', '')
-                                    user_info['interaction'] = ''  # 获赞与收藏(微博没有这个数据)
+                                    # user_info['interaction'] = ''  # 获赞与收藏(微博没有这个数据)
                                     user_info['collect_time'] = collect_date  # 添加采集时间
                                     user_info['profile_url'] = author_profile_url  # 添加个人主页链接
 

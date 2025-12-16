@@ -461,7 +461,7 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                     url = user_info.get("profile_url", "")
                     follows = str(user_info.get("follows", "0"))
                     fans = str(user_info.get("fans", "0"))
-                    interaction = user_info.get("interaction", "")
+                    interaction = user_info.get("interaction")
                     collection_time = user_info.get("collect_time", "")
 
                     # 设备IP和来源类型
