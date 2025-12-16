@@ -26,3 +26,22 @@ CREATE TABLE `s_xhs_data_overview_traffic_analysis` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_constraint_account_id_collection_time_url` (`account_id`,`url`,`collection_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1029 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台XHS数据概览_流量分析表';
+
+
+
+-- social_media.s_xhs_user_info_ocr definition
+
+CREATE TABLE `s_xhs_user_info_ocr` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `nickname` text COLLATE utf8mb4_unicode_ci COMMENT '昵称',
+  `device_ip` text COLLATE utf8mb4_unicode_ci COMMENT '设备id',
+  `account_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '账号id',
+  `source_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '应用id',
+  `url` text COLLATE utf8mb4_unicode_ci COMMENT '小红书主页链接',
+  `follows` int DEFAULT '0' COMMENT '关注数',
+  `interaction` int DEFAULT '0' COMMENT '获赞与收藏',
+  `fans` int DEFAULT '0' COMMENT '粉丝数',
+  `collection_time` datetime DEFAULT NULL COMMENT '采集时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_constraint_account_id_collection_time` (`account_id`,`collection_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
