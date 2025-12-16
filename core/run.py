@@ -7,7 +7,8 @@ import numpy as np
 from PIL import Image
 from core.logger import logger
 from core.ocr import sort_text_lines_by_surya_position, ocr, sort_text_lines_by_paddle_position
-
+# 调用同步函数将数据同步到远程数据库
+from db.data_sync import sync_weibo_data_to_remote, sync_user_info_to_remote
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
 import time
@@ -201,8 +202,7 @@ def process_images():
                                 for weibo_data in weibo_data_list:
                                     weibo_data["device_ip"] = ip_port_dir
 
-                                # 调用同步函数将数据同步到远程数据库
-                                from db.data_sync import sync_weibo_data_to_remote
+
                                 sync_weibo_data_to_remote(weibo_data_list, account_id)
                             except Exception as e:
                                 logger.error(f"处理weibo_data.json文件时出错: {e}")
@@ -218,21 +218,26 @@ def process_images():
                                     user_info['nickname'] = profile_data.get('nickname', '')
                                     user_info['follows'] = profile_data.get('follow_count', '')
                                     user_info['fans'] = profile_data.get('follower_count', '')
-                                    user_info['interaction'] = ""
+                                    user_info['collect_time'] = collect_date  # 添加采集时间
+                                    user_info['profile_url'] = author_profile_url  # 添加个人主页链接
 
                             try:
                                 # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
-                                if isinstance(user_info, dict):
+                                if isinstance(user_info, dict) and user_info.get('nickname'):
                                     logger.info(f"保存用户信息成功: {user_info}")
                                     # 同步到本地数据库
                                     save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
                                                        author_profile_url)
+                                    # 同步到远程数据库
+                                    sync_user_info_to_remote([user_info], app_name, ip_port_dir, account_id)
                                 else:
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
-                                logger.error(f"获取用户信息失败: {author_profile_url}")
-
+                                logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
+                                
+                        # 处理小红书用户信息文件 (profile_url.json)
                         if filename == "profile_url.json" and app_name == "xhs":
+                            # 同步到本地数据库
                             user_info = {}
                             # 如果文件名是profile_url.json 则读取文件
                             with open(file_path, 'r', encoding='utf-8') as f:
@@ -242,21 +247,23 @@ def process_images():
                                     user_info['nickname'] = profile_data.get('nickname', '')
                                     user_info['follows'] = profile_data.get('following_count', '')
                                     user_info['fans'] = profile_data.get('fans', '')
-                                    user_info['interaction'] = profile_data.get('likes_collect_count', '')
+                                    user_info['interaction'] = profile_data.get('likes_collect_count', '')  # 获赞与收藏
+                                    user_info['collect_time'] = collect_date  # 添加采集时间
+                                    user_info['profile_url'] = author_profile_url  # 添加个人主页链接
 
                             try:
-                                # user_info = asyncio.run(get_user_profile_data(author_profile_url))
-                                # 检查目录名是否包含 # 字符
-
                                 # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
-                                if isinstance(user_info, dict):
+                                if isinstance(user_info, dict) and user_info.get('nickname'):
                                     logger.info(f"保存用户信息成功: {user_info}")
+                                    # 同步到本地数据库
                                     save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
                                                        author_profile_url)
+                                    # 同步到远程数据库
+                                    sync_user_info_to_remote([user_info], app_name, ip_port_dir, account_id)
                                 else:
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
-                                logger.error(f"获取用户信息失败: {author_profile_url}")
+                                logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
                         elif ".png" in filename and app_name == "xhs":
                             tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                             json_filename = f"{post_title}.json"

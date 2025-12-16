@@ -393,3 +393,110 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
         logger.error("缺少 pymysql 库，请安装: pip install pymysql")
     except Exception as e:
         logger.error(f"同步微博数据到 MySQL 数据库时出错: {str(e)}")
+
+
+def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, account_id=None):
+    """
+    将用户信息数据同步到远程MySQL数据库中的s_xhs_user_info_ocr表
+    
+    参数:
+    user_info_list: 用户信息数据列表，每个元素为包含用户信息的字典
+    app_name: 应用名称
+    ip_port: 设备IP和端口
+    account_id: 账号ID
+    """
+    try:
+        # 从环境变量获取数据库配置
+        db_config = {
+            "host": os.getenv("MYSQL_HOST", "localhost"),
+            "port": int(os.getenv("MYSQL_PORT", 3306)),
+            "user": os.getenv("MYSQL_USER", ""),
+            "password": os.getenv("MYSQL_PASSWORD", ""),
+            "database": os.getenv("MYSQL_DATABASE", "")
+        }
+
+        # 如果没有配置数据库，则跳过同步
+        if not all([db_config["host"], db_config["user"], db_config["password"], db_config["database"]]):
+            logger.warning("未配置远程数据库，跳过用户信息数据同步")
+            return
+
+        # 导入pymysql
+        import pymysql
+        
+        # 创建MySQL连接
+        mysql_conn = pymysql.connect(
+            host=db_config.get("host", "localhost"),
+            port=db_config.get("port", 3306),
+            user=db_config.get("user", ""),
+            password=db_config.get("password", ""),
+            database=db_config.get("database", ""),
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+
+        try:
+            with mysql_conn.cursor() as cursor:
+                # 确保表存在
+                table_name = 's_xhs_user_info_ocr'
+                
+                # 检查表是否存在
+                try:
+                    cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+                    table_result = cursor.fetchall()
+                    table_exists = len(table_result) > 0
+                    logger.debug(f"检查表 {table_name} 是否存在: {table_exists}, 查询结果: {table_result}")
+                except Exception as e:
+                    logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
+                    table_exists = False
+                
+                # 如果表不存在，则创建表
+                if not table_exists:
+                    logger.info(f"表 {table_name} 不存在，请手动初始化")
+                    # 使用与现有表结构一致的定义创建表
+
+                # 准备插入数据
+                for user_info in user_info_list:
+                    # 映射用户信息数据到表字段
+                    nickname = user_info.get("nickname", "")
+                    url = user_info.get("profile_url", "")
+                    follows = str(user_info.get("follows", "0"))
+                    fans = str(user_info.get("fans", "0"))
+                    collection_time = user_info.get("collect_time", "")
+                    
+                    # 设备IP和来源类型
+                    device_ip = ip_port  # 使用ip_port作为设备IP
+                    source_type = "1948663593734004737"  # 默认设为weibo
+                    
+                    # 构建INSERT语句
+                    insert_sql = """
+                    INSERT INTO s_xhs_user_info_ocr 
+                    (device_ip, account_id, source_type, url, nickname, follows, fans, collection_time)
+                    VALUES (%s, %s, %s,  %s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE
+                    nickname = VALUES(nickname),
+                    follows = VALUES(follows),
+                    fans = VALUES(fans)
+                    """
+                    
+                    cursor.execute(insert_sql, (
+                        device_ip,
+                        account_id,
+                        source_type,
+                        url,
+                        nickname,
+                        follows,
+                        fans,
+                        collection_time
+                    ))
+                
+                # 提交事务
+                mysql_conn.commit()
+                logger.info(f"成功同步 {len(user_info_list)} 条用户信息数据到MySQL数据库")
+
+        finally:
+            mysql_conn.close()
+
+    except ImportError:
+        logger.error("缺少 pymysql 库，请安装: pip install pymysql")
+    except Exception as e:
+        logger.error(f"同步用户信息数据到 MySQL 数据库时出错: {str(e)}")
