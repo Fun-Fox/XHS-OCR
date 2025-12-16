@@ -8,7 +8,6 @@ from PIL import Image
 from core.logger import logger
 from core.ocr import sort_text_lines_by_surya_position, ocr, sort_text_lines_by_paddle_position
 
-# from core.user_profile import get_user_profile_data
 # 引入数据库模块
 from db import save_ocr_data, save_userinfo_data
 import time
@@ -197,7 +196,7 @@ def process_images():
                             try:
                                 with open(file_path, 'r', encoding='utf-8') as f:
                                     weibo_data_list = json.load(f)
-                                
+
                                 # 为每条微博数据添加设备IP和账号ID
                                 for weibo_data in weibo_data_list:
                                     weibo_data["device_ip"] = ip_port_dir
@@ -209,6 +208,7 @@ def process_images():
                                 logger.error(f"处理weibo_data.json文件时出错: {e}")
 
                         if filename == "user_info.json" and app_name == "weibo":
+                            # 同步到本地数据库
                             user_info = {}
                             # 如果文件名是user_info.json 则读取文件
                             with open(file_path, 'r', encoding='utf-8') as f:
@@ -224,6 +224,7 @@ def process_images():
                                 # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
                                 if isinstance(user_info, dict):
                                     logger.info(f"保存用户信息成功: {user_info}")
+                                    # 同步到本地数据库
                                     save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
                                                        author_profile_url)
                                 else:
@@ -243,7 +244,6 @@ def process_images():
                                     user_info['fans'] = profile_data.get('fans', '')
                                     user_info['interaction'] = profile_data.get('likes_collect_count', '')
 
-                            parent_dir = os.path.dirname(file_path)
                             try:
                                 # user_info = asyncio.run(get_user_profile_data(author_profile_url))
                                 # 检查目录名是否包含 # 字符
@@ -268,13 +268,12 @@ def process_images():
                                     with open(json_file_path, 'r', encoding='utf-8') as f:
                                         json_data = json.load(f)
                                         note_link = json_data.get("note_link", "")
-                                        post_content = json_data.get("post_content", "")
-                                        clean_title = json_data.get("clean_title", "")
+                                        # post_content = json_data.get("post_content", "")
+                                        # clean_title = json_data.get("clean_title", "")
                                 except Exception as e:
                                     logger.error(f"读取JSON文件失败: {json_file_path}, 错误: {e}")
                             else:
                                 logger.warning(f"JSON文件不存在: {json_file_path}")
-
 
                             logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
 
