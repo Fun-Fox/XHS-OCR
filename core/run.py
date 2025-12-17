@@ -418,7 +418,7 @@ def process_images():
                                     continue
 
                             if not ocr_success:
-                                logger.error(f"使用所有遮罩文件处理失败: {filename}")
+                                logger.error(f"使用蒙版库中，所有遮罩，最后还是识别失败: {filename}")
                                 continue
 
                             # 保存数据到数据库
