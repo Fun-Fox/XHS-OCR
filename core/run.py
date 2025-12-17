@@ -201,6 +201,7 @@ def process_images():
                                 # 为每条微博数据添加设备IP和账号ID
                                 for weibo_data in weibo_data_list:
                                     weibo_data["device_ip"] = ip_port_dir
+                                    weibo_data['collect_time'] = collect_date
 
                                 sync_weibo_data_to_remote(weibo_data_list, account_id)
                             except Exception as e:

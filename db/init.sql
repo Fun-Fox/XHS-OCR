@@ -4,7 +4,7 @@ CREATE TABLE `s_xhs_data_overview_traffic_analysis` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增ID 主键，非空',
   `device_ip` text COLLATE utf8mb4_unicode_ci COMMENT '设备IP',
   `account_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '平台账号',
-  `source_type` text COLLATE utf8mb4_unicode_ci COMMENT '应用appid',
+  `source_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '应用appid',
   `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小红书作品链接（短链）',
   `title` text COLLATE utf8mb4_unicode_ci COMMENT '作品标题',
   `type` text COLLATE utf8mb4_unicode_ci COMMENT '内容类型（图文、视频）',
@@ -24,8 +24,8 @@ CREATE TABLE `s_xhs_data_overview_traffic_analysis` (
   `exit_rate_2s` text COLLATE utf8mb4_unicode_ci COMMENT '2秒退出率',
   `post_remark` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '帖子备注',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_constraint_account_id_collection_time_url` (`account_id`,`url`,`collection_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=1029 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台XHS数据概览_流量分析表';
+  UNIQUE KEY `unique_constraint_url` (`url`)
+) ENGINE=InnoDB AUTO_INCREMENT=1137 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台XHS数据概览_流量分析表';
 
 
 
@@ -37,11 +37,11 @@ CREATE TABLE `s_xhs_user_info_ocr` (
   `device_ip` text COLLATE utf8mb4_unicode_ci COMMENT '设备id',
   `account_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '账号id',
   `source_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '应用id',
-  `url` text COLLATE utf8mb4_unicode_ci COMMENT '小红书主页链接',
+  `url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小红书主页链接',
   `follows` int DEFAULT '0' COMMENT '关注数',
   `interaction` int DEFAULT '0' COMMENT '获赞与收藏',
   `fans` int DEFAULT '0' COMMENT '粉丝数',
   `collection_time` datetime DEFAULT NULL COMMENT '采集时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_constraint_account_id_collection_time` (`account_id`,`collection_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `unique_constraint_url` (`url`)
+) ENGINE=InnoDB AUTO_INCREMENT=348 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
