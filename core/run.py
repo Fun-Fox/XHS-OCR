@@ -106,17 +106,17 @@ def enhance_image(image, alpha=1.5, beta=50):
 
 
 def process_images():
-    try:
-        import subprocess
-        import sys
-        # 安装 Chromium 浏览器（如果尚未安装）
-        result = subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"],
-                                capture_output=True, text=True)
-        if result.returncode != 0:
-            logger.warning(f"Playwright 安装失败: {result.stderr}")
-        logger.info(f"Playwright chromium 安装成功")
-    except ImportError:
-        logger.warning("playwright 模块未安装，某些功能可能不可用")
+    # try:
+    #     import subprocess
+    #     import sys
+    #     # 安装 Chromium 浏览器（如果尚未安装）
+    #     result = subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"],
+    #                             capture_output=True, text=True)
+    #     if result.returncode != 0:
+    #         logger.warning(f"Playwright 安装失败: {result.stderr}")
+    #     logger.info(f"Playwright chromium 安装成功")
+    # except ImportError:
+    #     logger.warning("playwright 模块未安装，某些功能可能不可用")
     """
     处理OCR目录下的所有图片
     """
