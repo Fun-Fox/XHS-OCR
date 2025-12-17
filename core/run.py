@@ -1,4 +1,3 @@
-import asyncio
 import json
 import os
 import re
@@ -10,7 +9,7 @@ from core.ocr import sort_text_lines_by_surya_position, ocr, sort_text_lines_by_
 # 调用同步函数将数据同步到远程数据库
 from db.data_sync import sync_weibo_data_to_remote, sync_user_info_to_remote
 # 引入数据库模块
-from db import save_ocr_data, save_userinfo_data
+from db import save_ocr_data
 import time
 import configparser
 from datetime import datetime, timedelta
