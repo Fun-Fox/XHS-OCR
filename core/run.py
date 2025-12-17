@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 # 配置日志文件
 load_dotenv()
 
-# 遮罩图路径
+# 蒙版图路径
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OCR 图片目录
@@ -155,13 +155,13 @@ def process_images():
 
         level_one_path = os.path.join(ocr_root, level_one_dir)
         app_name = level_one_dir
-        logger.info(f" ====APP名称： {app_name}====")
+        logger.info(f"\n====APP名称： {app_name}====\n")
         for item in os.listdir(level_one_path):
             item_path = os.path.join(level_one_path, item)
             if os.path.isdir(item_path):
                 # logger.info(f"  二级目录: {level_one_dir}/{item}")
                 hard_ware = item
-                logger.info(f"  ====硬件名称： {hard_ware}====")
+                logger.info(f"\n======硬件名称： {hard_ware}======\n")
 
                 app_data_collection_path = os.path.join(ocr_root, app_name, hard_ware)
                 for root, dirs, files in os.walk(app_data_collection_path):
@@ -194,7 +194,7 @@ def process_images():
                         if filename == "weibo_data.json" and app_name == "weibo":
                             # 读取weibo_data.json文件
                             # 直接同步到远程数据库s_xhs_data_overview_traffic_analysis
-                            logger.info(f"====开始处理微博数据: {file_path}====")
+                            logger.info(f"\n====开始处理微博数据====\n{file_path}")
                             try:
                                 with open(file_path, 'r', encoding='utf-8') as f:
                                     weibo_data_list = json.load(f)
@@ -207,10 +207,10 @@ def process_images():
                                 sync_weibo_data_to_remote(weibo_data_list, account_id)
                             except Exception as e:
                                 logger.error(f"处理weibo_data.json文件时出错: {e}")
-                            logger.info(f"====处理微博数据完成====")
+                            logger.info(f"\n====处理微博数据完成====\n")
 
                         if filename == "user_info.json" and app_name == "weibo":
-                            logger.info(f"====开始处理微博用户信息: {file_path}====")
+                            logger.info(f"\n====开始处理微博用户信息====\n{file_path}")
                             # 同步到本地数据库
                             user_info = {}
                             # 如果文件名是user_info.json 则读取文件
@@ -238,10 +238,10 @@ def process_images():
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
                                 logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
-                            logger.info(f"====处理微博用户信息完成====")
+                            logger.info(f"\n====处理微博用户信息完成====\n")
                         # 处理小红书用户信息文件 (profile_url.json)
                         if filename == "profile_url.json" and app_name == "xhs":
-                            logger.info(f"====开始处理小红书用户信息: {file_path}====")
+                            logger.info(f"\n====开始处理小红书用户信息====\n{file_path}")
                             # 同步到本地数据库
                             user_info = {}
                             # 如果文件名是profile_url.json 则读取文件
@@ -269,9 +269,9 @@ def process_images():
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
                                 logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
-                            logger.info(f"====处理小红书用户信息完成====")
+                            logger.info(f"\n====处理小红书用户信息完成====\n")
                         elif filename.endswith('.png') and app_name == "xhs":
-                            logger.info(f"====开始处理小红书图片: {file_path}====")
+                            logger.info(f"\n====开始处理小红书图片====\n{file_path}")
                             tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                             json_filename = f"{post_title}.json"
                             json_file_path = os.path.join(root, json_filename)
@@ -291,9 +291,9 @@ def process_images():
 
                             logger.info(f"处理图片: {filename}, 日期: {date_dir}, 设备: {ip_port_dir}")
 
-                            # 查找tag文件夹中的所有遮罩文件
+                            # 查找tag文件夹中的所有蒙版文件
                             mask_folder = os.path.join(root_dir, "mask", app_name, hard_ware, tag)
-                            logger.info(f"遮罩文件夹: {mask_folder}")
+                            logger.info(f"蒙版文件夹: {mask_folder}")
                             mask_files = []
 
                             if os.path.exists(mask_folder) and os.path.isdir(mask_folder):
@@ -303,33 +303,33 @@ def process_images():
                                         mask_files.append(file)
                                 mask_files.sort()  # 排序确保处理顺序一致性
 
-                            # 依次尝试每个遮罩文件
+                            # 依次尝试每个蒙版文件
                             ocr_success = False
                             for mask_file in mask_files:
                                 try:
                                     mask_path = os.path.join(mask_folder, mask_file)
-                                    logger.info(f"处理遮罩文件: {mask_file}")
-                                    # 读取原图和遮罩图
+                                    logger.info(f"使用蒙版: {mask_file}")
+                                    # 读取原图和蒙版图
                                     original_img = imread_with_pil(file_path)
-                                    mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
+                                    mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的蒙版图
 
                                     # 检查原图是否有效
                                     if original_img is None:
                                         logger.error(f"原图加载失败: {file_path}")
                                         continue
 
-                                    # 检查遮罩图是否有效
+                                    # 检查蒙版图是否有效
                                     if mask_img is None:
-                                        logger.error(f"遮罩图加载失败: {mask_path}")
+                                        logger.error(f"蒙版图加载失败: {mask_path}")
                                         continue
 
-                                    # 确保遮罩图与原图尺寸一致
+                                    # 确保蒙版图与原图尺寸一致
                                     if original_img.shape[:2] != mask_img.shape[:2]:
                                         logger.warning(
-                                            f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
+                                            f"蒙版图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
                                         continue
 
-                                    # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
+                                    # 使用蒙版图合成新图片（保留蒙版区域，其他区域变黑）
                                     alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
                                     result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
                                     result_img = result_img.astype(np.uint8)
@@ -375,7 +375,7 @@ def process_images():
                                         getObj = ocr.run(temp_output_path)
                                         # print(getObj)
                                         if not getObj["code"] == 100:
-                                            logger.info(f"识别结果: {getObj}")
+                                            logger.info(f"OCR识别结果: {getObj}")
                                             logger.error(
                                                 f"使用蒙版文件{mask_path},OCR识别失败: 请检查{file_path},是否为空白图片")
                                             continue
@@ -403,22 +403,23 @@ def process_images():
                                                 .replace('</b>', ''))
                                         if text:
                                             ocr_texts.append(text)
-                                    print(ocr_texts)
+                                    logger.info(f"OCR识别结果：{ocr_texts}")
 
                                     if len(ocr_texts) != len(index_mapping_data):
                                         logger.warning(
                                             f"{filename}：识别到的数据个数不匹配，尝试使用蒙版库中其余蒙版")
+                                        # logger.info(f"{index_mapping_data}")
                                         continue
                                     ocr_success = True
-                                    logger.info(f"使用遮罩文件 {mask_file} 处理成功")
+                                    logger.info(f"使用蒙版库中蒙版 {mask_file} OCR识别成功")
                                     break
 
                                 except Exception as e:
-                                    logger.warning(f"使用遮罩文件 {mask_file} 处理失败: {e}")
+                                    logger.warning(f"使用蒙版文件 {mask_file} 处理失败: {e}")
                                     continue
 
                             if not ocr_success:
-                                logger.error(f"使用蒙版库中，所有遮罩，最后还是识别失败: {filename}")
+                                logger.error(f"使用蒙版库中，所有蒙版，最后还是识别失败: {filename}")
                                 continue
 
                             # 保存数据到数据库
@@ -437,7 +438,7 @@ def process_images():
 
 # 结束 OCR 引擎
 # ocr.exit()
-logger.info("程序结束。")
+# logger.info("程序结束。")
 
 
 def imread_with_pil(path):
