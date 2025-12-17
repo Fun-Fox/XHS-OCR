@@ -24,7 +24,7 @@ load_dotenv()
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OCR 图片目录
-ocr_dir = os.getenv("OCR_IMAGES_PATH", os.path.join(root_dir, "images"))
+ocr_root = os.getenv("OCR_IMAGES_PATH", os.path.join(root_dir, "images"))
 ocr_engine = os.getenv("OCR_ENGINE", "surya")
 
 if ocr_engine == "PaddleOCR":
@@ -139,14 +139,14 @@ def process_images():
     # logger.info(f"开始扫描ocr目录：{ocr_dir}")
 
     # 检查ocr目录是否存在
-    if not os.path.exists(ocr_dir):
-        logger.error(f"OCR目录不存在: {ocr_dir}")
+    if not os.path.exists(ocr_root):
+        logger.error(f"OCR目录不存在: {ocr_root}")
         return
 
     # 第一步：只扫描一级目录
     level_one_dirs = []
-    for item in os.listdir(ocr_dir):
-        item_path = os.path.join(ocr_dir, item)
+    for item in os.listdir(ocr_root):
+        item_path = os.path.join(ocr_root, item)
         if os.path.isdir(item_path):
             logger.info(f"一级目录: {item}")
             level_one_dirs.append(item)
@@ -154,7 +154,7 @@ def process_images():
     # 第二步：扫描二级目录
     for level_one_dir in level_one_dirs:
 
-        level_one_path = os.path.join(ocr_dir, level_one_dir)
+        level_one_path = os.path.join(ocr_root, level_one_dir)
         app_name = level_one_dir
         logger.info(f" ====APP名称： {app_name}====")
         for item in os.listdir(level_one_path):
@@ -164,14 +164,15 @@ def process_images():
                 hard_ware = item
                 logger.info(f"  ====硬件名称： {hard_ware}====")
 
-                for root, dirs, files in os.walk(ocr_dir):
+                app_data_collection_path = os.path.join(ocr_root, app_name, hard_ware)
+                for root, dirs, files in os.walk(app_data_collection_path):
                     # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
                     dir_contains_recent_date = any(date in root for date in recent_dates)
 
                     logger.info(f"扫描目录: {root}, 包含最近日期: {dir_contains_recent_date}")
 
                     # 如果是根目录，继续遍历子目录
-                    if root == ocr_dir:
+                    if root == app_data_collection_path:
                         continue
 
                     # 如果当前路径不包含最近3天的日期，则跳过
@@ -427,7 +428,6 @@ def process_images():
                                 content_type = "视频"
                             else:
                                 content_type = "图文"
-
 
                             save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data,
                                           collect_date,
