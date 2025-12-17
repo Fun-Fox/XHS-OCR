@@ -265,7 +265,7 @@ def process_images():
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
                                 logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
-                        elif ".png" in filename and app_name == "xhs":
+                        elif filename.endswith('.png') and app_name == "xhs":
                             tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                             json_filename = f"{post_title}.json"
                             json_file_path = os.path.join(root, json_filename)
@@ -319,7 +319,7 @@ def process_images():
                                     if original_img.shape[:2] != mask_img.shape[:2]:
                                         logger.warning(
                                             f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
-                                        continue
+                                        # continue
 
                                     # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
                                     alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
