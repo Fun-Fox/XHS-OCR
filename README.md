@@ -171,3 +171,19 @@ data_overview = 曝光数,观看数,点击率,平均观看时长,完播率,2秒�
 3. 使用OCR引擎识别处理后的图片
 4. 将识别结果保存到本地SQLite数据库
 5. 可选：将数据同步到远程MySQL数据库
+
+# liunx 开机启动
+方法1：使用 systemd 服务（推荐）
+创建服务文件 /etc/systemd/system/xhs-ocr.service
+
+sudo vim /etc/systemd/system/xhs-ocr_service
+
+启用服务：
+sudo systemctl daemon-reexec 是一个系统管理命令，用于重新执行 systemd 守护进程。这个命令的主要作用是：
+重新加载 systemd 配置：当系统配置文件（如服务文件）被修改后，需要重新加载配置以使更改生效
+刷新系统状态：确保所有服务和配置都处于最新状态
+在您的场景中，这个命令通常与创建或修改 systemd 服务文件（如 xhs-ocr.service）配合使用。当您修改了服务文件后，需要运行 daemon-reexec 来重新加载配置，然后才能使用 enable 和 start 命令来启用和启动服务。
+
+sudo systemctl daemon-reexec
+sudo systemctl enable xhs-ocr.service
+sudo systemctl start xhs-ocr.service
