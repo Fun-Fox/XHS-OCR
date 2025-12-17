@@ -377,7 +377,8 @@ def process_images():
                                         # print(getObj)
                                         if not getObj["code"] == 100:
                                             logger.info(f"识别结果: {getObj}")
-                                            logger.error(f"识别失败: {filename}")
+                                            logger.error(
+                                                f"使用蒙版文件{mask_path},OCR识别失败: {filename},尝试下一个蒙版文件")
                                             continue
                                         # sorted_lines = getObj["data"]
                                         # 这里也增加从左到右 从上到下的排序功能
