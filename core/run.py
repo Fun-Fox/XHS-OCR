@@ -156,13 +156,13 @@ def process_images():
 
         level_one_path = os.path.join(ocr_dir, level_one_dir)
         app_name = level_one_dir
-        logger.info(f" APP名称： {app_name}")
+        logger.info(f" ====APP名称： {app_name}====")
         for item in os.listdir(level_one_path):
             item_path = os.path.join(level_one_path, item)
             if os.path.isdir(item_path):
-                logger.info(f"  二级目录: {level_one_dir}/{item}")
+                # logger.info(f"  二级目录: {level_one_dir}/{item}")
                 hard_ware = item
-                logger.info(f"  硬件名称： {hard_ware}")
+                logger.info(f"  ====硬件名称： {hard_ware}====")
 
                 for root, dirs, files in os.walk(ocr_dir):
                     # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
@@ -194,6 +194,7 @@ def process_images():
                         if filename == "weibo_data.json" and app_name == "weibo":
                             # 读取weibo_data.json文件
                             # 直接同步到远程数据库s_xhs_data_overview_traffic_analysis
+                            logger.info(f"====开始处理微博数据: {file_path}====")
                             try:
                                 with open(file_path, 'r', encoding='utf-8') as f:
                                     weibo_data_list = json.load(f)
@@ -206,8 +207,10 @@ def process_images():
                                 sync_weibo_data_to_remote(weibo_data_list, account_id)
                             except Exception as e:
                                 logger.error(f"处理weibo_data.json文件时出错: {e}")
+                            logger.info(f"====处理微博数据完成====")
 
                         if filename == "user_info.json" and app_name == "weibo":
+                            logger.info(f"====开始处理微博用户信息: {file_path}====")
                             # 同步到本地数据库
                             user_info = {}
                             # 如果文件名是user_info.json 则读取文件
@@ -235,9 +238,10 @@ def process_images():
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
                                 logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
-
+                            logger.info(f"====处理微博用户信息完成====")
                         # 处理小红书用户信息文件 (profile_url.json)
                         if filename == "profile_url.json" and app_name == "xhs":
+                            logger.info(f"====开始处理小红书用户信息: {file_path}====")
                             # 同步到本地数据库
                             user_info = {}
                             # 如果文件名是profile_url.json 则读取文件
@@ -265,7 +269,9 @@ def process_images():
                                     logger.error(f"获取用户信息失败: {author_profile_url}")
                             except Exception as e:
                                 logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
+                            logger.info(f"====处理小红书用户信息完成====")
                         elif filename.endswith('.png') and app_name == "xhs":
+                            logger.info(f"====开始处理小红书图片: {file_path}====")
                             tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                             json_filename = f"{post_title}.json"
                             json_file_path = os.path.join(root, json_filename)
@@ -421,6 +427,7 @@ def process_images():
                                 content_type = "视频"
                             else:
                                 content_type = "图文"
+
 
                             save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data,
                                           collect_date,

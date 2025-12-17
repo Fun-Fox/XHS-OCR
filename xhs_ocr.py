@@ -89,9 +89,13 @@ def run_all_tasks(sync_enabled=True):
     执行所有任务：OCR识别 + 数据同步
     :param sync_enabled: 是否启用数据同步功能
     """
+    logger.info(f"****[开始]采集数据的加工****")
     run_ocr_task()
+    logger.info(f"****[完成]采集数据的加工****")
     if sync_enabled:
+        logger.info(f"****[开始]数据的同步****")
         run_sync_task()
+        logger.info(f"****[完成]数据的同步****")
     else:
         logger.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 数据同步功能已禁用")
 
