@@ -112,9 +112,11 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
             password=db_config.get("password", ""),
             database=db_config.get("database", ""),
             charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor
+            cursorclass=pymysql.cursors.DictCursor,
+            use_unicode=True,
+            ssl_disabled=True,  # 对应 useSSL=false
+            init_command="SET SESSION time_zone='+08:00'"  # 对应 serverTimezone=Asia/Shanghai
         )
-
         try:
             with mysql_conn.cursor() as cursor:
                 # 检查表是否存在
@@ -317,7 +319,10 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
             password=db_config.get("password", ""),
             database=db_config.get("database", ""),
             charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor
+            cursorclass=pymysql.cursors.DictCursor,
+            use_unicode = True,
+            ssl_disabled = True,  # 对应 useSSL=false
+            init_command = "SET SESSION time_zone='+08:00'"  # 对应 serverTimezone=Asia/Shanghai
         )
 
         try:
@@ -431,8 +436,12 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
             password=db_config.get("password", ""),
             database=db_config.get("database", ""),
             charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor
+            cursorclass=pymysql.cursors.DictCursor,
+            use_unicode=True,
+            ssl_disabled=True,  # 对应 useSSL=false
+            init_command="SET SESSION time_zone='+08:00'"  # 对应 serverTimezone=Asia/Shanghai
         )
+
 
         try:
             with mysql_conn.cursor() as cursor:
