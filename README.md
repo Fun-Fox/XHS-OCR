@@ -105,12 +105,12 @@ python xhs_ocr.py --mode schedule
 python xhs_ocr.py --mode schedule --interval 30
 
 # 每天10:00执行一次OCR识别和数据同步
-python xhs_ocr.py --mode schedule --at-time "18:00"
+python xhs_ocr.py --mode schedule --at-time "22:00"
 
 # 每小时执行OCR识别但不进行数据同步
 python xhs_ocr.py --mode schedule --no-sync
 
-TZ='Asia/Shanghai' nohup python xhs_ocr.py --mode schedule --at-time "18:00" >> run.log 2>&1 &
+TZ='Asia/Shanghai' nohup python xhs_ocr.py --mode schedule --at-time "22:00" >> run.log 2>&1 &
 
 ```
 
