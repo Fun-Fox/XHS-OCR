@@ -287,6 +287,7 @@ def process_images():
 
                             # 查找tag文件夹中的所有遮罩文件
                             mask_folder = os.path.join(root_dir, "mask", app_name, hard_ware, tag)
+                            logger.info(f"遮罩文件夹: {mask_folder}")
                             mask_files = []
 
                             if os.path.exists(mask_folder) and os.path.isdir(mask_folder):
@@ -301,6 +302,7 @@ def process_images():
                             for mask_file in mask_files:
                                 try:
                                     mask_path = os.path.join(mask_folder, mask_file)
+                                    logger.info(f"处理遮罩文件: {mask_file}")
                                     # 读取原图和遮罩图
                                     original_img = imread_with_pil(file_path)
                                     mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的遮罩图
@@ -319,7 +321,7 @@ def process_images():
                                     if original_img.shape[:2] != mask_img.shape[:2]:
                                         logger.warning(
                                             f"遮罩图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
-                                        # continue
+                                        continue
 
                                     # 使用遮罩图合成新图片（保留遮罩区域，其他区域变黑）
                                     alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
