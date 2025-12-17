@@ -407,7 +407,7 @@ def process_images():
 
                                     if len(ocr_texts) != len(index_mapping_data):
                                         logger.warning(
-                                            f"{filename}：识别到的数据个数不匹配，可能是截图位置发生变化或者截图不完整，可能需要重新制作蒙版")
+                                            f"{filename}：识别到的数据个数不匹配，尝试使用蒙版库中其余蒙版")
                                         continue
                                     ocr_success = True
                                     logger.info(f"使用遮罩文件 {mask_file} 处理成功")
