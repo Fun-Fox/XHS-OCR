@@ -378,7 +378,7 @@ def process_images():
                                         if not getObj["code"] == 100:
                                             logger.info(f"识别结果: {getObj}")
                                             logger.error(
-                                                f"使用蒙版文件{mask_path},OCR识别失败: {filename},这种一般为本身就是空数据空白图片")
+                                                f"使用蒙版文件{mask_path},OCR识别失败: 请检查{file_path},是否为空白图片")
                                             continue
                                         # sorted_lines = getObj["data"]
                                         # 这里也增加从左到右 从上到下的排序功能
