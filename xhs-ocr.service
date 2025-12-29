@@ -5,12 +5,12 @@ After=network.target
 [Service]
 Type=simple
 User=callfans
-WorkingDirectory=/home/callfans/data/AI-box/XHS-OCR
+WorkingDirectory=/home/callfans/data/XHS-OCR
 Environment=TZ=Asia/Shanghai
-ExecStart=/home/callfans/miniconda3/bin/conda run -n py312 python /home/callfans/data/AI-box/XHS-OCR/xhs_ocr.py --mode schedule --at-time "22:00"
+ExecStart=/home/callfans/miniconda3/bin/conda run -n py312 python /home/callfans/data/XHS-OCR/xhs_ocr.py --mode schedule --at-time "22:00"
 Restart=always
-StandardOutput=append:/home/callfans/data/AI-box/XHS-OCR/logs/run.log
-StandardError=append:/home/callfans/data/AI-box/XHS-OCR/logs/run.log
+StandardOutput=append:/home/callfans/data/XHS-OCR/logs/run.log
+StandardError=append:/home/callfans/data/XHS-OCR/logs/run.log
 
 [Install]
 WantedBy=multi-user.target
