@@ -25,7 +25,7 @@ def run_data_processing_pipeline(days=3):
         target_db="local",
         related_key=["账号ID", "设备IP", "采集日期", "链接"]
     )
-
+    print("步骤1-1: 处理图文总览数据...")
     sync_explore_data_merge_to_remote(
         table_name_list=['s_xhs_note_data_overview_top_ocr', 's_xhs_note_data_overview_bottom_ocr'],
         merged_table_name="s_xhs_note_data_overview_ocr",
