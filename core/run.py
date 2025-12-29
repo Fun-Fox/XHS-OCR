@@ -251,9 +251,9 @@ def process_images():
                                 if isinstance(profile_data, dict):
                                     author_profile_url = profile_data.get("user_profile_url", "")
                                     user_info['nickname'] = profile_data.get('nickname', '')
-                                    user_info['follows'] = profile_data.get('following_count', '')
-                                    user_info['fans'] = profile_data.get('fans', '')
-                                    user_info['interaction'] = profile_data.get('likes_collect_count', '')  # 获赞与收藏
+                                    user_info['follows'] = convert_chinese_numbers(profile_data.get('following_count', ''))
+                                    user_info['fans'] = convert_chinese_numbers(profile_data.get('fans', ''))
+                                    user_info['interaction'] = convert_chinese_numbers(profile_data.get('likes_collect_count', ''))  # 获赞与收藏
                                     user_info['collect_time'] = collect_date  # 添加采集时间
                                     user_info['profile_url'] = author_profile_url  # 添加个人主页链接
 
@@ -461,6 +461,18 @@ def imread_with_pil(path):
         logger.error(f"使用PIL读取图片失败: {path}, 错误: {e}")
         return None
 
+def convert_chinese_numbers(text):
+    """
+    转换中文数字表示（如：1.5万）为实际数值
+    """
+    if '万' in text:
+        number_part = re.sub(r'[^\d.]', '', text)
+        try:
+            number = float(number_part)
+            return int(number * 10000)
+        except ValueError:
+            return text
+    return text
 
 if __name__ == "__main__":
     process_images()
