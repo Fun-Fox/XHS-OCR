@@ -13,12 +13,10 @@ __pycache__
 /logs
 /zip
 *.zip
-.env
 *.bak
 /tts
 /heygem/deploy/ssh
 *.webm
 *.html
 /models
-*.env
 ocr_data.db
