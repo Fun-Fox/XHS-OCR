@@ -214,6 +214,7 @@ def process_images():
                                 for weibo_data in weibo_data_list:
                                     weibo_data["device_ip"] = ip_port_dir
                                     weibo_data['collect_time'] = collect_date
+                                logger.info(f"account_id:{account_id}")
 
                                 sync_weibo_data_to_remote(weibo_data_list, account_id)
                             except Exception as e:
