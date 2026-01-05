@@ -179,7 +179,7 @@ def process_images():
                     # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
                     dir_contains_recent_date = any(date in root for date in recent_dates)
 
-                    logger.info(f"扫描目录: {root}, 包含最近日期: {dir_contains_recent_date}")
+                    # logger.info(f"扫描目录: {root}, 包含最近日期: {dir_contains_recent_date}")
 
                     # 如果是根目录，继续遍历子目录
                     if root == app_data_collection_path:
