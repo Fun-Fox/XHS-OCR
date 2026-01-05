@@ -241,6 +241,7 @@ def process_images():
                                 # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
                                 if isinstance(user_info, dict) and user_info.get('nickname'):
                                     logger.info(f"保存用户信息成功: {user_info}")
+                                    logger.info(f"account_id:{account_id}")
                                     # 同步到本地数据库
                                     # save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
                                     #                    author_profile_url)
