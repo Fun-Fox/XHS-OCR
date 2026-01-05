@@ -371,6 +371,8 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                     shares = VALUES(shares),
                     comments = VALUES(comments),
                     likes = VALUES(likes)
+                    account_id = VALUES(account_id)
+                    device_ip = VALUES(device_ip)
                     """
 
                     cursor.execute(insert_sql, (
@@ -490,6 +492,8 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                     follows = VALUES(follows),
                     fans = VALUES(fans),
                     interaction = VALUES(interaction)
+                    account_id = VALUES(account_id)
+                    device_ip = VALUES(device_ip)
                     """
 
                     cursor.execute(insert_sql, (
