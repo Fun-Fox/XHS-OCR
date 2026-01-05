@@ -161,10 +161,20 @@ def process_images():
             item_path = os.path.join(level_one_path, item)
             if os.path.isdir(item_path):
                 # logger.info(f"  二级目录: {level_one_dir}/{item}")
-                hard_ware = item
-                logger.info(f"\n======硬件名称： {hard_ware}======\n")
 
-                app_data_collection_path = os.path.join(ocr_root, app_name, hard_ware)
+                if app_name == "xhs":
+                    logger.info(f"\n======硬件名称： {item}======\n")
+                    hard_ware = item
+                    app_data_collection_path = os.path.join(ocr_root, app_name, hard_ware)
+
+                elif app_name == "weibo":
+                    logger.info(f"\n======采集日期： {item}======\n")
+
+                    app_data_collection_path = os.path.join(ocr_root, app_name)
+                else:
+                    logger.info(f"异常采集APP: {app_name}")
+                    continue
+
                 for root, dirs, files in os.walk(app_data_collection_path):
                     # 只扫描ocr_dir下最近3天的目录文件夹(例如目录是20250902的)
                     dir_contains_recent_date = any(date in root for date in recent_dates)
@@ -177,7 +187,7 @@ def process_images():
 
                     # 如果当前路径不包含最近3天的日期，则跳过
                     if not dir_contains_recent_date:
-                        logger.info(f"跳过目录(非最近{day}天): {root}")
+                        # logger.info(f"跳过目录(非最近{day}天): {root}")
                         continue
 
                     logger.info(f"处理最近{day}天的目录: {root}")
@@ -251,9 +261,11 @@ def process_images():
                                 if isinstance(profile_data, dict):
                                     author_profile_url = profile_data.get("user_profile_url", "")
                                     user_info['nickname'] = profile_data.get('nickname', '')
-                                    user_info['follows'] = convert_chinese_numbers(profile_data.get('following_count', ''))
+                                    user_info['follows'] = convert_chinese_numbers(
+                                        profile_data.get('following_count', ''))
                                     user_info['fans'] = convert_chinese_numbers(profile_data.get('fans', ''))
-                                    user_info['interaction'] = convert_chinese_numbers(profile_data.get('likes_collect_count', ''))  # 获赞与收藏
+                                    user_info['interaction'] = convert_chinese_numbers(
+                                        profile_data.get('likes_collect_count', ''))  # 获赞与收藏
                                     user_info['collect_time'] = collect_date  # 添加采集时间
                                     user_info['profile_url'] = author_profile_url  # 添加个人主页链接
 
@@ -461,6 +473,7 @@ def imread_with_pil(path):
         logger.error(f"使用PIL读取图片失败: {path}, 错误: {e}")
         return None
 
+
 def convert_chinese_numbers(text):
     """
     转换中文数字表示（如：1.5万）为实际数值
@@ -473,6 +486,7 @@ def convert_chinese_numbers(text):
         except ValueError:
             return text
     return text
+
 
 if __name__ == "__main__":
     process_images()
