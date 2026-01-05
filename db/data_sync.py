@@ -393,7 +393,6 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                         logger.debug(f"微博数据SQL执行成功，影响行数: {affected_rows}")
                     except Exception as e:
                         logger.error(f"执行微博数据SQL时出错: {str(e)}, SQL: {insert_sql}")
-                        raise
 
                 # 提交事务
                 mysql_conn.commit()
@@ -517,7 +516,6 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                         logger.debug(f"SQL执行成功，影响行数: {affected_rows}")
                     except Exception as e:
                         logger.error(f"执行SQL时出错: {str(e)}, SQL: {insert_sql}")
-                        raise
 
                 # 提交事务
                 mysql_conn.commit()
