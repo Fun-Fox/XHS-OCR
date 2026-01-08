@@ -320,9 +320,9 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
             database=db_config.get("database", ""),
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor,
-            use_unicode = True,
-            ssl_disabled = True,  # 对应 useSSL=false
-            init_command = "SET SESSION time_zone='+08:00'"  # 对应 serverTimezone=Asia/Shanghai
+            use_unicode=True,
+            ssl_disabled=True,  # 对应 useSSL=false
+            init_command="SET SESSION time_zone='+08:00'"  # 对应 serverTimezone=Asia/Shanghai
         )
 
         try:
@@ -372,7 +372,8 @@ def sync_weibo_data_to_remote(weibo_data_list, account_id=None):
                     comments = VALUES(comments),
                     likes = VALUES(likes),
                     account_id = VALUES(account_id),
-                    device_ip = VALUES(device_ip)
+                    device_ip = VALUES(device_ip),
+                    collection_time =VALUES(collection_time)
                     """
 
                     # 建议改进
@@ -449,7 +450,6 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
             init_command="SET SESSION time_zone='+08:00'"  # 对应 serverTimezone=Asia/Shanghai
         )
 
-
         try:
             with mysql_conn.cursor() as cursor:
                 # 确保表存在
@@ -498,7 +498,8 @@ def sync_user_info_to_remote(user_info_list, app_name=None, ip_port=None, accoun
                     fans = VALUES(fans),
                     interaction = VALUES(interaction),
                     account_id = VALUES(account_id),
-                    device_ip = VALUES(device_ip)
+                    device_ip = VALUES(device_ip),
+                    collection_time =VALUES(collection_time)
                     """
 
                     try:
