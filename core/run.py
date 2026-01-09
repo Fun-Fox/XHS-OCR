@@ -411,7 +411,8 @@ def process_images():
                                             text = str(line['text'])
                                         else:
                                             text = line.text
-                                        text = re.sub(r'[\u4e00-\u9fff]+', '', text)
+                                        if not filename.startswith("note_traffic_analysis"):
+                                            text = re.sub(r'[\u4e00-\u9fff]+', '', text)
                                         text = (text.replace('秒', '')
                                                 .replace(' ', '')
                                                 .replace('o', '0')
@@ -420,7 +421,14 @@ def process_images():
                                         if text:
                                             ocr_texts.append(text)
                                     logger.info(f"OCR识别结果：{ocr_texts}")
-
+                                    if filename.startswith("note_traffic_analysis"):
+                                        if len(ocr_texts) == 8:
+                                            # 使用分隔符连接
+                                            ocr_texts = ['|'.join([f"{ocr_texts[i]}:{ocr_texts[i + 1]}"
+                                                                   for i in range(0, len(ocr_texts), 2)])]
+                                            logger.info(f"流量分析结果：{ocr_texts}")
+                                        else:
+                                            ocr_texts = []
                                     if len(ocr_texts) != len(index_mapping_data):
                                         logger.warning(
                                             f"{filename}：识别到的数据个数不匹配，尝试使用蒙版库中其余蒙版")
