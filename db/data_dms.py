@@ -366,30 +366,23 @@ def create_table_if_not_exists_sqlite(cursor, table_name, column_names, related_
     如果表不存在则创建表 (SQLite)
     """
     columns_definitions = []
-    #
-    # 添加自增ID字段作为主键
-    # columns_definitions.append('"id" INTEGER PRIMARY KEY AUTOINCREMENT')
 
-    # 处理related_key作为主键或唯一约束
-    primary_keys = []
+    for col in column_names:
+        columns_definitions.append(f'"{col}" TEXT')
+
+    # 如果有related_key，则将其设置为复合唯一约束
+    unique_constraint = ""
     if related_key:
         # 确保related_key是列表格式
         if isinstance(related_key, str):
-            primary_keys = [related_key]
+            related_key_fields = [related_key]
         else:
-            primary_keys = related_key
+            related_key_fields = related_key
 
-    for col in column_names:
-        # 所有字段都作为普通字段处理（除了已经在上面添加的id字段）
-        columns_definitions.append(f'"{col}" TEXT')
-
-    # 如果有related_key，则将其设置为唯一约束而不是主键
-    unique_constraint = ""
-    if primary_keys:
-        # 确保所有主键字段都在列定义中
-        existing_primary_keys = [key for key in primary_keys if key in column_names]
-        if existing_primary_keys:
-            unique_constraint = f", UNIQUE ({', '.join([f'\"{key}\"' for key in existing_primary_keys])})"
+        # 确保所有related_key字段都在列定义中
+        existing_related_keys = [key for key in related_key_fields if key in column_names]
+        if existing_related_keys:
+            unique_constraint = f", CONSTRAINT uk_{table_name.replace('.', '_')} UNIQUE ({', '.join([f'\"{key}\"' for key in existing_related_keys])})"
 
     create_table_sql = f"""
     CREATE TABLE {table_name} (
