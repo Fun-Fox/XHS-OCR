@@ -301,19 +301,19 @@ def sync_to_local_sqlite(db_path, table_name, column_names, rows, related_key=No
                 # 检查related_key字段是否都在column_names中
                 if all(key in filtered_columns for key in related_key_fields):
                     # 构造更新字段列表（排除关联键字段）
-                    # update_fields = [col for col in filtered_columns if col not in related_key_fields]
-                    # update_clause = ", ".join([f'"{field}" = excluded."{field}"' for field in update_fields])
-                    #
-                    # insert_sql = f"""
-                    #             INSERT INTO {table_name} ({columns_str})
-                    #             VALUES ({placeholders})
-                    #             ON CONFLICT ({', '.join([f'"{col}"' for col in related_key_fields])})
-                    #             DO UPDATE SET {update_clause}
-                    #         """
+                    update_fields = [col for col in filtered_columns if col not in related_key_fields]
+                    update_clause = ", ".join([f'"{field}" = excluded."{field}"' for field in update_fields])
+
                     insert_sql = f"""
-                        INSERT OR IGNORE INTO {table_name} ({columns_str})
-                        VALUES ({placeholders})
-                    """
+                                INSERT INTO {table_name} ({columns_str})
+                                VALUES ({placeholders})
+                                ON CONFLICT ({', '.join([f'"{col}"' for col in related_key_fields])})
+                                DO UPDATE SET {update_clause}
+                            """
+                    # insert_sql = f"""
+                    #     INSERT OR IGNORE INTO {table_name} ({columns_str})
+                    #     VALUES ({placeholders})
+                    # """
                 else:
                     # 如果related_key字段不全在列中，则使用普通插入
                     insert_sql = f"""
