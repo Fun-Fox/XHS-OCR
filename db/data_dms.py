@@ -68,13 +68,18 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
 
         logger.debug(f"数据库中已存在的表: {existing_tables}")
 
-        for table_name in table_name_list:
-            # 检查表名是否在现有表中（不区分大小写）
+        for table_name in table_name_list.copy():  # 使用副本遍历，避免修改原列表            # 检查表名是否在现有表中（不区分大小写）
             table_exists = any(table_name.lower() == existing_table.lower() for existing_table in existing_tables)
             if not table_exists:
-                logger.warning(f"表 {table_name} 不存在，中止融合同步")
-                table_name_list.remove(table_name)
-                conn.close()
+                if merge_type == "related":
+                    # 关联融合必须所有表都存在
+                    logger.warning(f"表 {table_name} 不存在，中止关联融合同步")
+                    conn.close()
+                    return  # 完全终止流程
+                else:  # unrelated
+                    # 非关联融合允许部分表缺失
+                    logger.warning(f"表 {table_name} 不存在，跳过此表继续融合")
+                    table_name_list.remove(table_name)  # 只是从列表中移除该表
 
         # 收集所有表的数据
         all_table_data = {}
