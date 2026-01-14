@@ -73,12 +73,12 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
             if not table_exists:
                 if merge_type == "related":
                     # 关联融合必须所有表都存在
-                    logger.warning(f"表 {table_name} 不存在，中止关联融合同步")
+                    logger.warning(f"关联融合，表 {table_name} 不存在，中止关联融合同步")
                     conn.close()
                     return  # 完全终止流程
                 else:  # unrelated
                     # 非关联融合允许部分表缺失
-                    logger.warning(f"表 {table_name} 不存在，跳过此表继续融合")
+                    logger.warning(f"非关联融合，表 {table_name} 不存在，跳过此表继续融合")
                     table_name_list.remove(table_name)  # 只是从列表中移除该表
 
         # 收集所有表的数据
