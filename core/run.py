@@ -8,7 +8,7 @@ from core.logger import logger
 # from core.ocr import sort_text_lines_by_surya_position, ocr, sort_text_lines_by_paddle_position
 from core.ocr import sort_text_lines_by_surya_position, sort_text_lines_by_paddle_position
 # 调用同步函数将数据同步到远程数据库
-from db.data_sync import sync_weibo_data_to_remote, sync_user_info_to_remote
+from db.data_sync import sync_post_data_to_remote, sync_user_info_to_remote
 # 引入数据库模块
 from db import save_ocr_data
 import time
@@ -201,6 +201,57 @@ def process_images():
                             ip_port_dir, account_id = os.path.basename(parent_dir), '无'
                         date_dir = os.path.basename(os.path.dirname(parent_dir))  # 获取日期文件夹名
                         collect_date = date_dir
+                        if filename == "user_info.json" and app_name == "tiktok":
+                            logger.info(f"\n====开始处理TK用户信息====\n{file_path}")
+                            # 同步到本地数据库
+                            user_info = {}
+                            # 如果文件名是user_info.json 则读取文件
+                            with open(file_path, 'r', encoding='utf-8') as f:
+                                profile_data = json.load(f)
+                                if isinstance(profile_data, dict):
+                                    author_profile_url = profile_data.get("share_link", "")
+                                    user_info['nickname'] = profile_data.get('nickname', '')
+                                    user_info['follows'] = profile_data.get('follow_count', '')
+                                    user_info['fans'] = profile_data.get('follower_count', '')
+                                    user_info['interaction'] = profile_data.get('like_count', '') # 获赞与收藏
+                                    user_info['collect_time'] = collect_date  # 添加采集时间
+                                    user_info['profile_url'] = author_profile_url  # 添加个人主页链接
+
+                            try:
+                                # 检查是否成功获取到用户信息（判断user_info是否包含有效数据）
+                                if isinstance(user_info, dict) and user_info.get('nickname'):
+                                    logger.info(f"保存用户信息成功: {user_info}")
+                                    logger.info(f"account_id:{account_id}")
+                                    # 同步到本地数据库
+                                    # save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_date,
+                                    #                    author_profile_url)
+                                    # 同步到远程数据库
+                                    sync_user_info_to_remote([user_info], app_name, ip_port_dir, account_id)
+                                else:
+                                    logger.error(f"获取用户信息失败: {author_profile_url}")
+                            except Exception as e:
+                                logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
+                            logger.info(f"\n====处理TK用户信息完成====\n")
+
+                        if filename == "post_data.json" and app_name == "tiktok":
+                            # 读取weibo_data.json文件
+                            # 直接同步到远程数据库s_xhs_data_overview_traffic_analysis
+                            logger.info(f"\n====开始处理微博数据====\n{file_path}")
+                            try:
+                                with open(file_path, 'r', encoding='utf-8') as f:
+                                    post_data_list = json.load(f)
+
+                                # 为每条微博数据添加设备IP和账号ID
+                                for post_data in post_data_list:
+                                    post_data["device_ip"] = ip_port_dir
+                                    post_data['collect_time'] = collect_date
+                                logger.info(f"account_id:{account_id}")
+
+                                sync_post_data_to_remote(post_data_list,app_name, account_id)
+                            except Exception as e:
+                                logger.error(f"处理weibo_data.json文件时出错: {e}")
+                            logger.info(f"\n====处理微博数据完成====\n")
+
 
                         if filename == "weibo_data.json" and app_name == "weibo":
                             # 读取weibo_data.json文件
@@ -208,15 +259,15 @@ def process_images():
                             logger.info(f"\n====开始处理微博数据====\n{file_path}")
                             try:
                                 with open(file_path, 'r', encoding='utf-8') as f:
-                                    weibo_data_list = json.load(f)
+                                    post_data_list = json.load(f)
 
                                 # 为每条微博数据添加设备IP和账号ID
-                                for weibo_data in weibo_data_list:
-                                    weibo_data["device_ip"] = ip_port_dir
-                                    weibo_data['collect_time'] = collect_date
+                                for post_data in post_data_list:
+                                    post_data["device_ip"] = ip_port_dir
+                                    post_data['collect_time'] = collect_date
                                 logger.info(f"account_id:{account_id}")
 
-                                sync_weibo_data_to_remote(weibo_data_list, account_id)
+                                sync_post_data_to_remote(post_data_list, app_name, account_id)
                             except Exception as e:
                                 logger.error(f"处理weibo_data.json文件时出错: {e}")
                             logger.info(f"\n====处理微博数据完成====\n")
