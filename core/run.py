@@ -171,6 +171,10 @@ def process_images():
                     logger.info(f"\n======采集日期： {item}======\n")
 
                     app_data_collection_path = os.path.join(ocr_root, app_name)
+                elif app_name == "tiktok":
+                    logger.info(f"\n======采集日期： {item}======\n")
+
+                    app_data_collection_path = os.path.join(ocr_root, app_name)
                 else:
                     logger.info(f"异常采集APP: {app_name}")
                     continue
