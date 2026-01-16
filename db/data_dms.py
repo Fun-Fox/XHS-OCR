@@ -74,7 +74,6 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
                 if merge_type == "related":
                     # 关联融合必须所有表都存在
                     logger.warning(f"关联融合，表 {table_name} 不存在，中止关联融合同步")
-                    conn.close()
                     return  # 完全终止流程
                 else:  # unrelated
                     # 非关联融合允许部分表缺失
@@ -156,11 +155,12 @@ def sync_explore_data_merge_to_remote(table_name_list=None,
             sync_to_local_sqlite(db_path, merged_table_name, merged_columns, merged_rows, related_key)
             logger.info(f"融合数据已保存到本地SQLite数据库，表名: {merged_table_name}，融合类型: {merge_type}")
 
-        # 关闭本地数据库连接
-        conn.close()
-
     except Exception as e:
         logger.error(f"融合同步数据时出错: {str(e)}")
+    finally:
+        # 在finally块中统一处理连接关闭
+        if conn:
+            conn.close()
 
 
 def merge_table_data_related(all_table_data, merged_columns, related_key):
