@@ -133,10 +133,11 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
                 if not table_exists:
                     logger.info(f"表 {table_name} 不存在，正在创建...")
                     create_table_if_not_exists(cursor, table_name, column_names, unique_constraints)
-                else:
+                # else:
                     # 如果表存在，检查是否有新增字段需要添加
-                    logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
-                    add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
+                    # logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
+                    # add_missing_columns(cursor, table_name, column_names, db_config.get("database", ""))
+
 
                 if rows:
                     # 映射列名为英文名
