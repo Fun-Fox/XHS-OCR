@@ -7,10 +7,10 @@ Type=simple
 User=callfans
 WorkingDirectory=/home/callfans/data/ocr/XHS-OCR
 Environment=TZ=Asia/Shanghai
-ExecStart=/home/callfans/miniconda3/bin/conda run -n py312 TZ='Asia/Shanghai' nohup python xhs_ocr.py --mode schedule --at-time "22:00" >> run.log 2>&1 &
+ExecStart=/home/callfans/miniconda3/bin/conda run -n py312 python /home/callfans/data/ocr/XHS-OCR/xhs_ocr.py --mode schedule --at-time "22:00"
 Restart=always
-StandardOutput=append:/home/callfans/data/XHS-OCR/ocr/logs/run.log
-StandardError=append:/home/callfans/data/XHS-OCR/ocr/logs/run.log
+StandardOutput=append:/home/callfans/data/ocr/XHS-OCR/logs/run.log
+StandardError=append:/home/callfans/data/ocr/XHS-OCR/logs/run.log
 
 [Install]
 WantedBy=multi-user.target
