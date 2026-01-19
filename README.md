@@ -187,6 +187,9 @@ sudo systemctl daemon-reexec 是一个系统管理命令，用于重新执行 sy
 sudo systemctl daemon-reexec
 sudo systemctl enable xhs-ocr.service
 sudo systemctl start xhs-ocr.service
-
+重启服务
+sudo systemctl restart xhs-ocr.service
+重新加载 systemd 配置
+sudo systemctl daemon-reload
 查看服务运行状态
 sudo systemctl status xhs-ocr.service
