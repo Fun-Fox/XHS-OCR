@@ -1,67 +1,6 @@
-# XHS OCR 数据融合同步工具
-
-XHS OCR 数据融合同步工具是一个用于处理小红书OCR识别数据的工具包，支持数据融合、同步和流水线处理。
-
-## 功能特性
-
-- 支持多种数据融合方式（关联融合、非关联融合）
-- 支持本地SQLite数据库和远程MySQL数据库
-- 提供完整的数据处理流水线
-- 支持时间范围筛选
-- 支持命令行接口
-
-## 安装
-
-```bash
-pip install .
-```
-
-## 使用方法
-
-### 作为命令行工具使用
-
-```bash
-# 运行完整的数据处理流水线
-xhs-ocr-merge --mode full --days 3
-
-# 运行部分流水线 - 视频总览数据处理
-xhs-ocr-merge --mode video_overview --days 3
-
-# 运行部分流水线 - 数据总览处理
-xhs-ocr-merge --mode data_overview --days 3
-
-# 运行部分流水线 - 趋势分析数据处理
-xhs-ocr-merge --mode traffic_analysis --days 3
-
-# 运行部分流水线 - 远程数据库同步
-xhs-ocr-merge --mode remote_merge
-```
+# SocialMediaOCR - 
 
 
-## 流水线处理步骤
-
-1. **视频总览数据处理** - 将视频的顶部与底部数据进行关联合并
-2. **总览数据处理** - 将视频数据与图文数据进行非关联合并
-3. **趋势分析数据处理** - 将视频数据与图文数据进行非关合并不合并
-4. **远程数据库同步** - 将数据分析与趋势分析进行关联合并并同步到远程数据库
-
-## 配置
-
-需要在环境变量中配置以下参数用于远程数据库连接：
-
-- `MYSQL_HOST`: MySQL服务器地址
-- `MYSQL_PORT`: MySQL端口
-- `MYSQL_USER`: MySQL用户名
-- `MYSQL_PASSWORD`: MySQL密码
-- `MYSQL_DATABASE`: MySQL数据库名
-
-## 许可证
-
-MIT
-
-# XHS-OCR - 小红书数据OCR识别系统
-
-一个用于识别小红书图片数据并保存到数据库的OCR系统。
 ![](./doc/1.png)
 
 只需要3步骤，实现OCR图片批量识别，并保存到本地数据库，并同步远程数据库
@@ -86,31 +25,31 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ```bash
 # 执行OCR识别和数据同步
-python xhs_ocr.py
+python social_ocr.py
 
 # 或明确指定模式
-python xhs_ocr.py --mode manual
+python social_ocr.py --mode manual
 
 # 执行OCR识别但不进行数据同步
-python xhs_ocr.py --mode manual --no-sync
+python social_ocr.py --mode manual --no-sync
 ```
 
 ### 定时任务模式
 
 ```bash
 # 每小时执行一次OCR识别和数据同步
-python xhs_ocr.py --mode schedule
+python social_ocr.py --mode schedule
 
 # 每30分钟执行一次OCR识别和数据同步
-python xhs_ocr.py --mode schedule --interval 30
+python social_ocr.py --mode schedule --interval 30
 
 # 每天10:00执行一次OCR识别和数据同步
-python xhs_ocr.py --mode schedule --at-time "22:00"
+python social_ocr.py --mode schedule --at-time "22:00"
 
 # 每小时执行OCR识别但不进行数据同步
-python xhs_ocr.py --mode schedule --no-sync
+python social_ocr.py --mode schedule --no-sync
 
-TZ='Asia/Shanghai' nohup python xhs_ocr.py --mode schedule --at-time "22:00" >> run.log 2>&1 &
+TZ='Asia/Shanghai' nohup python social_ocr.py --mode schedule --at-time "22:00" >> run.log 2>&1 &
 
 ```
 
@@ -119,7 +58,7 @@ TZ='Asia/Shanghai' nohup python xhs_ocr.py --mode schedule --at-time "22:00" >> 
 ## 项目结构
 
 ```
-XHS-OCR/
+SocialMediaOCR/
 ├── core/                 # 核心功能模块
 │   ├── mask_ocr.py       # OCR识别主程序
 │   ├── config.ini        # 配置文件
@@ -131,7 +70,7 @@ XHS-OCR/
 ├── mask/                 # 遮罩图片
 ├── ocr_result/           # OCR识别结果
 ├── tmp/                  # 临时文件
-├── xhs_ocr.py              # 主入口文件
+├── social_ocr.py              # 主入口文件
 └── requirements.txt     # 项目依赖
 ```
 
@@ -174,25 +113,25 @@ data_overview = 曝光数,观看数,点击率,平均观看时长,完播率,2秒�
 
 # liunx 开机启动
 方法1：使用 systemd 服务（推荐）
-创建服务文件 /etc/systemd/system/xhs-ocr.service
+创建服务文件 /etc/systemd/system/social_ocr.service
 
-sudo vim /etc/systemd/system/xhs-ocr_service
+sudo vim /etc/systemd/system/social_ocr_service
 
 启用服务：
 sudo systemctl daemon-reexec 是一个系统管理命令，用于重新执行 systemd 守护进程。这个命令的主要作用是：
 重新加载 systemd 配置：当系统配置文件（如服务文件）被修改后，需要重新加载配置以使更改生效
 刷新系统状态：确保所有服务和配置都处于最新状态
-在您的场景中，这个命令通常与创建或修改 systemd 服务文件（如 xhs-ocr.service）配合使用。当您修改了服务文件后，需要运行 daemon-reexec 来重新加载配置，然后才能使用 enable 和 start 命令来启用和启动服务。
+在您的场景中，这个命令通常与创建或修改 systemd 服务文件（如 social_ocr.service）配合使用。当您修改了服务文件后，需要运行 daemon-reexec 来重新加载配置，然后才能使用 enable 和 start 命令来启用和启动服务。
 
 sudo systemctl daemon-reexec
-sudo systemctl enable xhs-ocr.service
-sudo systemctl start xhs-ocr.service
+sudo systemctl enable social_ocr.service
+sudo systemctl start social_ocr.service
 重启服务
-sudo systemctl restart xhs-ocr.service
+sudo systemctl restart social_ocr.service
 重新加载 systemd 配置
 sudo systemctl daemon-reload
 查看服务运行状态
-sudo systemctl status xhs-ocr.service
+sudo systemctl status social_ocr.service
 
 
 
