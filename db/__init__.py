@@ -43,7 +43,7 @@ def save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_tim
         '''
     cursor.execute(create_table_sql)
     conn.commit()
-    source_type =  ""
+    source_type = ""
     if app_name == "xhs":
         source_type = "1894230222988058625"
     elif app_name == "weibo":
@@ -94,7 +94,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, content_type: str, ocr_d
             "采集日期" DATE,
             "内容类型" TEXT,
             {(' TEXT, '.join(escaped_fields)) + ' TEXT' if escaped_fields else ''},
-            UNIQUE("作品标题", "采集日期")
+            UNIQUE("作品标题", "链接","采集日期")
         )
     '''
 
