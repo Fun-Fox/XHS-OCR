@@ -81,7 +81,7 @@ def run_sync_task():
                                     , remote_table_name='s_xhs_data_overview_traffic_analysis'
                                     , time_filter={"column": "采集日期", "days": day})
 
-        sync_explore_data_to_remote(table_name='s_tiktok_analysis_overview'
+        sync_explore_data_to_remote(table_name='s_tiktok_analysis_overview_ocr'
                                     , remote_table_name='s_xhs_data_overview_traffic_analysis'
                                     , time_filter={"column": "采集日期", "days": day})
 

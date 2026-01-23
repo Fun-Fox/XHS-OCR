@@ -110,7 +110,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, content_type: str, ocr_d
     # 使用 INSERT OR IGNORE 语句，当作品标题和OCR采集时间都相同时不插入
     table_len = len(index_mapping_data) + 7  # 4 是指"设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间"（这个4个字段）
     sql_str = f"""
-        INSERT OR IGNORE INTO s_xhs_{tag}_ocr (
+        INSERT OR IGNORE INTO s_{app_name}_{tag}_ocr (
             "设备IP","数据来源","账号ID","作品标题", "链接","采集日期","内容类型", {','.join(escaped_fields)}
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     """
