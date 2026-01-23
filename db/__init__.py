@@ -64,14 +64,14 @@ def save_userinfo_data(app_name, user_info, ip_port_dir, account_id, collect_tim
     conn.close()
 
 
-def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_data: List[str], index_mapping_data,
+def save_ocr_data(tag, post_title: str, note_link: str, content_type: str, ocr_data: List[str], index_mapping_data,
                   date_dir,
-                  ip_port_dir, account_id: str, ):
+                  ip_port_dir, account_id: str, app_name):
     """
     保存OCR识别数据到数据库
     :param tag: 标签名称
     :param post_title: 文件名（作品标题）
-    :param collect_time: OCR采集时间
+    :param content_type: 内容类型
     :param ocr_data: OCR识别的数据列表
     :param index_mapping_data: 字段名列表
     """
@@ -100,6 +100,12 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
 
     cursor.execute(create_table_sql)
     conn.commit()
+    if app_name == "xhs":
+        source_type = "1894230222988058625"
+    elif app_name == "weibo":
+        source_type = "1948663593734004737"
+    elif app_name == "tiktok":
+        source_type = "1866687481668411393"
 
     # 使用 INSERT OR IGNORE 语句，当作品标题和OCR采集时间都相同时不插入
     table_len = len(index_mapping_data) + 7  # 4 是指"设备IP","数据来源","账号ID","作品标题", "截图采集日期","OCR采集时间"（这个4个字段）
@@ -109,7 +115,7 @@ def save_ocr_data(tag, post_title: str, note_link: str, collect_time: str, ocr_d
         ) VALUES ({','.join(['?' for _ in range(table_len)])})
     """
     cursor.execute(sql_str, (
-        ip_port_dir, "1894230222988058625", account_id, post_title, note_link, date_dir, collect_time,
+        ip_port_dir, source_type, account_id, post_title, note_link, date_dir, content_type,
         *[ocr_data[i] if len(ocr_data) > i else '' for i in range(len(ocr_data))]
     ))
 

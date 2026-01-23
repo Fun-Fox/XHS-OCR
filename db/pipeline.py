@@ -16,6 +16,7 @@ def run_data_processing_pipeline(days=3):
 
     # 步骤1: 视频总览数据处理
     # 将视频的顶部与底部数据进行关联合并，生成视频总览数据
+    print("===xhs===数据同步")
     print("步骤1: 处理视频总览数据...")
     sync_explore_data_merge_to_remote(
         table_name_list=['s_xhs_video_data_overview_top_ocr', 's_xhs_video_data_overview_bottom_ocr'],
@@ -61,7 +62,8 @@ def run_data_processing_pipeline(days=3):
 
     # 步骤4: 远程数据库同步
     # 将数据分析与趋势分析进行关联合并，并同步到远程数据库
-    print("步骤4: 同步数据到远程数据库...")
+
+    print("步骤4: 数据融合...")
     sync_explore_data_merge_to_remote(
         table_name_list=['s_xhs_data_overview_ocr', 's_xhs_traffic_analysis_ocr'],
         merged_table_name="s_xhs_data_overview_traffic_analysis",

@@ -20,7 +20,7 @@ for section in config.sections():
 
 
 # 添加数据库同步功能
-def sync_explore_data_to_remote(table_name_list=None, time_filter=None, unique_constraints=None):
+def sync_explore_data_to_remote(table_name=None, remote_table_name=None,time_filter=None, unique_constraints=None):
     """
     将Download文件夹下的ExploreData.db sqlite数据同步到远程MySQL数据库中
     
@@ -58,37 +58,36 @@ def sync_explore_data_to_remote(table_name_list=None, time_filter=None, unique_c
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
-        for table_name in table_name_list:
-            # 构建查询语句
-            if time_filter and time_filter.get("column") and time_filter.get("days"):
-                # 如果有时间筛选条件，则只查询最近N天的数据
-                time_column = time_filter["column"]
-                days = time_filter["days"]
-                cutoff_date = (datetime.now() - timedelta(days=days)).strftime('%Y%m%d')
-                query = f"SELECT * FROM {table_name} WHERE {time_column} >= ?"
-                cursor.execute(query, (cutoff_date,))
-                logger.info(f"执行查询: {query} 参数: {cutoff_date}")
-            else:
-                # 查询所有数据
-                cursor.execute(f"SELECT * FROM {table_name}")
-                logger.info(f"执行查询: SELECT * FROM {table_name}")
+        # 构建查询语句
+        if time_filter and time_filter.get("column") and time_filter.get("days"):
+            # 如果有时间筛选条件，则只查询最近N天的数据
+            time_column = time_filter["column"]
+            days = time_filter["days"]
+            cutoff_date = (datetime.now() - timedelta(days=days)).strftime('%Y%m%d')
+            query = f"SELECT * FROM {table_name} WHERE {time_column} >= ?"
+            cursor.execute(query, (cutoff_date,))
+            logger.info(f"执行查询: {query} 参数: {cutoff_date}")
+        else:
+            # 查询所有数据
+            cursor.execute(f"SELECT * FROM {table_name}")
+            logger.info(f"执行查询: SELECT * FROM {table_name}")
 
-            rows = cursor.fetchall()
-            logger.info(f"表 {table_name} 查询到 {len(rows)} 行数据")
+        rows = cursor.fetchall()
+        logger.info(f"表 {table_name} 查询到 {len(rows)} 行数据")
 
-            # 获取列名
-            column_names = [description[0] for description in cursor.description]
-            # 替换 '采集日期' 为 '采集时间'
-            for i, col in enumerate(column_names):
-                if col == "采集日期":
-                    column_names[i] = "采集时间"
+        # 获取列名
+        column_names = [description[0] for description in cursor.description]
+        # 替换 '采集日期' 为 '采集时间'
+        for i, col in enumerate(column_names):
+            if col == "采集日期":
+                column_names[i] = "采集时间"
 
-            logger.debug(f"列名: {column_names}")
+        logger.debug(f"列名: {column_names}")
 
-            # 同步到MySQL数据库
-            table_unique_constraints = unique_constraints.get(table_name, []) if unique_constraints else []
-            sync_to_mysql(db_config, table_name, column_names, rows, table_unique_constraints)
-            logger.info(f"表 {table_name} 数据已同步到远程MySQL数据库")
+        # 同步到MySQL数据库
+        table_unique_constraints = unique_constraints.get(table_name, []) if unique_constraints else []
+        sync_to_mysql(db_config, remote_table_name, column_names, rows, table_unique_constraints)
+        logger.info(f"表 {table_name} 数据已同步到远程MySQL数据库")
 
         # 关闭本地数据库连接
         conn.close()
@@ -97,7 +96,7 @@ def sync_explore_data_to_remote(table_name_list=None, time_filter=None, unique_c
         logger.error(f"同步数据到远程数据库时出错: {str(e)}")
 
 
-def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=None):
+def sync_to_mysql(db_config, remote_table_name, column_names, rows, unique_constraints=None):
     """
     同步数据到MySQL数据库
     支持表不存在时创建表，字段不存在时新增字段
@@ -121,18 +120,18 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
             with mysql_conn.cursor() as cursor:
                 # 检查表是否存在
                 try:
-                    cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+                    cursor.execute(f"SHOW TABLES LIKE '{remote_table_name}'")
                     table_result = cursor.fetchall()
                     table_exists = len(table_result) > 0
-                    logger.debug(f"检查表 {table_name} 是否存在: {table_exists}, 查询结果: {table_result}")
+                    logger.debug(f"检查表 {remote_table_name} 是否存在: {table_exists}, 查询结果: {table_result}")
                 except Exception as e:
-                    logger.warning(f"检查表 {table_name} 是否存在时出错: {str(e)}")
+                    logger.warning(f"检查表 {remote_table_name} 是否存在时出错: {str(e)}")
                     table_exists = False
-                logger.info(f"表 {table_name} 约束字段: {unique_constraints}")
+                logger.info(f"表 {remote_table_name} 约束字段: {unique_constraints}")
                 # 如果表不存在，则创建表
                 if not table_exists:
-                    logger.info(f"表 {table_name} 不存在，正在创建...")
-                    create_table_if_not_exists(cursor, table_name, column_names, unique_constraints)
+                    logger.info(f"表 {remote_table_name} 不存在，正在创建...")
+                    create_table_if_not_exists(cursor, remote_table_name, column_names, unique_constraints)
                 # else:
                 # 如果表存在，检查是否有新增字段需要添加
                 # logger.info(f"表 {table_name} 已存在，检查是否需要新增字段...")
@@ -158,7 +157,7 @@ def sync_to_mysql(db_config, table_name, column_names, rows, unique_constraints=
 
                     placeholders = ", ".join(["%s"] * len(column_names))
                     insert_sql = " ".join(f"""
-                                    INSERT INTO {table_name} ({columns_str})
+                                    INSERT INTO {remote_table_name} ({columns_str})
                                     VALUES ({placeholders})
                                     ON DUPLICATE KEY UPDATE {", ".join(update_fields)}
                                     """.split())
@@ -408,7 +407,7 @@ def sync_post_data_to_remote(post_data_list, app_name, account_id=None):
 
                         # 获取设备IP和来源类型（如果有提供）
                         device_ip = post_data.get("device_ip", "")  # 如果数据中有设备IP可以传入
-                        source_type = "1866687481668411393"  # 默认设为weibo
+                        source_type = "1866687481668411393"
 
                         # 构建INSERT语句
                         insert_sql = """

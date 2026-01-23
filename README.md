@@ -193,3 +193,6 @@ sudo systemctl restart xhs-ocr.service
 sudo systemctl daemon-reload
 查看服务运行状态
 sudo systemctl status xhs-ocr.service
+
+
+

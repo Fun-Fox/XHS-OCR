@@ -340,7 +340,7 @@ def process_images():
                             except Exception as e:
                                 logger.error(f"处理用户信息失败: {author_profile_url}, 错误: {e}")
                             logger.info(f"\n====处理小红书用户信息完成====\n")
-                        elif filename.endswith('.png') and app_name == "xhs":
+                        elif filename.endswith('.png') and app_name in ("xhs"):
                             logger.info(f"\n====开始处理小红书图片====\n{file_path}")
                             tag, post_title = os.path.basename(filename).replace(".png", "").split('#')
                             json_filename = f"{post_title}.json"
@@ -512,7 +512,143 @@ def process_images():
                             save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data,
                                           collect_date,
                                           ip_port_dir,
-                                          account_id)
+                                          account_id,app_name)
+                        elif filename.endswith('.png') and app_name in ("tiktok"):
+                            logger.info(f"\n====开始处理tiktok图片====\n{file_path}")
+                            tag, note_link = os.path.basename(filename).replace(".png", "").split('#')
+                            # 查找tag文件夹中的所有蒙版文件
+                            mask_folder = os.path.join(root_dir, "mask", app_name, hard_ware, tag)
+                            logger.info(f"蒙版文件夹: {mask_folder}")
+                            mask_files = []
+
+                            if os.path.exists(mask_folder) and os.path.isdir(mask_folder):
+                                # 获取文件夹内所有png文件
+                                for file in os.listdir(mask_folder):
+                                    if file.lower().endswith('.png'):
+                                        mask_files.append(file)
+                                mask_files.sort()  # 排序确保处理顺序一致性
+                                # 依次尝试每个蒙版文件
+                                ocr_success = False
+                                for mask_file in mask_files:
+                                    try:
+                                        mask_path = os.path.join(mask_folder, mask_file)
+                                        logger.info(f"使用蒙版: {mask_file}")
+                                        # 读取原图和蒙版图
+                                        original_img = imread_with_pil(file_path)
+                                        mask_img = imread_with_pil(mask_path)  # 读取带Alpha通道的蒙版图
+
+                                        # 检查原图是否有效
+                                        if original_img is None:
+                                            logger.error(f"原图加载失败: {file_path}")
+                                            continue
+
+                                        # 检查蒙版图是否有效
+                                        if mask_img is None:
+                                            logger.error(f"蒙版图加载失败: {mask_path}")
+                                            continue
+
+                                        # 确保蒙版图与原图尺寸一致
+                                        if original_img.shape[:2] != mask_img.shape[:2]:
+                                            logger.warning(
+                                                f"蒙版图尺寸不匹配: {mask_img.shape[:2]} vs {original_img.shape[:2]}")
+                                            continue
+
+                                        # 使用蒙版图合成新图片（保留蒙版区域，其他区域变黑）
+                                        alpha = mask_img[:, :, 3] / 255.0  # 提取Alpha通道并归一化
+                                        result_img = original_img * alpha[:, :, np.newaxis]  # 应用Alpha混合
+                                        result_img = result_img.astype(np.uint8)
+
+                                        # 将结果保存为临时文件
+                                        temp_output_path = os.path.join(root_dir, "tmp", "temp_ocr_input.png")
+                                        # temp_output_path = os.path.join(root_dir, r"tmp", f"{time.time()}.png")
+                                        # 放大
+                                        # result_img = upscale_image(result_img, scale_factor=2)
+                                        # result_img = enhance_image(result_img, alpha=1, beta=20)  # 增加对比度和亮度
+                                        cv2.imwrite(temp_output_path, result_img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
+
+                                        # 等待文件写入完成并验证
+                                        timeout = 5  # 超时时间（秒）
+                                        start_time = time.time()
+                                        while not os.path.exists(temp_output_path):
+                                            if time.time() - start_time > timeout:
+                                                logger.error(f"文件写入超时: {temp_output_path}")
+                                                break
+                                            time.sleep(0.1)
+
+                                        # 验证文件是否写入成功
+                                        if os.path.exists(temp_output_path):
+                                            file_size = os.path.getsize(temp_output_path)
+                                            if file_size > 0:
+                                                logger.info(f"临时文件保存完成，大小: {file_size} bytes")
+                                            else:
+                                                logger.warning(f"临时文件写入完成但大小为0: {temp_output_path}")
+                                        else:
+                                            logger.error(f"临时文件保存失败: {temp_output_path}")
+
+                                        # 从配置文件中获取index_mapping_data
+                                        index_mapping_data = []
+                                        if config.has_section('tags') and config.has_option('tags', tag):
+                                            index_mapping_data_str = config.get('tags', tag)
+                                            index_mapping_data = [item.strip() for item in
+                                                                  index_mapping_data_str.split(',')]
+                                        # 执行 OCR 识别
+                                        # 使用快速的蒙版识别方式，使用VLM OCR方式
+                                        logger.info(f"正在处理: {filename}")
+
+                                        if ocr_engine == "PaddleOCR":
+                                            getObj = ocr.run(temp_output_path)
+                                            # print(getObj)
+                                            if not getObj["code"] == 100:
+                                                logger.info(f"OCR识别结果: {getObj}")
+                                                logger.error(
+                                                    f"使用蒙版文件{mask_path},OCR识别失败: 请检查{file_path},是否为空白图片")
+                                                continue
+                                            # sorted_lines = getObj["data"]
+                                            # 这里也增加从左到右 从上到下的排序功能
+                                            # print("排序前:", getObj["data"])
+                                            sorted_lines = sort_text_lines_by_paddle_position(getObj["data"])
+                                        # surya ocr
+                                        # else:
+                                        #     # 执行OCR
+                                        #     img = Image.open(temp_output_path)
+                                        #     img_pred = ocr(img, with_bboxes=True)
+                                        #     sorted_lines = sort_text_lines_by_surya_position(img_pred.text_lines)
+
+                                        ocr_texts = []
+                                        for line in sorted_lines:
+                                            if ocr_engine == "PaddleOCR":
+                                                text = str(line['text'])
+                                            else:
+                                                text = line.text
+                                            text = (text.replace('秒', '')
+                                                    .replace(' ', '')
+                                                    .replace('o', '0')
+                                                    .replace('<b>', '')
+                                                    .replace('</b>', ''))
+                                            if text:
+                                                ocr_texts.append(text)
+                                        logger.info(f"OCR识别结果：{ocr_texts}")
+                                        if len(ocr_texts) != len(index_mapping_data):
+                                            logger.warning(
+                                                f"{filename}：识别到的数据个数不匹配，尝试使用蒙版库中其余蒙版")
+                                            # logger.info(f"{index_mapping_data}")
+                                            continue
+                                        ocr_success = True
+                                        logger.info(f"使用蒙版库中蒙版 {mask_file} OCR识别成功")
+                                        break
+
+                                    except Exception as e:
+                                        logger.warning(f"使用蒙版文件 {mask_file} 处理失败: {e}")
+                                        continue
+
+                                if not ocr_success:
+                                    logger.error(f"使用蒙版库中，所有蒙版，最后还是识别失败: {filename}")
+                                    continue
+
+                                save_ocr_data(tag, '', note_link, "tiktok视频", ocr_texts, index_mapping_data,
+                                              collect_date,
+                                              ip_port_dir,
+                                              account_id,app_name)
 
 
 # 结束 OCR 引擎
