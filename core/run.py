@@ -217,7 +217,7 @@ def process_images():
                                     user_info['nickname'] = profile_data.get('nickname', '')
                                     user_info['follows'] = profile_data.get('follow_count', '')
                                     user_info['fans'] = profile_data.get('follower_count', '')
-                                    user_info['interaction'] = profile_data.get('like_count', '') # 获赞与收藏
+                                    user_info['interaction'] = profile_data.get('like_count', '')  # 获赞与收藏
                                     user_info['collect_time'] = collect_date  # 添加采集时间
                                     user_info['profile_url'] = author_profile_url  # 添加个人主页链接
 
@@ -251,11 +251,10 @@ def process_images():
                                     post_data['collect_time'] = collect_date
                                 logger.info(f"account_id:{account_id}")
 
-                                sync_post_data_to_remote(post_data_list,app_name, account_id)
+                                sync_post_data_to_remote(post_data_list, app_name, account_id)
                             except Exception as e:
                                 logger.error(f"处理weibo_data.json文件时出错: {e}")
                             logger.info(f"\n====处理微博数据完成====\n")
-
 
                         if filename == "weibo_data.json" and app_name == "weibo":
                             # 读取weibo_data.json文件
@@ -512,7 +511,7 @@ def process_images():
                             save_ocr_data(tag, post_title, note_link, content_type, ocr_texts, index_mapping_data,
                                           collect_date,
                                           ip_port_dir,
-                                          account_id,app_name)
+                                          account_id, app_name)
                         elif filename.endswith('.png') and app_name in ("tiktok"):
                             logger.info(f"\n====开始处理tiktok图片====\n{file_path}")
                             tag, note_link = os.path.basename(filename).replace(".png", "").split('#')
@@ -621,6 +620,7 @@ def process_images():
                                             else:
                                                 text = line.text
                                             text = (text.replace('秒', '')
+                                                    .replace('s', '')
                                                     .replace(' ', '')
                                                     .replace('o', '0')
                                                     .replace('<b>', '')
@@ -644,11 +644,12 @@ def process_images():
                                 if not ocr_success:
                                     logger.error(f"使用蒙版库中，所有蒙版，最后还是识别失败: {filename}")
                                     continue
+                                note_link = note_link.replace('*', "/")
 
                                 save_ocr_data(tag, '', note_link, "tiktok视频", ocr_texts, index_mapping_data,
                                               collect_date,
                                               ip_port_dir,
-                                              account_id,app_name)
+                                              account_id, app_name)
 
 
 # 结束 OCR 引擎
