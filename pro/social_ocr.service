@@ -1,5 +1,5 @@
 [Unit]
-Description=XHS OCR Service
+Description=Social Media OCR Service
 After=network.target
 
 [Service]
@@ -7,7 +7,7 @@ Type=simple
 User=callfans
 WorkingDirectory=/home/callfans/data/AI-box/SocialMediaOCR
 Environment=TZ=Asia/Shanghai
-ExecStart=/home/callfans/miniconda3/bin/conda run -n py312 python /home/callfans/data/AI-box/SocialMediaOCR/xhs_ocr.py --mode schedule --at-time "22:00"
+ExecStart=/home/callfans/miniconda3/bin/conda run -n py312 python /home/callfans/data/AI-box/SocialMediaOCR/social_ocr.py --mode schedule --at-time "22:00"
 Restart=always
 StandardOutput=append:/home/callfans/data/AI-box/SocialMediaOCR/logs/run.log
 StandardError=append:/home/callfans/data/AI-box/SocialMediaOCR/logs/run.log
